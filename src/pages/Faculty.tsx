@@ -1,9 +1,13 @@
-
 import { useState } from 'react';
-import { User, Mail, Phone, Award, BookOpen, Users, Computer, Briefcase, Palette, Microscope } from 'lucide-react';
+import {
+  User, Mail, Phone, BookOpen, Award,
+  Users, Computer, Briefcase, Palette, Microscope
+} from 'lucide-react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import img1 from '../assets/images/director.jpg';
+import img2 from '../assets/images/management.jpg';
 
 const Faculty = () => {
   const [selectedDepartment, setSelectedDepartment] = useState('all');
@@ -11,7 +15,7 @@ const Faculty = () => {
   const departments = [
     { id: 'all', name: 'All Faculty', icon: Users },
     { id: 'computer-science', name: 'Computer Science', icon: Computer },
-    { id: 'business', name: 'Business', icon: Briefcase },
+    { id: 'management', name: 'Management', icon: Briefcase },
     { id: 'arts', name: 'Arts & Design', icon: Palette },
     { id: 'science', name: 'Sciences', icon: Microscope }
   ];
@@ -19,251 +23,212 @@ const Faculty = () => {
   const facultyMembers = [
     {
       id: 1,
-      name: 'Dr. John Smith',
-      title: 'Professor of Computer Science',
+      name: 'Dr. MADHAV M. BOKARE',
+      title: 'Associate Prof. and Head, Computer Science',
       department: 'computer-science',
-      email: 'john.smith@itmcollege .edu',
-      phone: '+1 (555) 123-4567',
-      education: ['Ph.D. Computer Science - MIT', 'M.S. Software Engineering - Stanford'],
-      experience: '15+ years',
-      specialization: ['Machine Learning', 'Artificial Intelligence', 'Data Structures'],
-      bio: 'Dr. Smith is a renowned expert in artificial intelligence and machine learning with over 15 years of teaching and research experience.',
-      achievements: ['Best Teacher Award 2023', 'Published 50+ research papers', 'IEEE Fellow']
+      email: 'madhavm_tbokare@ssbesitm.org',
+      phone: '+91 9421870580',
+      experience: '36+ years',
+      specialization: ['AI & ML', 'Computer Networks', 'Research'],
+      bio: 'Dr. Bokare is a veteran academician and researcher with over 36 years of experience, leading the department at SSBES’ ITM, Nanded.',
+      achievements: ['Editor IJACT', 'ICT Researcher of the Year 2016', 'Ph.D Supervisor'],
+      image: img1
     },
     {
       id: 2,
-      name: 'Prof. Sarah Johnson',
-      title: 'Associate Professor of Business',
-      department: 'business',
-      email: 'sarah.johnson@ITM College .edu',
-      phone: '+1 (555) 123-4568',
-      education: ['MBA - Harvard Business School', 'B.Com - University of California'],
-      experience: '12+ years',
-      specialization: ['Marketing Strategy', 'Consumer Behavior', 'Digital Marketing'],
-      bio: 'Prof. Johnson brings extensive industry experience from Fortune 500 companies to her teaching.',
-      achievements: ['Outstanding Faculty Award 2022', 'Marketing Excellence Award', 'Industry Leader Recognition']
+      name: 'Dr. M. S. Altamash',
+      title: 'Assistant Prof. and Head',
+      department: 'management',
+      email: 'ms_altamash@ssbesitm.org',
+      phone: '+91 7972779491',
+      experience: '20+ years',
+      specialization: ['Marketing', 'Business Strategy', 'HR'],
+      bio: 'Dr. Altamash leads the Management department with strong academic and industry experience.',
+      achievements: ['Published 30+ papers', 'Led MBA curriculum redesign'],
+      image: img2
     },
     {
       id: 3,
-      name: 'Dr. Emily Chen',
-      title: 'Professor of Environmental Science',
-      department: 'science',
-      email: 'emily.chen@ITM College .edu',
-      phone: '+1 (555) 123-4569',
-      education: ['Ph.D. Environmental Science - Berkeley', 'M.S. Biology - UCLA'],
-      experience: '18+ years',
-      specialization: ['Climate Change', 'Sustainability', 'Ecosystem Management'],
-      bio: 'Dr. Chen is a leading researcher in environmental sustainability and climate change mitigation strategies.',
-      achievements: ['Environmental Excellence Award', 'UN Climate Panel Member', '100+ Publications']
+      name: 'Dr. N. D. Shinde',
+      title: 'Assistant Professor, Management',
+      department: 'management',
+      email: 'nd_shinde@ssbesitm.org',
+      phone: '+91 8999050686',
+      experience: '12+ years',
+      specialization: ['Finance', 'Accounting', 'Business Analytics'],
+      bio: 'Dr. Shinde brings deep industry insights to classroom teaching and research.',
+      achievements: ['Certificate Courses in SAP', 'Member – Management Council'],
+      image: 'https://via.placeholder.com/150?text=Shinde'
     },
     {
       id: 4,
-      name: 'Prof. Michael Brown',
-      title: 'Associate Professor of Graphic Design',
-      department: 'arts',
-      email: 'michael.brown@ITM College .edu',
-      phone: '+1 (555) 123-4570',
-      education: ['MFA Graphic Design - RISD', 'BFA Visual Arts - Parsons'],
+      name: 'Dr. Nasreen',
+      title: 'Assistant Professor, Management',
+      department: 'management',
+      email: 'nasreen@ssbesitm.org',
+      phone: '+91 XXXXXXXXXX',
       experience: '10+ years',
-      specialization: ['Brand Design', 'Digital Arts', 'Typography'],
-      bio: 'Prof. Brown combines creative expertise with technical skills to inspire the next generation of designers.',
-      achievements: ['Design Excellence Award', 'International Design Recognition', 'Creative Industry Leader']
-    },
-    {
-      id: 5,
-      name: 'Dr. Lisa Wang',
-      title: 'Professor of Data Science',
-      department: 'computer-science',
-      email: 'lisa.wang@ITM College .edu',
-      phone: '+1 (555) 123-4571',
-      education: ['Ph.D. Statistics - Harvard', 'M.S. Mathematics - Princeton'],
-      experience: '14+ years',
-      specialization: ['Big Data Analytics', 'Statistical Modeling', 'Machine Learning'],
-      bio: 'Dr. Wang specializes in big data analytics and has worked with major tech companies on data-driven solutions.',
-      achievements: ['Data Science Innovation Award', 'Tech Industry Collaborator', 'Research Excellence']
-    },
-    {
-      id: 6,
-      name: 'Prof. David Wilson',
-      title: 'Professor of Finance',
-      department: 'business',
-      email: 'david.wilson@ITM College .edu',
-      phone: '+1 (555) 123-4572',
-      education: ['Ph.D. Finance - Wharton', 'CFA Charter Holder'],
-      experience: '20+ years',
-      specialization: ['Corporate Finance', 'Investment Analysis', 'Risk Management'],
-      bio: 'Prof. Wilson brings Wall Street expertise to academia with extensive experience in corporate finance.',
-      achievements: ['Finance Excellence Award', 'Wall Street Recognition', 'Industry Consultant']
+      specialization: ['Organizational Behavior', 'Leadership'],
+      bio: 'Dr. Nasreen specializes in leadership and organizational development.',
+      achievements: ['Presented at ICMIT Auckland', 'Won Institutional Teaching Award'],
+      image: 'https://via.placeholder.com/150?text=Nasreen'
     }
   ];
 
-  const filteredFaculty = selectedDepartment === 'all' 
-    ? facultyMembers 
+  const filteredFaculty = selectedDepartment === 'all'
+    ? facultyMembers
     : facultyMembers.filter(member => member.department === selectedDepartment);
 
   return (
     <div className="min-h-screen pt-16 bg-gray-50">
       {/* Header */}
       <section className="py-16 bg-gradient-to-r from-blue-600 to-purple-600">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold text-white mb-6 animate-fade-in">
-            Our Faculty
-          </h1>
-          <p className="text-xl text-blue-100 max-w-3xl mx-auto animate-slide-in-left">
-            Meet our distinguished educators and researchers who are committed to 
-            academic excellence and student success.
+        <div className="text-center px-4">
+          <h1 className="text-5xl font-bold text-white">Our Faculty</h1>
+          <p className="text-xl text-blue-100 mt-4">
+            Meet our distinguished educators committed to academic excellence.
           </p>
         </div>
       </section>
 
       {/* Department Filter */}
       <section className="py-8 bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap justify-center gap-4">
-            {departments.map((dept) => (
-              <Button
-                key={dept.id}
-                variant={selectedDepartment === dept.id ? "default" : "outline"}
-                onClick={() => setSelectedDepartment(dept.id)}
-                className={`flex items-center space-x-2 ${
-                  selectedDepartment === dept.id ? 'bg-blue-600 text-white' : ''
-                }`}
-              >
-                <dept.icon className="h-4 w-4" />
-                <span>{dept.name}</span>
-              </Button>
-            ))}
-          </div>
+        <div className="flex justify-center flex-wrap gap-4">
+          {departments.map(dept => (
+            <Button
+              key={dept.id}
+              variant={selectedDepartment === dept.id ? 'default' : 'outline'}
+              onClick={() => setSelectedDepartment(dept.id)}
+              className={selectedDepartment === dept.id ? 'bg-blue-600 text-white' : ''}
+            >
+              <dept.icon className="h-4 w-4 mr-1" />
+              <span>{dept.name}</span>
+            </Button>
+          ))}
         </div>
       </section>
 
       {/* Faculty Grid */}
       <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredFaculty.map((faculty, index) => (
-              <Card 
-                key={faculty.id} 
-                className="card-hover animate-fade-in"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <CardHeader className="text-center pb-4">
-                  <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-                    <User className="h-12 w-12 text-blue-600" />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900">{faculty.name}</h3>
-                  <p className="text-blue-600 font-medium">{faculty.title}</p>
-                  <Badge variant="outline" className="mx-auto">
-                    {faculty.experience} Experience
-                  </Badge>
-                </CardHeader>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto px-4">
+          {filteredFaculty.map((fac, idx) => (
+            <Card
+              key={fac.id}
+              className="card-hover animate-fade-in"
+              style={{ animationDelay: `${idx * 0.1}s` }}
+            >
+              <CardHeader className="text-center pb-4">
+                <div className="w-36 h-36 rounded-full overflow-hidden ring-4 ring-blue-300 shadow-lg mx-auto mb-4">
+                  <img src={fac.image} alt={fac.name} className="w-full h-full object-cover" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900">{fac.name}</h3>
+                <p className="text-blue-600">{fac.title}</p>
+                <Badge variant="outline" className="mt-2">
+                  {fac.experience} Experience
+                </Badge>
+              </CardHeader>
 
-                <CardContent className="space-y-4">
-                  <p className="text-gray-600 text-sm leading-relaxed">{faculty.bio}</p>
+              <CardContent className="space-y-4">
+                <p className="text-gray-600 text-sm">{fac.bio}</p>
 
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-2 flex items-center">
-                      <BookOpen className="h-4 w-4 mr-2" />
-                      Specialization
-                    </h4>
-                    <div className="flex flex-wrap gap-1">
-                      {faculty.specialization.slice(0, 2).map((spec, idx) => (
-                        <Badge key={idx} variant="secondary" className="text-xs">
-                          {spec}
-                        </Badge>
-                      ))}
-                      {faculty.specialization.length > 2 && (
-                        <Badge variant="secondary" className="text-xs">
-                          +{faculty.specialization.length - 2} more
-                        </Badge>
-                      )}
-                    </div>
+                <div>
+                  <h4 className="font-semibold mb-1 flex items-center text-gray-900">
+                    <BookOpen className="h-4 w-4 mr-2" />
+                    Specialization
+                  </h4>
+                  <div className="flex gap-1 flex-wrap">
+                    {fac.specialization.slice(0, 2).map((s, i) => (
+                      <Badge key={i} variant="secondary" className="text-xs">
+                        {s}
+                      </Badge>
+                    ))}
+                    {fac.specialization.length > 2 && (
+                      <Badge variant="secondary" className="text-xs">
+                        +{fac.specialization.length - 2} more
+                      </Badge>
+                    )}
                   </div>
+                </div>
 
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-2 flex items-center">
-                      <Award className="h-4 w-4 mr-2" />
-                      Key Achievements
-                    </h4>
-                    <ul className="text-sm text-gray-600 space-y-1">
-                      {faculty.achievements.slice(0, 2).map((achievement, idx) => (
-                        <li key={idx} className="flex items-start">
-                          <span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                          {achievement}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                <div>
+                  <h4 className="font-semibold mb-1 flex items-center text-gray-900">
+                    <Award className="h-4 w-4 mr-2" />
+                    Achievements
+                  </h4>
+                  <ul className="text-sm text-gray-600 space-y-1">
+                    {fac.achievements.slice(0, 2).map((ach, i) => (
+                      <li key={i} className="flex items-start">
+                        <span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2"></span>
+                        {ach}
+                      </li>
+                    ))}
+                    {fac.achievements.length > 2 && (
+                      <li className="text-blue-600 text-xs">
+                        +{fac.achievements.length - 2} more...
+                      </li>
+                    )}
+                  </ul>
+                </div>
 
-                  <div className="pt-4 border-t border-gray-100 space-y-2">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Mail className="h-4 w-4 mr-2 text-blue-600" />
-                      <a href={`mailto:${faculty.email}`} className="hover:text-blue-600 transition-colors">
-                        {faculty.email}
-                      </a>
-                    </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Phone className="h-4 w-4 mr-2 text-blue-600" />
-                      <span>{faculty.phone}</span>
-                    </div>
+                <div className="border-t pt-3 space-y-2">
+                  <div className="flex items-center text-sm text-gray-600">
+                    <Mail className="h-4 w-4 text-blue-600 mr-2" />
+                    <a href={`mailto:${fac.email}`} className="hover:text-blue-600">
+                      {fac.email}
+                    </a>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  <div className="flex items-center text-sm text-gray-600">
+                    <Phone className="h-4 w-4 text-blue-600 mr-2" />
+                    <span>{fac.phone}</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </section>
 
       {/* Faculty Stats */}
       <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Faculty Excellence
-            </h2>
-            <p className="text-xl text-gray-600">
-              Our commitment to academic and research excellence
-            </p>
+        <div className="text-center mb-12 px-4">
+          <h2 className="text-3xl font-bold text-gray-900">Faculty Excellence</h2>
+          <p className="text-xl text-gray-600 mt-2">
+            Exemplary qualifications and leadership through research.
+          </p>
+        </div>
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 px-4">
+          <div className="text-center animate-fade-in">
+            <div className="text-4xl font-bold text-blue-600">200+</div>
+            <div className="text-gray-600">Faculty Members</div>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="text-center animate-fade-in">
-              <div className="text-4xl font-bold text-blue-600 mb-2">200+</div>
-              <div className="text-gray-600">Faculty Members</div>
-            </div>
-            <div className="text-center animate-fade-in" style={{ animationDelay: '0.1s' }}>
-              <div className="text-4xl font-bold text-purple-600 mb-2">85%</div>
-              <div className="text-gray-600">With Ph.D. Degrees</div>
-            </div>
-            <div className="text-center animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              <div className="text-4xl font-bold text-green-600 mb-2">500+</div>
-              <div className="text-gray-600">Research Publications</div>
-            </div>
-            <div className="text-center animate-fade-in" style={{ animationDelay: '0.3s' }}>
-              <div className="text-4xl font-bold text-orange-600 mb-2">15:1</div>
-              <div className="text-gray-600">Student-Faculty Ratio</div>
-            </div>
+          <div className="text-center animate-fade-in" style={{ animationDelay: '0.1s' }}>
+            <div className="text-4xl font-bold text-purple-600">85%</div>
+            <div className="text-gray-600">With Ph.D.</div>
+          </div>
+          <div className="text-center animate-fade-in" style={{ animationDelay: '0.2s' }}>
+            <div className="text-4xl font-bold text-green-600">500+</div>
+            <div className="text-gray-600">Publications</div>
+          </div>
+          <div className="text-center animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            <div className="text-4xl font-bold text-orange-600">15:1</div>
+            <div className="text-gray-600">Student‑Faculty Ratio</div>
           </div>
         </div>
       </section>
 
       {/* Call to Action */}
-      <section className="py-16 bg-blue-600">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-6">
-            Learn from the Best
-          </h2>
-          <p className="text-xl text-blue-100 mb-8">
-            Join our community and be mentored by industry experts and renowned academics.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-white text-blue-600 hover:bg-gray-100">
-              Apply Now
-            </Button>
-            <Button variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600">
-              Contact Faculty
-            </Button>
-          </div>
+      <section className="py-16 bg-blue-600 text-center px-4">
+        <h2 className="text-3xl font-bold text-white mb-6">Learn from the Best</h2>
+        <p className="text-xl text-blue-100 mb-8">
+          Join ITM and be mentored by distinguished faculty and researchers.
+        </p>
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <Button className="bg-white text-blue-600 hover:bg-gray-100">
+            Apply Now
+          </Button>
+          <Button variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600">
+            Contact Us
+          </Button>
         </div>
       </section>
     </div>
