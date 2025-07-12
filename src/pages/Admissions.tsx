@@ -117,7 +117,7 @@ const Admissions = () => {
                 </div>
 
 
-                
+
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -130,6 +130,7 @@ const Admissions = () => {
                     onChange={handleInputChange}
                     required
                   />
+                  
                 </div>
                 <div>
                   <Label htmlFor="phone">Phone</Label>
