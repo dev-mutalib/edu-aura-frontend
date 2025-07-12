@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
-  SelectItem,
+  SelectItem, 
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -115,6 +115,9 @@ const Admissions = () => {
                     required
                   />
                 </div>
+
+
+                
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
