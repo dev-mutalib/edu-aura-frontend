@@ -257,7 +257,7 @@ const Home = () => {
       <section className="relative mt-16"> {/* Added mt-16 for navigation bar space */}
         <Slider {...carouselSettings}>
           {carouselItems.map((item, idx) => (
-            <div key={idx} className="relative h-screen flex items-center justify-center">
+            <div key={idx} className="relative h-[50vh] md:h-screen flex items-center justify-center">
               {/* Background image */}
               <img 
                 src={item.image} 
@@ -270,25 +270,25 @@ const Home = () => {
               
               {/* Content - Centered */}
               <div className="relative z-10 text-center text-white px-4">
-                <h1 className="text-4xl md:text-6xl font-bold mb-8 text-center animate-fade-in">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-8 text-center animate-fade-in">
                   {item.title}
                 </h1>
               </div>
               
-              {/* Buttons at bottom with new colors */}
-              <div className="absolute bottom-20 left-0 right-0 z-10">
-                <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-in-right">
-                  {/* Apply Now Button - Vibrant Blue */}
-                  <Button asChild size="lg" 
-                          className="bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-lg">
+              {/* Buttons at bottom with new colors - Medium size */}
+              <div className="absolute bottom-8 md:bottom-20 left-0 right-0 z-10">
+                <div className="flex flex-col sm:flex-row gap-3 justify-center animate-slide-in-right">
+                  {/* Apply Now Button - Medium size */}
+                  <Button asChild 
+                          className="py-3 px-6 text-base bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-lg">
                     <Link to="/admissions">
-                      Apply Now <ArrowRight className="ml-2 h-5 w-5"/>
+                      Apply Now <ArrowRight className="ml-2 h-4 w-4 inline" />
                     </Link>
                   </Button>
                   
-                  {/* Explore Courses Button - Light Teal */}
-                  <Button asChild size="lg" variant="outline"
-                          className="bg-gradient-to-r from-teal-400 to-teal-500 text-white border-0 hover:from-teal-500 hover:to-teal-600 shadow-lg">
+                  {/* Explore Courses Button - Medium size */}
+                  <Button asChild variant="outline"
+                          className="py-3 px-6 text-base bg-gradient-to-r from-teal-400 to-teal-500 text-white border-0 hover:from-teal-500 hover:to-teal-600 shadow-lg">
                     <Link to="/courses">Explore Courses</Link>
                   </Button>
                 </div>
