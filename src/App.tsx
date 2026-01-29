@@ -7,6 +7,7 @@ import Contact from './pages/Contact';
 import Faculty from './pages/Faculty';
 import About from './pages/About';
 import Gallery from './pages/Gallery';
+import Library from './pages/Library';
 
 
 
@@ -22,6 +23,7 @@ const App = () => {
           <Route path='/contact' element={<Contact />} />
           <Route path='/about' element={<About />} />
           <Route path='/gallery' element={<Gallery />} />
+          <Route path='/library' element={<Library />} />
 
         </Routes>
       </Layout>

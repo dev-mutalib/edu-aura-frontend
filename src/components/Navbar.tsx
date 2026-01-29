@@ -15,14 +15,14 @@ const Navbar = () => {
 
         {/* DESKTOP NAV */}
         <nav className="hidden items-center gap-6 md:flex">
-          {['/', '/courses', '/faculty', '/admissions', '/contact', '/gallery', '/about'].map(
+          {['/', '/courses', '/faculty', '/library', '/admissions', '/contact', '/gallery', '/about'].map(
             (path, i) => (
               <Link
                 key={path}
                 to={path}
                 className="hover:text-primary transition-colors"
               >
-                {['Home', 'Courses', 'Faculty', 'Admissions', 'Contact', 'Gallery', 'About'][i]}
+                {['Home', 'Courses', 'Faculty', 'Library', 'Admissions', 'Contact', 'Gallery', 'About'][i]}
               </Link>
             )
           )}
@@ -42,7 +42,7 @@ const Navbar = () => {
       {isOpen && (
         <div className="md:hidden border-t bg-background shadow">
           <nav className="flex flex-col px-4 py-4">
-            {['/', '/courses', '/faculty', '/admissions', '/contact'].map(
+            {['/', '/courses', '/faculty', '/library', '/admissions', '/contact', '/gallery', '/about'].map(
               (path, i) => (
                 <Link
                   key={path}
@@ -50,7 +50,7 @@ const Navbar = () => {
                   onClick={() => setIsOpen(false)}
                   className="py-3 hover:text-primary transition-colors"
                 >
-                  {['Home', 'Courses', 'Faculty', 'Admissions', 'Contact'][i]}
+                  {['Home', 'Courses', 'Faculty', 'Library', 'Admissions', 'Contact', 'Gallery', 'About'][i]}
                 </Link>
               )
             )}
