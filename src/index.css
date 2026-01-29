@@ -3,33 +3,33 @@
 @tailwind utilities;
 
 /* =========================================================
-   ROOT + BRAND VARIABLES (LIGHT MODE)
+   ROOT + BRAND VARIABLES (DARK THEME - Like nxtstepx.com)
 ========================================================= */
 @layer base {
   :root {
+    /* ===== DARK THEME COLORS ===== */
+    --background: 222 47% 7%;           /* Dark navy #0F172A */
+    --foreground: 210 40% 98%;          /* Light text */
+
     /* ===== BRAND COLORS ===== */
-    --primary: 270 47% 52%;        /* #7B4CBB */
+    --primary: 192 91% 36%;             /* Cyan/Teal #06B6D4 */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 224 54% 56%;      /* #546CCC */
+    --secondary: 280 67% 60%;           /* Purple #A855F7 */
     --secondary-foreground: 0 0% 100%;
 
-    /* ===== BACKGROUND & TEXT ===== */
-    --background: 240 20% 98%;
-    --foreground: 222 47% 11%;
-
     /* ===== CARD / POPOVER ===== */
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card: 222 47% 11%;                /* Slightly lighter navy */
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
 
     /* ===== MUTED / ACCENT ===== */
-    --muted: 240 5% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 217 19% 18%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 224 54% 56%;
+    --accent: 330 81% 60%;              /* Magenta/Pink #EC4899 */
     --accent-foreground: 0 0% 100%;
 
     /* ===== STATES ===== */
@@ -37,41 +37,20 @@
     --destructive-foreground: 0 0% 100%;
 
     /* ===== UI ELEMENTS ===== */
-    --border: 240 6% 90%;
-    --input: 240 6% 90%;
-    --ring: 270 47% 52%;
+    --border: 217 19% 18%;
+    --input: 217 19% 18%;
+    --ring: 192 91% 36%;
 
     --radius: 0.75rem;
+
+    /* ===== CUSTOM GLOW COLORS ===== */
+    --glow-primary: 192 91% 36%;
+    --glow-secondary: 280 67% 60%;
+    --glow-accent: 330 81% 60%;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
-  }
-}
-
-/* =========================================================
-   DARK MODE VARIABLES
-========================================================= */
-@layer base {
-  .dark {
-    --background: 222 47% 7%;
-    --foreground: 210 40% 98%;
-
-    --card: 222 47% 11%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222 47% 11%;
-    --popover-foreground: 210 40% 98%;
-
-    --muted: 217 19% 18%;
-    --muted-foreground: 215 20% 65%;
-
-    --accent: 224 54% 56%;
-    --accent-foreground: 0 0% 100%;
-
-    --border: 217 19% 18%;
-    --input: 217 19% 18%;
-    --ring: 270 47% 52%;
   }
 }
 
@@ -91,28 +70,397 @@
 }
 
 /* =========================================================
-   BUTTON PREMIUM EFFECTS (NO COMPONENT CHANGE)
+   GRADIENT TEXT (like nxtstepx.com)
 ========================================================= */
-@layer components {
-  .btn-gradient {
-    @apply bg-gradient-to-r from-primary to-secondary text-white;
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--secondary)) 50%,
+      hsl(var(--accent)) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
-  .btn-gradient:hover {
-    filter: brightness(1.05);
+  .text-gradient-cyan {
+    background: linear-gradient(
+      135deg,
+      hsl(192 91% 50%) 0%,
+      hsl(192 91% 36%) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-purple {
+    background: linear-gradient(
+      135deg,
+      hsl(280 67% 70%) 0%,
+      hsl(330 81% 60%) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }
 
 /* =========================================================
-   CARD PREMIUM HOVER
+   BUTTON PREMIUM EFFECTS
+========================================================= */
+@layer components {
+  .btn-gradient {
+    @apply relative overflow-hidden;
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+  }
+
+  .btn-gradient::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--accent)) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .btn-gradient:hover::before {
+    opacity: 1;
+  }
+
+  .btn-gradient > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-glow {
+    box-shadow: 
+      0 0 20px hsl(var(--primary) / 0.3),
+      0 0 40px hsl(var(--primary) / 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .btn-glow:hover {
+    box-shadow: 
+      0 0 30px hsl(var(--primary) / 0.5),
+      0 0 60px hsl(var(--primary) / 0.2);
+    transform: translateY(-2px);
+  }
+}
+
+/* =========================================================
+   CARD PREMIUM HOVER (like nxtstepx.com)
 ========================================================= */
 @layer components {
   .card-hover {
-    @apply transition-all duration-300 ease-out;
+    @apply relative transition-all duration-300 ease-out;
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+  }
+
+  .card-hover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary) / 0) 0%,
+      hsl(var(--primary) / 0) 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    transition: all 0.3s ease;
+  }
+
+  .card-hover:hover::before {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--secondary)) 50%,
+      hsl(var(--accent)) 100%
+    );
   }
 
   .card-hover:hover {
-    transform: translateY(-4px);
+    transform: translateY(-8px);
+    box-shadow: 
+      0 20px 40px hsl(var(--primary) / 0.1),
+      0 0 60px hsl(var(--primary) / 0.05);
+  }
+
+  .card-glow {
+    @apply transition-all duration-300;
+  }
+
+  .card-glow:hover {
+    box-shadow: 
+      0 0 30px hsl(var(--primary) / 0.2),
+      0 0 60px hsl(var(--secondary) / 0.1);
+  }
+}
+
+/* =========================================================
+   GLOW EFFECTS
+========================================================= */
+@layer utilities {
+  .glow-primary {
+    box-shadow: 0 0 30px hsl(var(--primary) / 0.4);
+  }
+
+  .glow-secondary {
+    box-shadow: 0 0 30px hsl(var(--secondary) / 0.4);
+  }
+
+  .glow-accent {
+    box-shadow: 0 0 30px hsl(var(--accent) / 0.4);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px hsl(var(--primary) / 0.5);
+  }
+
+  .text-glow-secondary {
+    text-shadow: 0 0 20px hsl(var(--secondary) / 0.5);
+  }
+}
+
+/* =========================================================
+   SHIMMER ANIMATION (like nxtstepx.com buttons)
+========================================================= */
+@layer utilities {
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      hsl(0 0% 100% / 0.1) 50%,
+      transparent 100%
+    );
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+}
+
+/* =========================================================
+   FLOATING ANIMATION
+========================================================= */
+@layer utilities {
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-float-delayed {
+    animation: float 6s ease-in-out 2s infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+}
+
+/* =========================================================
+   PULSE GLOW ANIMATION
+========================================================= */
+@layer utilities {
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px hsl(var(--primary) / 0.6);
+    }
+  }
+}
+
+/* =========================================================
+   GRADIENT BORDER ANIMATION
+========================================================= */
+@layer utilities {
+  .gradient-border {
+    position: relative;
+    background: hsl(var(--card));
+    border-radius: var(--radius);
+  }
+
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(
+      45deg,
+      hsl(var(--primary)),
+      hsl(var(--secondary)),
+      hsl(var(--accent)),
+      hsl(var(--primary))
+    );
+    background-size: 300% 300%;
+    animation: gradient-rotate 3s linear infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  @keyframes gradient-rotate {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+}
+
+/* =========================================================
+   SLIDE IN ANIMATIONS
+========================================================= */
+@layer utilities {
+  .animate-slide-up {
+    animation: slide-up 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animate-slide-down {
+    animation: slide-down 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animate-slide-left {
+    animation: slide-left 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animate-slide-right {
+    animation: slide-right 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-down {
+    from {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-left {
+    from {
+      opacity: 0;
+      transform: translateX(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slide-right {
+    from {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+/* =========================================================
+   SCALE ANIMATIONS
+========================================================= */
+@layer utilities {
+  .hover-scale {
+    @apply transition-transform duration-300;
+  }
+
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+
+  .hover-lift {
+    @apply transition-all duration-300;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-8px);
+  }
+}
+
+/* =========================================================
+   BACKGROUND EFFECTS
+========================================================= */
+@layer utilities {
+  .bg-grid {
+    background-image: 
+      linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  .bg-dots {
+    background-image: radial-gradient(hsl(var(--muted-foreground) / 0.3) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .bg-gradient-radial {
+    background: radial-gradient(
+      ellipse at center,
+      hsl(var(--primary) / 0.1) 0%,
+      transparent 70%
+    );
   }
 }
 
@@ -123,18 +471,19 @@
   input,
   textarea,
   select {
-    @apply transition-shadow;
+    @apply transition-all duration-300 bg-card border-border;
   }
 
   input:focus,
   textarea:focus,
   select:focus {
-    @apply ring-2 ring-primary/60;
+    @apply ring-2 ring-primary/60 border-primary/50;
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.2);
   }
 }
 
 /* =========================================================
-   SCROLLBAR (OPTIONAL BUT PREMIUM)
+   SCROLLBAR (PREMIUM DARK THEME)
 ========================================================= */
 @layer base {
   ::-webkit-scrollbar {
@@ -142,7 +491,7 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: hsl(var(--muted));
+    background: hsl(var(--background));
   }
 
   ::-webkit-scrollbar-thumb {
@@ -153,4 +502,57 @@
     );
     border-radius: 999px;
   }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+      to bottom,
+      hsl(var(--secondary)),
+      hsl(var(--accent))
+    );
+  }
+}
+
+/* =========================================================
+   ICON ANIMATIONS
+========================================================= */
+@layer utilities {
+  .icon-bounce {
+    animation: icon-bounce 0.6s ease-in-out;
+  }
+
+  @keyframes icon-bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .icon-spin {
+    animation: icon-spin 1s linear infinite;
+  }
+
+  @keyframes icon-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+/* =========================================================
+   STAGGER ANIMATION DELAYS
+========================================================= */
+@layer utilities {
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+  .delay-600 { animation-delay: 600ms; }
+  .delay-700 { animation-delay: 700ms; }
+  .delay-800 { animation-delay: 800ms; }
 }

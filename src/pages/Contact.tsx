@@ -2,6 +2,8 @@ import { useState } from 'react';
 import api from '../api/axios';
 import Container from '../components/Container';
 import toast, { Toaster } from 'react-hot-toast';
+import { Mail, Phone, MapPin, Send, User, MessageSquare, FileText, Sparkles } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 
 const Contact = () => {
   const [name, setName] = useState('');
@@ -36,14 +38,10 @@ const Contact = () => {
         message,
       });
 
-
       toast.success(res.data?.message || 'Message sent successfully');
-
-      // ✅ FULL FORM RESET
       resetForm();
     } catch (error: any) {
       console.error('Contact API error:', error);
-
       toast.error(
         error?.response?.data?.message ||
         'Failed to send message. Please try again.',
@@ -53,135 +51,213 @@ const Contact = () => {
     }
   };
 
+  const contactInfo = [
+    { icon: MapPin, title: 'Address', value: 'Maharashtra, India', color: 'primary' },
+    { icon: Phone, title: 'Phone', value: '+91 88307 72432', href: 'tel:+918830772432', color: 'secondary' },
+    { icon: Mail, title: 'Email', value: 'principal@ssbesitm.org', href: 'mailto:principal@ssbesitm.org', color: 'accent' },
+  ];
+
   return (
-    <div className="relative min-h-screen">
-      {/* ================= TOASTER ================= */}
+    <div className="relative min-h-screen pt-16 overflow-hidden">
+      {/* Background Effects */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-float-slow" />
+        <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-accent/5 rounded-full blur-3xl" />
+      </div>
+
+      {/* TOASTER */}
       <Toaster
         position="top-right"
         toastOptions={{
           duration: 3000,
-          style: { fontSize: '14px' },
+          style: { 
+            fontSize: '14px',
+            background: 'hsl(var(--card))',
+            color: 'hsl(var(--foreground))',
+            border: '1px solid hsl(var(--border))',
+          },
         }}
       />
 
-      {/* ================= FLOATING CONTACT ICONS ================= */}
+      {/* FLOATING CONTACT ICONS */}
       <div className="fixed top-[35%] right-3 z-50 flex flex-col gap-3">
         <a
           href="https://wa.me/918830772432"
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-full bg-white p-2 shadow-md transition-transform hover:scale-110"
-          style={{ boxShadow: '0 0 10px rgba(37, 211, 102, 0.4)' }}
+          className="group rounded-full bg-card/80 backdrop-blur-sm p-2.5 shadow-lg border border-border/50 transition-all duration-300 hover:scale-110 hover:shadow-glow-md"
         >
           <img
             src="https://img.icons8.com/color/36/whatsapp--v1.png"
             alt="WhatsApp"
-            className="h-9 w-9"
+            className="h-8 w-8"
           />
         </a>
 
         <a
           href="mailto:principal@ssbesitm.org"
-          className="rounded-full bg-white p-2 shadow-md transition-transform hover:scale-110"
-          style={{ boxShadow: '0 0 10px rgba(234, 67, 53, 0.4)' }}
+          className="group rounded-full bg-card/80 backdrop-blur-sm p-2.5 shadow-lg border border-border/50 transition-all duration-300 hover:scale-110 hover:shadow-glow-md"
         >
           <img
             src="https://img.icons8.com/color/36/gmail-new.png"
             alt="Gmail"
-            className="h-9 w-9"
+            className="h-8 w-8"
           />
         </a>
 
         <a
           href="tel:+918830772432"
-          className="rounded-full bg-white p-2 shadow-md transition-transform hover:scale-110"
-          style={{ boxShadow: '0 0 10px rgba(0, 132, 255, 0.4)' }}
+          className="group rounded-full bg-card/80 backdrop-blur-sm p-2.5 shadow-lg border border-border/50 transition-all duration-300 hover:scale-110 hover:shadow-glow-md"
         >
           <img
             src="https://img.icons8.com/color/36/phone.png"
             alt="Phone"
-            className="h-9 w-9"
+            className="h-8 w-8"
           />
         </a>
       </div>
-      {/* =========================================================== */}
 
-      {/* ================= CONTACT FORM ================= */}
-      <Container>
-        <div className="relative z-10">
-          <h2 className="my-12 text-center text-3xl font-bold text-primary">
-            Contact Us
-          </h2>
-
-          <div className="mx-auto max-w-xl rounded-xl bg-card p-8 shadow">
-            <h3 className="mb-6 text-center text-xl font-semibold">
-              Send Us a Message
-            </h3>
-
-            {/* NAME */}
-            <input
-              type="text"
-              placeholder="Your Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              disabled={loading}
-              className="mb-4 w-full rounded-lg border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-
-            {/* EMAIL */}
-            <input
-              type="email"
-              placeholder="Your Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={loading}
-              className="mb-4 w-full rounded-lg border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-
-            {/* PHONE */}
-            <input
-              type="tel"
-              placeholder="Your Phone Number"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              disabled={loading}
-              className="mb-4 w-full rounded-lg border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-
-            {/* SUBJECT */}
-            <input
-              type="text"
-              placeholder="Subject"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-              disabled={loading}
-              className="mb-4 w-full rounded-lg border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-
-            {/* MESSAGE */}
-            <textarea
-              rows={5}
-              placeholder="Your Message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              disabled={loading}
-              className="mb-6 w-full resize-none rounded-lg border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-
-            <button
-              onClick={submitHandler}
-              disabled={loading}
-              className={`w-full rounded-lg py-3 font-medium text-white transition ${loading
-                  ? 'cursor-not-allowed bg-secondary/70'
-                  : 'bg-primary hover:bg-secondary'
-                }`}
-            >
-              {loading ? 'Sending...' : 'Send Message'}
-            </button>
+      {/* Hero Section */}
+      <section className="relative py-20">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-secondary/5 to-transparent" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 mb-6 animate-fade-in">
+            <Sparkles className="h-4 w-4 text-primary" />
+            <span className="text-sm text-primary font-medium">Get In Touch</span>
           </div>
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in-up">
+            <span className="text-gradient">Contact Us</span>
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto animate-fade-in delay-200">
+            Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+          </p>
+        </div>
+      </section>
+
+      <Container>
+        <div className="relative z-10 pb-20">
+          {/* Contact Info Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            {contactInfo.map((info, index) => (
+              <Card key={index} className="card-hover bg-card/50 border-border/50 backdrop-blur-sm animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
+                <CardContent className="p-6 text-center">
+                  <div className={`w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-${info.color} to-secondary p-3`}>
+                    <info.icon className="h-full w-full text-white" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">{info.title}</h3>
+                  {info.href ? (
+                    <a href={info.href} className="text-muted-foreground hover:text-primary transition-colors">
+                      {info.value}
+                    </a>
+                  ) : (
+                    <p className="text-muted-foreground">{info.value}</p>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Contact Form */}
+          <Card className="max-w-xl mx-auto bg-card/50 border-border/50 backdrop-blur-sm animate-fade-in delay-300">
+            <CardContent className="p-8">
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold text-gradient mb-2">Send Us a Message</h2>
+                <p className="text-muted-foreground">Fill out the form below and we'll get back to you</p>
+              </div>
+
+              <div className="space-y-4">
+                {/* Name */}
+                <div className="relative group">
+                  <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                  <input
+                    type="text"
+                    placeholder="Your Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    disabled={loading}
+                    className="w-full pl-12 pr-4 py-3 rounded-lg bg-muted/30 border border-border/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:bg-muted/50 transition-all duration-300"
+                  />
+                </div>
+
+                {/* Email */}
+                <div className="relative group">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                  <input
+                    type="email"
+                    placeholder="Your Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={loading}
+                    className="w-full pl-12 pr-4 py-3 rounded-lg bg-muted/30 border border-border/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:bg-muted/50 transition-all duration-300"
+                  />
+                </div>
+
+                {/* Phone */}
+                <div className="relative group">
+                  <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                  <input
+                    type="tel"
+                    placeholder="Your Phone Number"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    disabled={loading}
+                    className="w-full pl-12 pr-4 py-3 rounded-lg bg-muted/30 border border-border/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:bg-muted/50 transition-all duration-300"
+                  />
+                </div>
+
+                {/* Subject */}
+                <div className="relative group">
+                  <FileText className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                  <input
+                    type="text"
+                    placeholder="Subject"
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                    disabled={loading}
+                    className="w-full pl-12 pr-4 py-3 rounded-lg bg-muted/30 border border-border/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:bg-muted/50 transition-all duration-300"
+                  />
+                </div>
+
+                {/* Message */}
+                <div className="relative group">
+                  <MessageSquare className="absolute left-4 top-4 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                  <textarea
+                    rows={5}
+                    placeholder="Your Message"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    disabled={loading}
+                    className="w-full pl-12 pr-4 py-3 rounded-lg bg-muted/30 border border-border/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:bg-muted/50 transition-all duration-300 resize-none"
+                  />
+                </div>
+
+                <button
+                  onClick={submitHandler}
+                  disabled={loading}
+                  className={`w-full mt-4 py-3.5 rounded-lg font-medium text-white flex items-center justify-center gap-2 transition-all duration-300 ${
+                    loading
+                      ? 'cursor-not-allowed bg-muted'
+                      : 'bg-gradient-to-r from-primary to-secondary hover:shadow-glow-md hover:scale-[1.02] shimmer'
+                  }`}
+                >
+                  {loading ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="h-5 w-5" />
+                      Send Message
+                    </>
+                  )}
+                </button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </Container>
-      {/* =========================================================== */}
     </div>
   );
 };
