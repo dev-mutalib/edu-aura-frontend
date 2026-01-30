@@ -20,6 +20,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useEffect, useRef } from 'react';
+import EduBot from '@/components/EduBot';
 
 /* ---------- CAROUSEL IMAGES ---------- */
 import itm1 from '../Assets/images/itm1.jpg';
@@ -403,6 +404,8 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
+      {/* EduBot AI Chatbot */}
+      <EduBot />
     </div>
   );
 };

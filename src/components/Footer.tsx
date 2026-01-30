@@ -23,6 +23,7 @@ const Footer: React.FC = () => {
     { path: '/about', label: 'About Us' },
     { path: '/courses', label: 'Courses' },
     { path: '/faculty', label: 'Faculty' },
+    { path: '/library', label: 'Library' },
     { path: '/admissions', label: 'Admissions' },
     { path: '/contact', label: 'Contact Us' },
   ];
