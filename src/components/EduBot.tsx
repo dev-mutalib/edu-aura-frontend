@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Bot, User, Sparkles } from 'lucide-react';
+import { X, Send, Bot, User, Sparkles, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface Message {
@@ -38,6 +38,10 @@ const EduBot: React.FC = () => {
     }
   }, [isOpen]);
 
+  const toggleChat = () => {
+    setIsOpen((prev) => !prev);
+  };
+
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
 
@@ -52,17 +56,8 @@ const EduBot: React.FC = () => {
     setInputValue('');
     setIsTyping(true);
 
-    // Simulate API call to your backend
-    // Replace this with your actual API call
     try {
-      // Example: const response = await fetch('YOUR_BACKEND_API/chat', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ message: userMessage.content }),
-      // });
-      // const data = await response.json();
-
-      // Simulated response - replace with actual backend response
+      // Replace this with your actual API call
       await new Promise((resolve) => setTimeout(resolve, 1500));
       
       const botResponses: Record<string, string> = {
@@ -123,7 +118,7 @@ const EduBot: React.FC = () => {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
@@ -131,54 +126,54 @@ const EduBot: React.FC = () => {
   };
 
   return (
-    <>
-      {/* Chat Toggle Button - Premium Style like Apply Now */}
+    <div className="fixed bottom-6 right-6 z-[9999]">
+      {/* Chat Toggle Button */}
       {!isOpen && (
         <button
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-50 flex items-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-primary to-secondary shadow-glow-lg transition-all duration-300 hover:scale-105 hover:shadow-glow-xl shimmer group"
-          aria-label="Open EduBot Chat"
+          type="button"
+          onClick={toggleChat}
+          className="flex items-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-primary to-secondary shadow-glow-lg transition-all duration-300 hover:scale-105 hover:shadow-glow-xl shimmer cursor-pointer"
         >
-          <Bot className="h-5 w-5 text-white group-hover:animate-bounce-slow" />
-          <span className="text-white font-semibold">Ask EduBot</span>
-          <Sparkles className="h-4 w-4 text-white/80" />
+          <MessageSquare className="h-5 w-5 text-primary-foreground" />
+          <span className="text-primary-foreground font-semibold">Ask EduBot</span>
+          <Sparkles className="h-4 w-4 text-primary-foreground/80" />
         </button>
       )}
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-[350px] sm:w-[400px] h-[500px] bg-card/95 backdrop-blur-xl border border-border/50 rounded-2xl shadow-2xl overflow-hidden animate-scale-in">
+        <div className="w-[350px] sm:w-[400px] h-[520px] bg-card/95 backdrop-blur-xl border border-border/50 rounded-2xl shadow-2xl overflow-hidden animate-scale-in flex flex-col">
           {/* Header */}
-          <div className="relative bg-gradient-to-r from-primary to-secondary p-4">
+          <div className="relative bg-gradient-to-r from-primary to-secondary p-4 flex-shrink-0">
             <div className="absolute inset-0 bg-grid opacity-10" />
             <div className="relative flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="relative">
-                  <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                    <Bot className="h-7 w-7 text-white" />
+                  <div className="w-12 h-12 rounded-full bg-primary-foreground/20 backdrop-blur-sm flex items-center justify-center">
+                    <Bot className="h-7 w-7 text-primary-foreground" />
                   </div>
-                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white animate-pulse" />
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-primary-foreground animate-pulse" />
                 </div>
                 <div>
-                  <h3 className="text-white font-bold text-lg flex items-center gap-2">
+                  <h3 className="text-primary-foreground font-bold text-lg flex items-center gap-2">
                     EduBot
                     <Sparkles className="h-4 w-4" />
                   </h3>
-                  <p className="text-white/80 text-sm">Your AI Assistant</p>
+                  <p className="text-primary-foreground/80 text-sm">Your AI Assistant</p>
                 </div>
               </div>
               <button
-                onClick={() => setIsOpen(false)}
-                className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-                aria-label="Close chat"
+                type="button"
+                onClick={toggleChat}
+                className="p-2 rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors cursor-pointer"
               >
-                <X className="h-5 w-5 text-white" />
+                <X className="h-5 w-5 text-primary-foreground" />
               </button>
             </div>
           </div>
 
           {/* Messages */}
-          <div className="h-[340px] overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -202,7 +197,7 @@ const EduBot: React.FC = () => {
                 <div
                   className={`max-w-[75%] p-3 rounded-2xl ${
                     message.role === 'user'
-                      ? 'bg-gradient-to-r from-secondary to-secondary/80 text-white rounded-br-sm'
+                      ? 'bg-gradient-to-r from-secondary to-secondary/80 text-secondary-foreground rounded-br-sm'
                       : 'bg-muted/50 border border-border/50 text-foreground rounded-bl-sm'
                   }`}
                 >
@@ -210,7 +205,7 @@ const EduBot: React.FC = () => {
                   <p
                     className={`text-[10px] mt-1 ${
                       message.role === 'user'
-                        ? 'text-white/60'
+                        ? 'text-secondary-foreground/60'
                         : 'text-muted-foreground'
                     }`}
                   >
@@ -242,18 +237,19 @@ const EduBot: React.FC = () => {
           </div>
 
           {/* Input */}
-          <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-border/50 bg-card/80 backdrop-blur-sm">
+          <div className="p-3 border-t border-border/50 bg-card/80 backdrop-blur-sm flex-shrink-0">
             <div className="flex gap-2">
               <input
                 ref={inputRef}
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
+                onKeyDown={handleKeyDown}
                 placeholder="Type your message..."
                 className="flex-1 bg-muted/50 border border-border/50 rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all"
               />
               <Button
+                type="button"
                 onClick={handleSendMessage}
                 disabled={!inputValue.trim() || isTyping}
                 size="icon"
@@ -265,7 +261,7 @@ const EduBot: React.FC = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

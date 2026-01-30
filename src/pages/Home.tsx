@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useEffect, useRef } from 'react';
 import EduBot from '@/components/EduBot';
+import CourseMarquee from '@/components/CourseMarquee';
 
 /* ---------- CAROUSEL IMAGES ---------- */
 import itm1 from '../Assets/images/itm1.jpg';
@@ -300,6 +301,22 @@ const Home: React.FC = () => {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* EXPLORE OUR COURSES - Marquee Animation */}
+      <section className="relative py-12 md:py-16 overflow-hidden">
+        <div className="mx-auto max-w-7xl px-4 mb-8">
+          <div className="text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <span className="text-gradient">Explore Our</span>
+              <span className="text-foreground"> Programs</span>
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Discover world-class courses designed to shape your future career
+            </p>
+          </div>
+        </div>
+        <CourseMarquee />
       </section>
 
       {/* NOTICE BOARD */}
