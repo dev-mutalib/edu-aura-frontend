@@ -132,41 +132,48 @@ const EduBot: React.FC = () => {
 
   return (
     <>
-      {/* Chat Toggle Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 left-6 z-50 p-4 rounded-full bg-gradient-to-r from-primary to-secondary shadow-glow-lg transition-all duration-300 hover:scale-110 ${
-          isOpen ? 'rotate-0' : 'animate-bounce-slow'
-        }`}
-        aria-label={isOpen ? 'Close chat' : 'Open chat'}
-      >
-        {isOpen ? (
-          <X className="h-6 w-6 text-white" />
-        ) : (
-          <MessageCircle className="h-6 w-6 text-white" />
-        )}
-      </button>
+      {/* Chat Toggle Button - Premium Style like Apply Now */}
+      {!isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="fixed bottom-6 right-6 z-50 flex items-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-primary to-secondary shadow-glow-lg transition-all duration-300 hover:scale-105 hover:shadow-glow-xl shimmer group"
+          aria-label="Open EduBot Chat"
+        >
+          <Bot className="h-5 w-5 text-white group-hover:animate-bounce-slow" />
+          <span className="text-white font-semibold">Ask EduBot</span>
+          <Sparkles className="h-4 w-4 text-white/80" />
+        </button>
+      )}
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-24 left-6 z-50 w-[350px] sm:w-[400px] h-[500px] bg-card/95 backdrop-blur-xl border border-border/50 rounded-2xl shadow-2xl overflow-hidden animate-scale-in">
+        <div className="fixed bottom-6 right-6 z-50 w-[350px] sm:w-[400px] h-[500px] bg-card/95 backdrop-blur-xl border border-border/50 rounded-2xl shadow-2xl overflow-hidden animate-scale-in">
           {/* Header */}
           <div className="relative bg-gradient-to-r from-primary to-secondary p-4">
             <div className="absolute inset-0 bg-grid opacity-10" />
-            <div className="relative flex items-center gap-3">
-              <div className="relative">
-                <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                  <Bot className="h-7 w-7 text-white" />
+            <div className="relative flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                    <Bot className="h-7 w-7 text-white" />
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white animate-pulse" />
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white animate-pulse" />
+                <div>
+                  <h3 className="text-white font-bold text-lg flex items-center gap-2">
+                    EduBot
+                    <Sparkles className="h-4 w-4" />
+                  </h3>
+                  <p className="text-white/80 text-sm">Your AI Assistant</p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-white font-bold text-lg flex items-center gap-2">
-                  EduBot
-                  <Sparkles className="h-4 w-4" />
-                </h3>
-                <p className="text-white/80 text-sm">Your AI Assistant</p>
-              </div>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                aria-label="Close chat"
+              >
+                <X className="h-5 w-5 text-white" />
+              </button>
             </div>
           </div>
 
