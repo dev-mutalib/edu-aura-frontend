@@ -1,0 +1,60 @@
+import { Routes, Route } from 'react-router-dom';
+import Layout from '../components/Layout';
+
+import Home from '../pages/Home';
+import Courses from '../pages/Courses';
+import CourseDetails from '../pages/CourseDetails';
+import Admissions from '../pages/Admissions';
+import Contact from '../pages/Contact';
+import Faculty from '../pages/Faculty';
+import About from '../pages/About';
+import Gallery from '../pages/Gallery';
+import Library from '../pages/Library';
+
+const AppRoutes = () => {
+  return (
+    <Routes>
+      {/* Layout Wrapper */}
+      <Route element={<Layout />}>
+        <Route
+          path='/'
+          element={<Home />}
+        />
+        <Route
+          path='/courses'
+          element={<Courses />}
+        />
+        <Route
+          path='/courses/:id'
+          element={<CourseDetails />}
+        />
+        <Route
+          path='/faculty'
+          element={<Faculty />}
+        />
+        <Route
+          path='/admissions'
+          element={<Admissions />}
+        />
+        <Route
+          path='/contact'
+          element={<Contact />}
+        />
+        <Route
+          path='/about'
+          element={<About />}
+        />
+        <Route
+          path='/gallery'
+          element={<Gallery />}
+        />
+        <Route
+          path='/library'
+          element={<Library />}
+        />
+      </Route>
+    </Routes>
+  );
+};
+
+export default AppRoutes;
