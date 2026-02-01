@@ -344,16 +344,16 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* EXPLORE OUR COURSES - Marquee Animation */}
+      {/* EXPLORE TECH CAREERS - Marquee Animation */}
       <section className="relative py-12 md:py-16 overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 mb-8">
           <div className="text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="text-gradient">Explore Our</span>
-              <span className="text-foreground"> Programs</span>
+              <span className="text-gradient">Explore Tech Careers</span>
+              <span className="text-foreground"> of the Future</span>
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Discover world-class courses designed to shape your future career
+              Discover 25+ specialized tech roles with detailed roadmaps, skill requirements, and emerging trends
             </p>
           </div>
         </div>

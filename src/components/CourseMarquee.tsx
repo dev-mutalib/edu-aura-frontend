@@ -1,61 +1,107 @@
-import { GraduationCap } from 'lucide-react';
+import { 
+  Server, 
+  Code, 
+  Cloud, 
+  Brain, 
+  Shield, 
+  Database, 
+  Blocks, 
+  Container, 
+  FileCode, 
+  Layers, 
+  Terminal,
+  Cpu,
+  Gamepad2,
+  Radio,
+  Globe,
+  Smartphone,
+  Cog,
+  Lock,
+  Activity
+} from 'lucide-react';
 
-const courses = [
-  { name: 'BCA', fullName: 'Bachelor of Computer Applications', color: 'from-blue-500 to-cyan-400' },
-  { name: 'MCA', fullName: 'Master of Computer Applications', color: 'from-green-500 to-emerald-400' },
-  { name: 'BBA', fullName: 'Bachelor of Business Administration', color: 'from-purple-500 to-pink-400' },
-  { name: 'MBA', fullName: 'Master of Business Administration', color: 'from-orange-500 to-amber-400' },
+const careers = [
+  { name: 'DevOps Engineer', category: 'Infrastructure', icon: Server, color: 'from-blue-500 to-cyan-400' },
+  { name: 'Full Stack Developer', category: 'Development', icon: Code, color: 'from-green-500 to-emerald-400' },
+  { name: 'Cloud Architect', category: 'Cloud', icon: Cloud, color: 'from-purple-500 to-pink-400' },
+  { name: 'AI Engineer', category: 'AI/ML', icon: Brain, color: 'from-orange-500 to-amber-400' },
+  { name: 'Cybersecurity Specialist', category: 'Security', icon: Shield, color: 'from-red-500 to-rose-400' },
+  { name: 'Data Engineer', category: 'Data', icon: Database, color: 'from-indigo-500 to-violet-400' },
+  { name: 'MLOps Engineer', category: 'AI/ML', icon: Cog, color: 'from-teal-500 to-cyan-400' },
+  { name: 'Blockchain Developer', category: 'Web3', icon: Blocks, color: 'from-yellow-500 to-orange-400' },
+  { name: 'Kubernetes Administrator', category: 'Cloud', icon: Container, color: 'from-blue-600 to-indigo-400' },
+  { name: 'Python Developer', category: 'Development', icon: FileCode, color: 'from-green-600 to-teal-400' },
+  { name: 'React Specialist', category: 'Frontend', icon: Layers, color: 'from-cyan-500 to-blue-400' },
+  { name: 'Node.js Developer', category: 'Backend', icon: Terminal, color: 'from-lime-500 to-green-400' },
+  { name: 'AWS Solutions Architect', category: 'Cloud', icon: Cloud, color: 'from-orange-600 to-yellow-400' },
+  { name: 'TensorFlow Expert', category: 'AI/ML', icon: Brain, color: 'from-purple-600 to-pink-400' },
+  { name: 'Data Scientist', category: 'Data', icon: Database, color: 'from-blue-500 to-purple-400' },
+  { name: 'Game Developer', category: 'Gaming', icon: Gamepad2, color: 'from-pink-500 to-rose-400' },
+  { name: 'IoT Developer', category: 'Hardware', icon: Radio, color: 'from-emerald-500 to-teal-400' },
+  { name: 'WordPress Developer', category: 'CMS', icon: Globe, color: 'from-blue-400 to-indigo-400' },
+  { name: 'Salesforce Developer', category: 'CRM', icon: Cpu, color: 'from-cyan-600 to-blue-400' },
+  { name: 'QA Automation Engineer', category: 'Testing', icon: Activity, color: 'from-violet-500 to-purple-400' },
+  { name: 'React Native Developer', category: 'Mobile', icon: Smartphone, color: 'from-blue-500 to-cyan-400' },
+  { name: 'Rust Developer', category: 'Systems', icon: Cog, color: 'from-orange-500 to-red-400' },
+  { name: 'Go Developer', category: 'Backend', icon: Terminal, color: 'from-cyan-500 to-teal-400' },
+  { name: 'DevSecOps Engineer', category: 'Security', icon: Lock, color: 'from-red-600 to-orange-400' },
+  { name: 'Site Reliability Engineer', category: 'Infrastructure', icon: Server, color: 'from-indigo-500 to-blue-400' },
 ];
 
 const CourseMarquee: React.FC = () => {
-  return (
-    <div className="relative w-full flex items-center justify-center py-16 md:py-24">
-      {/* Circular Orbit Container */}
-      <div className="relative w-[320px] h-[320px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px]">
-        {/* Orbit Path */}
-        <div className="absolute inset-0 rounded-full border border-dashed border-primary/20" />
-        <div className="absolute inset-8 rounded-full border border-dashed border-secondary/10" />
+  // Split careers into two rows
+  const row1 = careers.slice(0, 13);
+  const row2 = careers.slice(13);
 
-        {/* Rotating Container */}
-        <div className="absolute inset-0 animate-orbit">
-          {courses.map((course, index) => {
-            const angle = (index / courses.length) * 360;
-            const radius = 50; // percentage from center
-            
-            return (
-              <div
-                key={course.name}
-                className="absolute top-1/2 left-1/2"
-                style={{
-                  transform: `rotate(${angle}deg) translateX(${radius}%)`,
-                  transformOrigin: '0 0',
-                }}
-              >
-                <div 
-                  className="group cursor-pointer animate-counter-orbit"
-                  style={{ 
-                    transform: `rotate(-${angle}deg)`,
-                    animationDelay: `${index * 0.1}s` 
-                  }}
-                >
-                  <div className={`relative px-4 py-3 sm:px-5 sm:py-3.5 rounded-xl bg-card/80 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all duration-300 hover:scale-110 shadow-lg`}>
-                    {/* Glow Effect on Hover */}
-                    <div className={`absolute inset-0 rounded-xl bg-gradient-to-r ${course.color} opacity-0 group-hover:opacity-20 transition-opacity blur-sm`} />
-                    
-                    <div className="relative flex items-center gap-2 sm:gap-3">
-                      <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br ${course.color} flex items-center justify-center group-hover:scale-110 transition-transform shadow-md`}>
-                        <GraduationCap className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-sm sm:text-base font-bold text-foreground">{course.name}</h3>
-                        <p className="text-[10px] sm:text-xs text-muted-foreground hidden sm:block max-w-[100px] truncate">{course.fullName}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+  return (
+    <div className="relative w-full py-8 overflow-hidden">
+      {/* Gradient Overlays */}
+      <div className="absolute left-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+
+      {/* Row 1 - Scrolling Left */}
+      <div className="flex mb-4 animate-marquee-left">
+        {[...row1, ...row1, ...row1].map((career, index) => (
+          <CareerCard key={`row1-${index}`} career={career} />
+        ))}
+      </div>
+
+      {/* Row 2 - Scrolling Right */}
+      <div className="flex animate-marquee-right">
+        {[...row2, ...row2, ...row2].map((career, index) => (
+          <CareerCard key={`row2-${index}`} career={career} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+interface CareerCardProps {
+  career: {
+    name: string;
+    category: string;
+    icon: React.ComponentType<{ className?: string }>;
+    color: string;
+  };
+}
+
+const CareerCard: React.FC<CareerCardProps> = ({ career }) => {
+  const IconComponent = career.icon;
+  
+  return (
+    <div className="flex-shrink-0 mx-2">
+      <div className="group relative px-4 py-3 rounded-xl bg-card/60 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all duration-300 hover:scale-105 cursor-pointer min-w-[200px] md:min-w-[240px]">
+        {/* Glow Effect on Hover */}
+        <div className={`absolute inset-0 rounded-xl bg-gradient-to-r ${career.color} opacity-0 group-hover:opacity-10 transition-opacity blur-sm`} />
+        
+        <div className="relative flex items-center gap-3">
+          <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${career.color} flex items-center justify-center group-hover:scale-110 transition-transform shadow-md`}>
+            <IconComponent className="h-5 w-5 text-white" />
+          </div>
+          <div className="flex flex-col">
+            <span className="text-sm font-semibold text-foreground whitespace-nowrap">{career.name}</span>
+            <span className="text-xs text-muted-foreground">{career.category}</span>
+          </div>
         </div>
       </div>
     </div>
