@@ -12,6 +12,7 @@ import {
   Sparkles,
   GraduationCap,
   Laptop,
+  Megaphone,
 } from 'lucide-react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -22,6 +23,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useEffect, useRef } from 'react';
 import EduBot from '@/components/EduBot';
 import CourseMarquee from '@/components/CourseMarquee';
+import AdmissionModal from '@/components/AdmissionModal';
 
 /* ---------- CAROUSEL IMAGES ---------- */
 import itm1 from '../Assets/images/itm1.jpg';
@@ -124,9 +126,9 @@ const Home: React.FC = () => {
     { value: '95%', label: 'Placement', icon: Target },
   ];
 
-  /* ---------- AUTO SCROLL NOTICE BOARD ---------- */
+  /* ---------- ANIMATED NOTICE BOARD ---------- */
 
-  const AutoScrollNoticeBoard: React.FC = () => {
+  const AnimatedNoticeBoard: React.FC = () => {
     const ref = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -140,32 +142,69 @@ const Home: React.FC = () => {
           pos = 0;
         }
         el.scrollTop = pos;
-      }, 80);
+      }, 60);
 
       return () => window.clearInterval(interval);
     }, []);
 
     return (
-      <div className="h-72 sm:h-80 md:h-96 overflow-hidden rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm">
-        <div ref={ref}>
-          {notices.map((n) => (
-            <div key={n.id} className="border-b border-border/30 p-4 last:border-none group hover:bg-muted/30 transition-colors">
-              <div className="flex gap-3">
-                <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                  <n.icon className="text-primary" size={18} />
+      <div className="relative h-72 sm:h-80 md:h-96 overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-xl">
+        {/* Animated Background Effects */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/20 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-secondary/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        </div>
+
+        {/* Header */}
+        <div className="sticky top-0 z-10 bg-gradient-to-r from-primary/10 to-secondary/10 backdrop-blur-md border-b border-border/30 p-3">
+          <div className="flex items-center gap-2">
+            <div className="p-2 rounded-lg bg-primary/20 animate-pulse">
+              <Megaphone className="h-4 w-4 text-primary" />
+            </div>
+            <span className="text-sm font-semibold text-foreground">Latest Updates</span>
+            <div className="ml-auto flex items-center gap-1">
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-ping" />
+              <span className="w-2 h-2 bg-green-500 rounded-full absolute" />
+              <span className="text-xs text-muted-foreground ml-2">Live</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Scrolling Content */}
+        <div ref={ref} className="h-[calc(100%-52px)] overflow-hidden">
+          {[...notices, ...notices].map((n, idx) => (
+            <div 
+              key={`${n.id}-${idx}`} 
+              className="border-b border-border/20 p-4 last:border-none group hover:bg-gradient-to-r hover:from-primary/5 hover:to-secondary/5 transition-all duration-300 cursor-pointer"
+            >
+              <div className="flex gap-3 items-start">
+                <div className="relative">
+                  <div className="p-2.5 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 group-hover:from-primary/30 group-hover:to-secondary/30 transition-all group-hover:scale-110 group-hover:rotate-3 duration-300">
+                    <n.icon className="text-primary h-5 w-5" />
+                  </div>
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full animate-ping opacity-75" />
                 </div>
-                <div>
-                  <p className="text-sm sm:text-base font-medium text-foreground">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm sm:text-base font-semibold text-foreground group-hover:text-gradient transition-all">
                     {n.title}
                   </p>
-                  <p className="text-xs sm:text-sm text-muted-foreground">
-                    {n.date} • {n.program}
-                  </p>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
+                      {n.program}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {n.date}
+                    </span>
+                  </div>
                 </div>
+                <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
               </div>
             </div>
           ))}
         </div>
+
+        {/* Bottom Gradient Fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-card to-transparent pointer-events-none" />
       </div>
     );
   };
@@ -187,6 +226,8 @@ const Home: React.FC = () => {
 
   return (
     <div className="relative overflow-x-hidden">
+      {/* Admission Modal Popup */}
+      <AdmissionModal />
       {/* Background Effects */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-float" />
@@ -303,16 +344,16 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* EXPLORE OUR COURSES - Marquee Animation */}
+      {/* BUILD YOUR TECH CAREER - Marquee Animation */}
       <section className="relative py-12 md:py-16 overflow-hidden">
-        <div className="mx-auto max-w-7xl px-4 mb-8">
+        <div className="mx-auto max-w-7xl px-4 mb-10">
           <div className="text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="text-gradient">Explore Our</span>
-              <span className="text-foreground"> Programs</span>
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">
+              <span className="text-gradient">Build Your Dream</span>
+              <span className="text-foreground"> Tech Career</span>
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Discover world-class courses designed to shape your future career
+            <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+              Click any role to explore career paths, required skills & growth opportunities in the tech industry
             </p>
           </div>
         </div>
@@ -321,42 +362,16 @@ const Home: React.FC = () => {
 
       {/* NOTICE BOARD */}
       <section className="relative py-12 md:py-16">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 rounded-lg bg-primary/10">
-                <Bell className="h-5 w-5 text-primary" />
-              </div>
-              <h2 className="text-xl md:text-2xl font-bold text-gradient">
-                Student Notice Board
-              </h2>
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 rounded-lg bg-primary/10">
+              <Bell className="h-5 w-5 text-primary" />
             </div>
-            <AutoScrollNoticeBoard />
+            <h2 className="text-xl md:text-2xl font-bold text-gradient">
+              Student Notice Board
+            </h2>
           </div>
-
-          {/* Quick Links Card */}
-          <div className="gradient-border p-6">
-            <h3 className="text-lg font-semibold text-foreground mb-4">Quick Links</h3>
-            <div className="space-y-3">
-              {[
-                { label: 'Admission Portal', path: '/admissions', icon: ClipboardList },
-                { label: 'Course Catalog', path: '/courses', icon: BookOpen },
-                { label: 'Faculty Directory', path: '/faculty', icon: Users },
-              ].map((link, i) => (
-                <Link
-                  key={i}
-                  to={link.path}
-                  className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 hover:bg-primary/10 border border-transparent hover:border-primary/30 transition-all duration-300 group"
-                >
-                  <link.icon className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-                  <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-                    {link.label}
-                  </span>
-                  <ArrowRight className="h-4 w-4 ml-auto text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
-                </Link>
-              ))}
-            </div>
-          </div>
+          <AnimatedNoticeBoard />
         </div>
       </section>
 

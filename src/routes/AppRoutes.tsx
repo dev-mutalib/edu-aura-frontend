@@ -10,48 +10,37 @@ import Faculty from '../pages/Faculty';
 import About from '../pages/About';
 import Gallery from '../pages/Gallery';
 import Library from '../pages/Library';
+import Careers from '../pages/Careers';
+import CareerDetails from '../pages/CareerDetails';
+import Degrees from '../pages/Degrees';
+import DegreeDetails from '../pages/DegreeDetails';
+import Jobs from '../pages/Jobs';
+import TermsAndConditions from '../pages/TermsAndConditions';
+import PrivacyPolicy from '../pages/PrivacyPolicy';
+import ResumeBuilder from '../pages/ResumeBuilder';
 
 const AppRoutes = () => {
   return (
     <Routes>
       {/* Layout Wrapper */}
       <Route element={<Layout />}>
-        <Route
-          path='/'
-          element={<Home />}
-        />
-        <Route
-          path='/courses'
-          element={<Courses />}
-        />
-        <Route
-          path='/courses/:id'
-          element={<CourseDetails />}
-        />
-        <Route
-          path='/faculty'
-          element={<Faculty />}
-        />
-        <Route
-          path='/admissions'
-          element={<Admissions />}
-        />
-        <Route
-          path='/contact'
-          element={<Contact />}
-        />
-        <Route
-          path='/about'
-          element={<About />}
-        />
-        <Route
-          path='/gallery'
-          element={<Gallery />}
-        />
-        <Route
-          path='/library'
-          element={<Library />}
-        />
+        <Route path='/' element={<Home />} />
+        <Route path='/courses' element={<Courses />} />
+        <Route path='/courses/:id' element={<CourseDetails />} />
+        <Route path='/faculty' element={<Faculty />} />
+        <Route path='/admissions' element={<Admissions />} />
+        <Route path='/contact' element={<Contact />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/gallery' element={<Gallery />} />
+        <Route path='/library' element={<Library />} />
+        <Route path='/careers' element={<Careers />} />
+        <Route path='/careers/:id' element={<CareerDetails />} />
+        <Route path='/degrees' element={<Degrees />} />
+        <Route path='/degrees/:id' element={<DegreeDetails />} />
+        <Route path='/jobs' element={<Jobs />} />
+        <Route path='/terms' element={<TermsAndConditions />} />
+        <Route path='/privacy' element={<PrivacyPolicy />} />
+        <Route path='/resume-builder' element={<ResumeBuilder />} />
       </Route>
     </Routes>
   );

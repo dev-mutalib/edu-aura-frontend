@@ -4,6 +4,13 @@ import Container from '../components/Container';
 import toast, { Toaster } from 'react-hot-toast';
 import { FileText, CheckCircle, ClipboardList, Sparkles, Send, User, Mail, Phone, BookOpen } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 const Admissions = () => {
   const [form, setForm] = useState({
@@ -19,6 +26,13 @@ const Admissions = () => {
     { icon: ClipboardList, title: 'Fill Application', desc: 'Complete the online application form with your details' },
     { icon: FileText, title: 'Submit Documents', desc: 'Upload required academic documents and certificates' },
     { icon: CheckCircle, title: 'Get Confirmation', desc: 'Receive admission confirmation and enrollment details' },
+  ];
+
+  const courses = [
+    { value: 'BCA', label: 'BCA - Bachelor of Computer Applications' },
+    { value: 'BBA', label: 'BBA - Bachelor of Business Administration' },
+    { value: 'MCA', label: 'MCA - Master of Computer Applications' },
+    { value: 'MBA', label: 'MBA - Master of Business Administration' },
   ];
 
   const submitHandler = async () => {
@@ -52,7 +66,6 @@ const Admissions = () => {
     { key: 'name', placeholder: 'Full Name', icon: User, type: 'text' },
     { key: 'email', placeholder: 'Email Address', icon: Mail, type: 'email' },
     { key: 'phone', placeholder: 'Phone Number', icon: Phone, type: 'tel' },
-    { key: 'course', placeholder: 'Preferred Course', icon: BookOpen, type: 'text' },
   ];
 
   return (
@@ -139,6 +152,27 @@ const Admissions = () => {
                     />
                   </div>
                 ))}
+
+                {/* Course Dropdown */}
+                <div className="relative group">
+                  <BookOpen className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
+                  <Select
+                    value={form.course}
+                    onValueChange={(value) => setForm({ ...form, course: value })}
+                    disabled={loading}
+                  >
+                    <SelectTrigger className="w-full pl-12 pr-4 py-3 h-auto rounded-lg bg-muted/30 border border-border/50 text-foreground focus:border-primary/50 focus:bg-muted/50">
+                      <SelectValue placeholder="Select Course" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-card border-border">
+                      {courses.map((course) => (
+                        <SelectItem key={course.value} value={course.value}>
+                          {course.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
                 <button
                   onClick={submitHandler}

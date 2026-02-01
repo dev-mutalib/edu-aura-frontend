@@ -28,7 +28,13 @@ const Footer: React.FC = () => {
     { path: '/contact', label: 'Contact Us' },
   ];
 
-  const programs = ['BCA', 'BBA', 'B.Com', 'MCA', 'MBA', 'Skill Development'];
+  const legalLinks = [
+    { path: '/degrees', label: 'Degree Programs' },
+    { path: '/careers', label: 'Career Paths' },
+    { path: '/jobs', label: 'Job Opportunities' },
+  ];
+
+  
 
   return (
     <footer className="relative bg-card border-t border-border/50 overflow-hidden">
@@ -88,15 +94,20 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Programs */}
+          {/* Programs & Legal */}
           <div className="animate-fade-in delay-200">
             <h3 className="mb-4 text-lg font-semibold text-foreground">
-              Our Programs
+              Resources
             </h3>
             <ul className="space-y-2 text-sm">
-              {programs.map((program) => (
-                <li key={program} className="text-muted-foreground">
-                  {program}
+              {legalLinks.map((link) => (
+                <li key={link.path}>
+                  <Link
+                    to={link.path}
+                    className="text-muted-foreground hover:text-primary transition-colors duration-300 hover:translate-x-1 inline-block"
+                  >
+                    {link.label}
+                  </Link>
                 </li>
               ))}
             </ul>
