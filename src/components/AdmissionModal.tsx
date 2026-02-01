@@ -9,6 +9,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 const AdmissionModal: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,10 +24,8 @@ const AdmissionModal: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
-    // Check if user has seen the modal before
     const hasSeenModal = sessionStorage.getItem('admissionModalSeen');
     if (!hasSeenModal) {
-      // Show modal after 2 seconds
       const timer = setTimeout(() => {
         setIsOpen(true);
       }, 2000);
@@ -41,23 +41,34 @@ const AdmissionModal: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    await new Promise((res) => setTimeout(res, 1500));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    
-    // Close modal after success
-    setTimeout(() => {
-      handleClose();
-    }, 2000);
+
+    try {
+      const { error } = await supabase.from('admissions').insert({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        course: formData.course,
+      });
+
+      if (error) throw error;
+
+      setIsSubmitted(true);
+      toast.success('Application submitted successfully!');
+      
+      setTimeout(() => {
+        handleClose();
+      }, 2000);
+    } catch (error) {
+      console.error('Submission error:', error);
+      toast.error('Failed to submit. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const courses = [
     { value: 'bca', label: 'BCA - Bachelor of Computer Applications' },
     { value: 'bba', label: 'BBA - Bachelor of Business Administration' },
-    { value: 'bcom', label: 'B.Com - Bachelor of Commerce' },
     { value: 'mca', label: 'MCA - Master of Computer Applications' },
     { value: 'mba', label: 'MBA - Master of Business Administration' },
   ];

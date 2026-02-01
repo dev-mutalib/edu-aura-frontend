@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Menu, X, Sparkles } from 'lucide-react';
+import { Menu, X, Sparkles, Bot } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,6 +17,9 @@ const Navbar = () => {
   const navLinks = [
     { path: '/', label: 'Home' },
     { path: '/courses', label: 'Courses' },
+    { path: '/degrees', label: 'Degrees' },
+    { path: '/careers', label: 'Careers' },
+    { path: '/jobs', label: 'Jobs' },
     { path: '/faculty', label: 'Faculty' },
     { path: '/library', label: 'Library' },
     { path: '/admissions', label: 'Admissions' },
@@ -45,33 +48,23 @@ const Navbar = () => {
           </h1>
         </Link>
 
-        {/* DESKTOP NAV */}
-        <nav className="hidden items-center gap-1 md:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className="relative px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-300 hover:text-foreground group"
-            >
-              {link.label}
-              <span className="absolute bottom-0 left-1/2 h-0.5 w-0 bg-gradient-to-r from-primary via-secondary to-accent transition-all duration-300 group-hover:left-0 group-hover:w-full" />
-            </Link>
-          ))}
-        </nav>
-
-        {/* CTA BUTTON */}
-        <div className="hidden md:block">
-          <Link
-            to="/admissions"
-            className="relative inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-primary-foreground bg-gradient-to-r from-primary to-secondary rounded-lg overflow-hidden transition-all duration-300 hover:shadow-glow-md hover:scale-105 shimmer"
+        {/* AI Button - Always visible */}
+        <div className="hidden md:flex items-center gap-4">
+          <button
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary/20 to-secondary/20 text-primary rounded-full border border-primary/30 hover:shadow-glow-sm transition-all"
+            onClick={() => {
+              const event = new CustomEvent('openEduBot');
+              window.dispatchEvent(event);
+            }}
           >
-            <span className="relative z-10">Apply Now</span>
-          </Link>
+            <Bot className="h-4 w-4" />
+            <span className="text-sm font-medium">AI Assistant</span>
+          </button>
         </div>
 
-        {/* MOBILE BUTTON */}
+        {/* HAMBURGER MENU - Always visible */}
         <button
-          className="md:hidden relative p-2 text-foreground hover:text-primary transition-colors"
+          className="relative p-2 text-foreground hover:text-primary transition-colors"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle menu"
         >
@@ -79,28 +72,30 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* MOBILE MENU */}
+      {/* MOBILE MENU - Full screen overlay */}
       <div
-        className={`md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-lg border-b border-border/50 shadow-xl transition-all duration-300 ${
+        className={`fixed inset-0 top-[72px] bg-background/95 backdrop-blur-lg z-40 transition-all duration-300 ${
           isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
         }`}
       >
-        <nav className="flex flex-col px-4 py-4">
-          {navLinks.map((link, index) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              onClick={() => setIsOpen(false)}
-              className="py-3 text-muted-foreground hover:text-primary transition-all duration-300 border-b border-border/30 last:border-none"
-              style={{ animationDelay: `${index * 50}ms` }}
-            >
-              {link.label}
-            </Link>
-          ))}
+        <nav className="flex flex-col items-center justify-center h-full px-4 py-8 -mt-20">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-2xl">
+            {navLinks.map((link, index) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                onClick={() => setIsOpen(false)}
+                className="flex items-center justify-center py-4 text-lg font-medium text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-300"
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
           <Link
             to="/admissions"
             onClick={() => setIsOpen(false)}
-            className="mt-4 text-center px-5 py-3 text-sm font-medium text-primary-foreground bg-gradient-to-r from-primary to-secondary rounded-lg"
+            className="mt-8 px-8 py-4 text-lg font-medium text-primary-foreground bg-gradient-to-r from-primary to-secondary rounded-xl hover:shadow-glow-md transition-all"
           >
             Apply Now
           </Link>
