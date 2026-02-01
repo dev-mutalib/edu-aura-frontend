@@ -344,16 +344,16 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* EXPLORE TECH CAREERS - Marquee Animation */}
+      {/* BUILD YOUR TECH CAREER - Marquee Animation */}
       <section className="relative py-12 md:py-16 overflow-hidden">
-        <div className="mx-auto max-w-7xl px-4 mb-8">
+        <div className="mx-auto max-w-7xl px-4 mb-10">
           <div className="text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="text-gradient">Explore Tech Careers</span>
-              <span className="text-foreground"> of the Future</span>
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">
+              <span className="text-gradient">Build Your Dream</span>
+              <span className="text-foreground"> Tech Career</span>
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Discover 25+ specialized tech roles with detailed roadmaps, skill requirements, and emerging trends
+            <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+              Click any role to explore career paths, required skills & growth opportunities in the tech industry
             </p>
           </div>
         </div>
@@ -362,42 +362,16 @@ const Home: React.FC = () => {
 
       {/* NOTICE BOARD */}
       <section className="relative py-12 md:py-16">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 rounded-lg bg-primary/10">
-                <Bell className="h-5 w-5 text-primary" />
-              </div>
-              <h2 className="text-xl md:text-2xl font-bold text-gradient">
-                Student Notice Board
-              </h2>
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 rounded-lg bg-primary/10">
+              <Bell className="h-5 w-5 text-primary" />
             </div>
-            <AnimatedNoticeBoard />
+            <h2 className="text-xl md:text-2xl font-bold text-gradient">
+              Student Notice Board
+            </h2>
           </div>
-
-          {/* Quick Links Card */}
-          <div className="gradient-border p-6">
-            <h3 className="text-lg font-semibold text-foreground mb-4">Quick Links</h3>
-            <div className="space-y-3">
-              {[
-                { label: 'Admission Portal', path: '/admissions', icon: ClipboardList },
-                { label: 'Course Catalog', path: '/courses', icon: BookOpen },
-                { label: 'Faculty Directory', path: '/faculty', icon: Users },
-              ].map((link, i) => (
-                <Link
-                  key={i}
-                  to={link.path}
-                  className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 hover:bg-primary/10 border border-transparent hover:border-primary/30 transition-all duration-300 group"
-                >
-                  <link.icon className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-                  <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-                    {link.label}
-                  </span>
-                  <ArrowRight className="h-4 w-4 ml-auto text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
-                </Link>
-              ))}
-            </div>
-          </div>
+          <AnimatedNoticeBoard />
         </div>
       </section>
 
