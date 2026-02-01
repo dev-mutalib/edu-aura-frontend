@@ -149,18 +149,6 @@ const Careers = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center p-8 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-3xl border border-border/50">
-          <h2 className="text-2xl font-bold mb-4">Don't See a Perfect Fit?</h2>
-          <p className="text-muted-foreground mb-6">
-            We're always looking for talented individuals. Send us your resume and we'll reach out when a suitable position opens up.
-          </p>
-          <Button className="bg-gradient-to-r from-primary to-secondary hover:shadow-glow-md">
-            Submit Your Resume
-          </Button>
-        </div>
-      </section>
     </main>
   );
 };

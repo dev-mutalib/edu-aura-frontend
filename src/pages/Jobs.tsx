@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, MapPin, Briefcase, Clock, Building, Filter, ChevronDown } from 'lucide-react';
+import { Search, MapPin, Briefcase, Clock, Building, Filter, ChevronDown, ExternalLink } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -22,6 +22,10 @@ const jobListings = [
     posted: '2 days ago',
     skills: ['Java', 'Spring Boot', 'MySQL'],
     logo: '🏢',
+    links: [
+      { name: 'LinkedIn', url: 'https://linkedin.com/jobs', icon: '💼' },
+      { name: 'Naukri', url: 'https://naukri.com', icon: '📋' },
+    ],
   },
   {
     id: 2,
@@ -34,6 +38,10 @@ const jobListings = [
     posted: '1 day ago',
     skills: ['React', 'TypeScript', 'CSS'],
     logo: '💼',
+    links: [
+      { name: 'Indeed', url: 'https://indeed.com', icon: '🔍' },
+      { name: 'Glassdoor', url: 'https://glassdoor.com', icon: '🏠' },
+    ],
   },
   {
     id: 3,
@@ -46,6 +54,10 @@ const jobListings = [
     posted: '3 days ago',
     skills: ['Excel', 'SQL', 'Power BI'],
     logo: '📊',
+    links: [
+      { name: 'LinkedIn', url: 'https://linkedin.com/jobs', icon: '💼' },
+      { name: 'Monster', url: 'https://monster.com', icon: '👾' },
+    ],
   },
   {
     id: 4,
@@ -58,6 +70,10 @@ const jobListings = [
     posted: '5 days ago',
     skills: ['Python', 'ML', 'TensorFlow'],
     logo: '🤖',
+    links: [
+      { name: 'Kaggle', url: 'https://kaggle.com/jobs', icon: '📊' },
+      { name: 'AngelList', url: 'https://angel.co', icon: '😇' },
+    ],
   },
   {
     id: 5,
@@ -70,6 +86,10 @@ const jobListings = [
     posted: '1 week ago',
     skills: ['Digital Marketing', 'SEO', 'Content'],
     logo: '📈',
+    links: [
+      { name: 'LinkedIn', url: 'https://linkedin.com/jobs', icon: '💼' },
+      { name: 'Internshala', url: 'https://internshala.com', icon: '🎓' },
+    ],
   },
   {
     id: 6,
@@ -82,6 +102,10 @@ const jobListings = [
     posted: '4 days ago',
     skills: ['React', 'Node.js', 'MongoDB'],
     logo: '🚀',
+    links: [
+      { name: 'Freelancermap', url: 'https://www.freelancermap.com', icon: '🗺️' },
+      { name: 'Toptal', url: 'https://toptal.com', icon: '⭐' },
+    ],
   },
   {
     id: 7,
@@ -94,6 +118,10 @@ const jobListings = [
     posted: '2 days ago',
     skills: ['Recruitment', 'HR Policies', 'Training'],
     logo: '👥',
+    links: [
+      { name: 'LinkedIn', url: 'https://linkedin.com/jobs', icon: '💼' },
+      { name: 'TimesJobs', url: 'https://timesjobs.com', icon: '📰' },
+    ],
   },
   {
     id: 8,
@@ -106,6 +134,10 @@ const jobListings = [
     posted: '6 days ago',
     skills: ['Figma', 'Adobe XD', 'Prototyping'],
     logo: '🎨',
+    links: [
+      { name: 'Dribbble', url: 'https://dribbble.com/jobs', icon: '🏀' },
+      { name: 'Behance', url: 'https://behance.net/joblist', icon: '🎨' },
+    ],
   },
 ];
 
@@ -210,7 +242,7 @@ const Jobs = () => {
             {filteredJobs.map((job) => (
               <div
                 key={job.id}
-                className="p-6 bg-card rounded-2xl border border-border/50 hover:border-primary/50 hover:shadow-glow-sm transition-all duration-300 cursor-pointer"
+                className="p-6 bg-card rounded-2xl border border-border/50 hover:border-primary/50 hover:shadow-glow-sm transition-all duration-300"
               >
                 <div className="flex flex-col md:flex-row md:items-center gap-4">
                   {/* Company Logo */}
@@ -253,13 +285,25 @@ const Jobs = () => {
                     </div>
                   </div>
 
-                  {/* Salary & Apply */}
+                  {/* Salary & Links */}
                   <div className="flex flex-col items-end gap-2">
                     <span className="text-lg font-semibold text-primary">{job.salary}</span>
                     <span className="text-xs text-muted-foreground">{job.posted}</span>
-                    <Button size="sm" className="bg-gradient-to-r from-primary to-secondary mt-2">
-                      Apply Now
-                    </Button>
+                    <div className="flex gap-2 mt-2">
+                      {job.links.map((link) => (
+                        <a
+                          key={link.name}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium bg-secondary/10 text-secondary hover:bg-secondary/20 rounded-full transition-colors"
+                        >
+                          <span>{link.icon}</span>
+                          <span>{link.name}</span>
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>

@@ -119,9 +119,10 @@ const Degrees = () => {
                         </span>
                       ))}
                     </div>
-                    <Button variant="ghost" className="group-hover:text-primary p-0">
-                      Learn More <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary/20 to-secondary/20 hover:from-primary/30 hover:to-secondary/30 text-primary rounded-full transition-all duration-300 group-hover:shadow-glow-sm">
+                      <span className="text-sm font-medium">Learn More</span>
+                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </div>
                   </div>
                 </div>
               </Link>

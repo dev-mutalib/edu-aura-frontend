@@ -165,24 +165,13 @@ const EduBot: React.FC = () => {
     }
   };
 
+  // Only render when open (triggered by navbar button)
+  if (!isOpen) return null;
+
   return (
     <div className="fixed bottom-6 right-6 z-[9999]">
-      {/* Floating Button */}
-      {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-primary to-secondary shadow-lg hover:shadow-glow-md transition-all duration-300 hover:scale-105 shimmer"
-          aria-label="Open EduBot Chat"
-        >
-          <MessageSquare className="h-5 w-5 text-primary-foreground" />
-          <span className="text-primary-foreground font-semibold">Ask EduAura AI</span>
-          <Sparkles className="h-4 w-4 text-primary-foreground/80" />
-        </button>
-      )}
 
-      {/* Chat Window */}
-      {isOpen && (
-        <div className="w-[360px] sm:w-[400px] h-[550px] bg-card border border-border/50 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-scale-in">
+      <div className="w-[360px] sm:w-[400px] h-[550px] bg-card border border-border/50 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-scale-in">
           {/* Header */}
           <div className="bg-gradient-to-r from-primary to-secondary p-4 flex justify-between items-center shrink-0">
             <div className="flex items-center gap-3">
@@ -259,9 +248,8 @@ const EduBot: React.FC = () => {
             <p className="text-xs text-muted-foreground text-center mt-2">
               EduAura AI may occasionally generate incorrect information
             </p>
-          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
