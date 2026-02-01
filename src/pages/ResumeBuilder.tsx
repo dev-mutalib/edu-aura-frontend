@@ -595,12 +595,17 @@ const ResumeBuilder = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0d1117] relative">
+      {/* Background Effects */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
+        <div className="absolute top-20 left-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-secondary/5 rounded-full blur-3xl" />
+      </div>
+
       {/* Hero Section */}
       <section className="relative py-16 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-10 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-float-slow" />
         
         <div className="container relative mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto">
@@ -853,9 +858,9 @@ const ResumeBuilder = () => {
                 </div>
               </div>
 
-              <Card className="border-border/50 overflow-hidden">
+              <Card className="border-border/50 overflow-hidden bg-card">
                 <div 
-                  className="resume-preview"
+                  className="resume-preview bg-white rounded-lg m-4"
                   dangerouslySetInnerHTML={{ __html: getTemplateHTML(selectedTemplate.id, formData) }}
                   style={{ transform: 'scale(0.85)', transformOrigin: 'top center' }}
                 />
