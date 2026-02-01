@@ -206,6 +206,18 @@ export default {
           '0%, 100%': { transform: 'rotate(-3deg)' },
           '50%': { transform: 'rotate(3deg)' },
         },
+        orbit: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+        'counter-orbit': {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(-360deg)' },
+        },
+        'marquee-fast': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -223,6 +235,9 @@ export default {
         'bounce-slow': 'bounce-slow 2s ease-in-out infinite',
         'spin-slow': 'spin-slow 8s linear infinite',
         wiggle: 'wiggle 0.5s ease-in-out infinite',
+        orbit: 'orbit 30s linear infinite',
+        'counter-orbit': 'counter-orbit 30s linear infinite',
+        'marquee-fast': 'marquee-fast 20s linear infinite',
       },
 
       /* ===============================
