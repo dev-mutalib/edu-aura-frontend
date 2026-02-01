@@ -289,7 +289,6 @@ const getTechProHTML = (data: FormData) => `
     .section-title::before { content: '//'; color: #6366f1; }
     .content { font-size: 11px; white-space: pre-line; color: #cbd5e1; }
     .full-width { grid-column: 1 / -1; }
-    .code-tag { display: inline-block; background: #3730a3; color: #c4b5fd; padding: 2px 8px; border-radius: 4px; font-size: 10px; margin: 2px; }
     @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
   </style>
 </head>
@@ -597,7 +596,7 @@ const ResumeBuilder = () => {
   return (
     <div className="min-h-screen bg-[#0d1117] relative">
       {/* Background Effects */}
-      <div className="fixed inset-0 pointer-events-none">
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
         <div className="absolute top-20 left-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
@@ -606,7 +605,6 @@ const ResumeBuilder = () => {
 
       {/* Hero Section */}
       <section className="relative py-16 overflow-hidden">
-        
         <div className="container relative mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
@@ -628,7 +626,7 @@ const ResumeBuilder = () => {
       </section>
 
       {/* Progress Steps */}
-      <section className="py-8 border-b border-border/50">
+      <section className="relative py-8 border-b border-border/50">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center gap-4">
             {stepsList.map((s, i) => (
@@ -653,7 +651,7 @@ const ResumeBuilder = () => {
       </section>
 
       {/* Main Content */}
-      <section className="py-12">
+      <section className="relative py-12">
         <div className="container mx-auto px-4">
           {step === 'browse' && (
             <>
@@ -680,7 +678,7 @@ const ResumeBuilder = () => {
                 {filteredTemplates.map((template) => (
                   <Card 
                     key={template.id}
-                    className="group cursor-pointer border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-glow-sm overflow-hidden"
+                    className="group cursor-pointer border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-glow-sm overflow-hidden bg-card"
                     onClick={() => handleSelectTemplate(template)}
                   >
                     <div className={`h-32 bg-gradient-to-br ${template.previewColor} relative overflow-hidden`}>
@@ -741,89 +739,89 @@ const ResumeBuilder = () => {
               </div>
 
               <div className="space-y-8">
-                <Card className="border-border/50">
+                <Card className="border-border/50 bg-card">
                   <CardHeader>
                     <CardTitle className="text-lg">Personal Information</CardTitle>
                   </CardHeader>
                   <CardContent className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="fullName">Full Name *</Label>
-                      <Input id="fullName" placeholder="John Doe" value={formData.fullName} onChange={(e) => handleInputChange('fullName', e.target.value)} />
+                      <Input id="fullName" placeholder="John Doe" value={formData.fullName} onChange={(e) => handleInputChange('fullName', e.target.value)} className="bg-background" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="email">Email *</Label>
-                      <Input id="email" type="email" placeholder="john@example.com" value={formData.email} onChange={(e) => handleInputChange('email', e.target.value)} />
+                      <Input id="email" type="email" placeholder="john@example.com" value={formData.email} onChange={(e) => handleInputChange('email', e.target.value)} className="bg-background" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="phone">Phone *</Label>
-                      <Input id="phone" placeholder="+91 98765 43210" value={formData.phone} onChange={(e) => handleInputChange('phone', e.target.value)} />
+                      <Input id="phone" placeholder="+91 98765 43210" value={formData.phone} onChange={(e) => handleInputChange('phone', e.target.value)} className="bg-background" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="location">Location</Label>
-                      <Input id="location" placeholder="Mumbai, India" value={formData.location} onChange={(e) => handleInputChange('location', e.target.value)} />
+                      <Input id="location" placeholder="Mumbai, India" value={formData.location} onChange={(e) => handleInputChange('location', e.target.value)} className="bg-background" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="linkedin">LinkedIn URL</Label>
-                      <Input id="linkedin" placeholder="linkedin.com/in/johndoe" value={formData.linkedin} onChange={(e) => handleInputChange('linkedin', e.target.value)} />
+                      <Input id="linkedin" placeholder="linkedin.com/in/johndoe" value={formData.linkedin} onChange={(e) => handleInputChange('linkedin', e.target.value)} className="bg-background" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="portfolio">Portfolio/Website</Label>
-                      <Input id="portfolio" placeholder="johndoe.com" value={formData.portfolio} onChange={(e) => handleInputChange('portfolio', e.target.value)} />
+                      <Input id="portfolio" placeholder="johndoe.com" value={formData.portfolio} onChange={(e) => handleInputChange('portfolio', e.target.value)} className="bg-background" />
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card className="border-border/50">
+                <Card className="border-border/50 bg-card">
                   <CardHeader>
                     <CardTitle className="text-lg">Professional Summary</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <Textarea placeholder="Results-driven software developer with 2+ years of experience..." className="min-h-[100px]" value={formData.summary} onChange={(e) => handleInputChange('summary', e.target.value)} />
+                    <Textarea placeholder="Results-driven software developer with 2+ years of experience..." className="min-h-[100px] bg-background" value={formData.summary} onChange={(e) => handleInputChange('summary', e.target.value)} />
                   </CardContent>
                 </Card>
 
-                <Card className="border-border/50">
+                <Card className="border-border/50 bg-card">
                   <CardHeader>
                     <CardTitle className="text-lg">Work Experience</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <Textarea placeholder="Software Developer | ABC Company | 2023 - Present&#10;• Developed web applications using React" className="min-h-[200px]" value={formData.experience} onChange={(e) => handleInputChange('experience', e.target.value)} />
+                    <Textarea placeholder="Software Developer | ABC Company | 2023 - Present&#10;• Developed web applications using React" className="min-h-[200px] bg-background" value={formData.experience} onChange={(e) => handleInputChange('experience', e.target.value)} />
                   </CardContent>
                 </Card>
 
-                <Card className="border-border/50">
+                <Card className="border-border/50 bg-card">
                   <CardHeader>
                     <CardTitle className="text-lg">Education</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <Textarea placeholder="Bachelor of Technology in Computer Science&#10;XYZ University | 2017 - 2021" className="min-h-[120px]" value={formData.education} onChange={(e) => handleInputChange('education', e.target.value)} />
+                    <Textarea placeholder="Bachelor of Technology in Computer Science&#10;XYZ University | 2017 - 2021" className="min-h-[120px] bg-background" value={formData.education} onChange={(e) => handleInputChange('education', e.target.value)} />
                   </CardContent>
                 </Card>
 
-                <Card className="border-border/50">
+                <Card className="border-border/50 bg-card">
                   <CardHeader>
                     <CardTitle className="text-lg">Skills</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <Textarea placeholder="JavaScript, React, Node.js, Python, SQL, Git, AWS" className="min-h-[100px]" value={formData.skills} onChange={(e) => handleInputChange('skills', e.target.value)} />
+                    <Textarea placeholder="JavaScript, React, Node.js, Python, SQL, Git, AWS" className="min-h-[100px] bg-background" value={formData.skills} onChange={(e) => handleInputChange('skills', e.target.value)} />
                   </CardContent>
                 </Card>
 
-                <Card className="border-border/50">
+                <Card className="border-border/50 bg-card">
                   <CardHeader>
                     <CardTitle className="text-lg">Projects</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <Textarea placeholder="E-Commerce Platform | React, Node.js&#10;• Built a full-stack platform" className="min-h-[150px]" value={formData.projects} onChange={(e) => handleInputChange('projects', e.target.value)} />
+                    <Textarea placeholder="E-Commerce Platform | React, Node.js&#10;• Built a full-stack platform" className="min-h-[150px] bg-background" value={formData.projects} onChange={(e) => handleInputChange('projects', e.target.value)} />
                   </CardContent>
                 </Card>
 
-                <Card className="border-border/50">
+                <Card className="border-border/50 bg-card">
                   <CardHeader>
                     <CardTitle className="text-lg">Certifications</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <Textarea placeholder="AWS Certified Solutions Architect | 2023" className="min-h-[100px]" value={formData.certifications} onChange={(e) => handleInputChange('certifications', e.target.value)} />
+                    <Textarea placeholder="AWS Certified Solutions Architect | 2023" className="min-h-[100px] bg-background" value={formData.certifications} onChange={(e) => handleInputChange('certifications', e.target.value)} />
                   </CardContent>
                 </Card>
 
@@ -858,17 +856,63 @@ const ResumeBuilder = () => {
                 </div>
               </div>
 
+              {/* Resume Preview Card */}
               <Card className="border-border/50 overflow-hidden bg-card">
-                <div 
-                  className="resume-preview bg-white rounded-lg m-4"
-                  dangerouslySetInnerHTML={{ __html: getTemplateHTML(selectedTemplate.id, formData) }}
-                  style={{ transform: 'scale(0.85)', transformOrigin: 'top center' }}
-                />
+                <CardHeader className="border-b border-border/50">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${selectedTemplate.previewColor} flex items-center justify-center`}>
+                      <selectedTemplate.icon className="h-5 w-5 text-white" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">{selectedTemplate.name}</CardTitle>
+                      <CardDescription>Preview your resume before downloading</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-6">
+                  {/* Preview sections based on form data */}
+                  <div className="space-y-4 text-sm">
+                    <div className="text-center pb-4 border-b border-border/50">
+                      <h3 className="text-2xl font-bold text-foreground">{formData.fullName || 'Your Name'}</h3>
+                      <p className="text-muted-foreground">
+                        {formData.email || 'email@example.com'} • {formData.phone || '+91 XXXXX'} • {formData.location || 'City'}
+                      </p>
+                    </div>
+                    
+                    {formData.summary && (
+                      <div>
+                        <h4 className="font-semibold text-primary mb-1">Professional Summary</h4>
+                        <p className="text-muted-foreground text-xs whitespace-pre-line">{formData.summary}</p>
+                      </div>
+                    )}
+                    
+                    {formData.experience && (
+                      <div>
+                        <h4 className="font-semibold text-primary mb-1">Experience</h4>
+                        <p className="text-muted-foreground text-xs whitespace-pre-line">{formData.experience}</p>
+                      </div>
+                    )}
+                    
+                    {formData.education && (
+                      <div>
+                        <h4 className="font-semibold text-primary mb-1">Education</h4>
+                        <p className="text-muted-foreground text-xs whitespace-pre-line">{formData.education}</p>
+                      </div>
+                    )}
+                    
+                    {formData.skills && (
+                      <div>
+                        <h4 className="font-semibold text-primary mb-1">Skills</h4>
+                        <p className="text-muted-foreground text-xs whitespace-pre-line">{formData.skills}</p>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
               </Card>
 
               <div className="mt-6 p-4 bg-card/50 rounded-lg border border-border/50">
                 <p className="text-sm text-muted-foreground text-center">
-                  💡 Click "Download PDF" and select "Save as PDF" for HD quality output.
+                  💡 Click "Download PDF" and select "Save as PDF" for HD quality output. Each template has a unique design in the final PDF.
                 </p>
               </div>
             </div>
