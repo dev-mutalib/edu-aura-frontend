@@ -17,7 +17,9 @@ import {
   Info,
   FileText,
   ScrollText,
-  Shield
+  Shield,
+  NotebookPen,
+  Settings
 } from 'lucide-react';
 
 const Navbar = () => {
@@ -36,6 +38,7 @@ const Navbar = () => {
     { path: '/', label: 'Home', icon: Home },
     { path: '/courses', label: 'Courses', icon: BookOpen },
     { path: '/degrees', label: 'Degrees', icon: GraduationCap },
+    { path: '/notes', label: 'Notes', icon: NotebookPen },
     { path: '/careers', label: 'Careers', icon: Briefcase },
     { path: '/jobs', label: 'Jobs', icon: Search },
     { path: '/faculty', label: 'Faculty', icon: Users },
@@ -45,6 +48,7 @@ const Navbar = () => {
     { path: '/gallery', label: 'Gallery', icon: Image },
     { path: '/about', label: 'About', icon: Info },
     { path: '/resume-builder', label: 'Resume Builder', icon: FileText },
+    { path: '/admin/notes', label: 'Admin Notes', icon: Settings },
     { path: '/terms', label: 'Terms & Conditions', icon: ScrollText },
     { path: '/privacy', label: 'Privacy Policy', icon: Shield },
   ];

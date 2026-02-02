@@ -18,6 +18,8 @@ import Jobs from '../pages/Jobs';
 import TermsAndConditions from '../pages/TermsAndConditions';
 import PrivacyPolicy from '../pages/PrivacyPolicy';
 import ResumeBuilder from '../pages/ResumeBuilder';
+import Notes from '../pages/Notes';
+import AdminNotes from '../pages/AdminNotes';
 
 const AppRoutes = () => {
   return (
@@ -41,6 +43,8 @@ const AppRoutes = () => {
         <Route path='/terms' element={<TermsAndConditions />} />
         <Route path='/privacy' element={<PrivacyPolicy />} />
         <Route path='/resume-builder' element={<ResumeBuilder />} />
+        <Route path='/notes' element={<Notes />} />
+        <Route path='/admin/notes' element={<AdminNotes />} />
       </Route>
     </Routes>
   );
