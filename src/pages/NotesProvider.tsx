@@ -80,13 +80,10 @@ const subjectsByCourse: Record<string, string[]> = {
   MBA: ['Finance', 'HRM', 'Strategy', 'Operations', 'Analytics', 'Entrepreneurship'],
 };
 
-// Admin emails list - in real app this would come from backend
-const ADMIN_EMAILS = ['admin@eduaura.com', 'admin@ssbesitm.org'];
-
 interface User {
   name: string;
   email: string;
-  isAdmin: boolean;
+  role: 'admin' | 'student';
 }
 
 const NotesProvider = () => {
@@ -126,8 +123,8 @@ const NotesProvider = () => {
   const availableSubjects = selectedCourse ? subjectsByCourse[selectedCourse] : [];
   const adminAvailableSubjects = uploadFormData.course ? subjectsByCourse[uploadFormData.course] : [];
 
-  // Check if user is admin
-  const isAdmin = user?.isAdmin || false;
+  // Check if user is admin based on role from backend
+  const isAdmin = user?.role === 'admin';
 
   // Filter notes
   const filteredNotes = useMemo(() => {
@@ -161,16 +158,22 @@ const NotesProvider = () => {
         password: authForm.password 
       });
       
-      const userData = {
+      // Role comes from backend API response
+      const userData: User = {
         name: res.data?.name || authForm.email.split('@')[0],
         email: authForm.email,
-        isAdmin: ADMIN_EMAILS.includes(authForm.email.toLowerCase()),
+        role: res.data?.role || 'student', // Default to student if no role provided
       };
       
       setUser(userData);
       setShowAuthModal(false);
       setAuthForm({ name: '', email: '', password: '' });
-      toast.success(`Welcome back, ${userData.name}!`);
+      
+      if (userData.role === 'admin') {
+        toast.success(`Welcome Admin ${userData.name}! You can now upload and manage notes.`);
+      } else {
+        toast.success(`Welcome ${userData.name}! You can now browse and download notes.`);
+      }
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Login failed. Please try again.');
     } finally {
@@ -343,7 +346,9 @@ const NotesProvider = () => {
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-6">
             {isAdmin 
               ? 'Welcome Admin! Upload and manage study materials for students.'
-              : 'Access comprehensive study materials from top educators. Download PDFs and ace your exams!'
+              : user 
+                ? 'Browse and download comprehensive study materials from top educators!'
+                : 'Access comprehensive study materials from top educators. Login to download PDFs and ace your exams!'
             }
           </p>
 
@@ -358,11 +363,13 @@ const NotesProvider = () => {
                 >
                   <User className="h-4 w-4 text-primary" />
                   <span className="text-foreground font-medium">{user.name}</span>
-                  {isAdmin && (
-                    <span className="text-xs bg-primary text-primary-foreground px-2 py-0.5 rounded-full">
-                      Admin
-                    </span>
-                  )}
+                  <span className={`text-xs px-2 py-0.5 rounded-full ${
+                    user.role === 'admin' 
+                      ? 'bg-primary text-primary-foreground' 
+                      : 'bg-secondary text-secondary-foreground'
+                  }`}>
+                    {user.role === 'admin' ? 'Admin' : 'Student'}
+                  </span>
                 </motion.div>
                 <Button variant="outline" onClick={handleLogout} className="rounded-xl">
                   <LogOut className="h-4 w-4 mr-2" />
