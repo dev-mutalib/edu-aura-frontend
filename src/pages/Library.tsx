@@ -1,14 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  LogOut,
-  Mail,
-  Lock,
-  User,
-  Eye,
-  EyeOff,
-  Search,
-  BookOpen,
-} from 'lucide-react';
+import { LogOut, Mail, Lock, User, Eye, EyeOff, Search } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -16,6 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import toast, { Toaster } from 'react-hot-toast';
 import api from '../api/axios.js';
+
+/* ================= TYPES ================= */
 
 interface Book {
   _id: string;
@@ -25,20 +18,21 @@ interface Book {
   image: string;
 }
 
+/* ================= HELPERS ================= */
+
 const BACKEND_URL = 'http://localhost:5000';
 
 const resolveImageUrl = (image: string) => {
   if (!image) return '/placeholder-user.jpg';
-
   if (image.startsWith('http://') || image.startsWith('https://')) {
     return image;
   }
-
   return `${BACKEND_URL}${image}`;
 };
 
-const Library = () => {
+/* ================= COMPONENT ================= */
 
+const Library = () => {
   /* ---------- AUTH ---------- */
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -62,24 +56,30 @@ const Library = () => {
     }
   }, []);
 
-  /* ---------- API HANDLERS ---------- */
+  /* ================= API HANDLERS ================= */
 
   const registerHandler = async () => {
     if (!name || !email || !password) {
-       toast.error('Please fill all fields');
+      toast.error('Please fill all fields');
       return;
     }
 
     try {
       setLoading(true);
-      const res = await api.post('/auth/register', { name, email, password });
+      const res = await api.post('/auth/register', {
+        name,
+        email,
+        password,
+      });
+
       const token = res.data.token;
       localStorage.setItem('library_token', token);
+
       toast.success('Registered Successfully');
       setIsAuthenticated(true);
       fetchBooks(token);
     } catch (err: any) {
-     toast.error(err?.response?.data?.message || 'Register failed');
+      toast.error(err?.response?.data?.message || 'Register failed');
     } finally {
       setLoading(false);
     }
@@ -94,8 +94,10 @@ const Library = () => {
     try {
       setLoading(true);
       const res = await api.post('/auth/login', { email, password });
+
       const token = res.data.token;
       localStorage.setItem('library_token', token);
+
       toast.success('Login Successful');
       setIsAuthenticated(true);
       fetchBooks(token);
@@ -113,7 +115,7 @@ const Library = () => {
       });
       setBooks(res.data);
     } catch {
-       toast.error('Failed to load books');
+      toast.error('Failed to load books');
     }
   };
 
@@ -121,10 +123,10 @@ const Library = () => {
     localStorage.removeItem('library_token');
     setIsAuthenticated(false);
     setBooks([]);
-     toast.success('Logged out');
+    toast.success('Logged out');
   };
 
-  /* ---------- BORROW / RETURN ---------- */
+  /* ================= BORROW / RETURN ================= */
 
   const getBorrowKey = (token: string, bookId: string) =>
     `library_user_borrowed_${token}_${bookId}`;
@@ -147,12 +149,11 @@ const Library = () => {
       );
 
       localStorage.setItem(key, String(currentBorrowed + 1));
-
       setBooks((prev) => prev.map((b) => (b._id === id ? res.data : b)));
 
       toast.success('Book borrowed successfully');
     } catch (err: any) {
-       toast.error(err?.response?.data?.message || 'Borrow failed');
+      toast.error(err?.response?.data?.message || 'Borrow failed');
     }
   };
 
@@ -176,12 +177,11 @@ const Library = () => {
       );
 
       localStorage.setItem(key, String(currentBorrowed - 1));
-
       setBooks((prev) => prev.map((b) => (b._id === id ? res.data : b)));
 
       toast.success('Book returned successfully');
     } catch (err: any) {
-     toast.error(err?.response?.data?.message || 'Return failed');
+      toast.error(err?.response?.data?.message || 'Return failed');
     }
   };
 
@@ -202,6 +202,7 @@ const Library = () => {
             },
           }}
         />
+
         <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-[#060b1f] via-[#0b122e] to-[#150c2c] px-4'>
           <Card className='w-full max-w-md rounded-2xl border border-white/10 bg-[#0b1027]/90 backdrop-blur-xl shadow-2xl'>
             <CardContent className='p-10 space-y-6'>
@@ -256,10 +257,24 @@ const Library = () => {
 
               <Button
                 onClick={isRegister ? registerHandler : loginHandler}
+                disabled={loading}
                 className='w-full h-12 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl'
               >
                 {isRegister ? 'Register' : 'Login'}
               </Button>
+
+              {/* 🔥 REGISTER / LOGIN TOGGLE */}
+              <p className='text-center text-sm text-gray-400'>
+                {isRegister
+                  ? 'Already have an account?'
+                  : "Don't have an account?"}
+                <button
+                  onClick={() => setIsRegister(!isRegister)}
+                  className='ml-2 text-cyan-400 hover:underline'
+                >
+                  {isRegister ? 'Login' : 'Register'}
+                </button>
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -298,7 +313,8 @@ const Library = () => {
             variant='destructive'
             onClick={logoutHandler}
           >
-            <LogOut className='w-4 h-4 mr-2' /> Logout
+            <LogOut className='w-4 h-4 mr-2' />
+            Logout
           </Button>
         </header>
 
@@ -319,16 +335,14 @@ const Library = () => {
               : 0;
 
             return (
-              <Card
-                key={book._id}
-                className='transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl'
-              >
+              <Card key={book._id}>
                 <CardContent className='p-6 space-y-3'>
                   <img
                     src={resolveImageUrl(book.image)}
                     alt={book.title}
                     className='h-48 w-full object-cover rounded'
                   />
+
                   <h3 className='text-lg font-bold'>{book.title}</h3>
                   <p className='text-sm text-muted-foreground'>
                     by {book.author}
@@ -347,6 +361,7 @@ const Library = () => {
                     >
                       Borrow
                     </Button>
+
                     <Button
                       variant='secondary'
                       onClick={() => returnBook(book._id)}
