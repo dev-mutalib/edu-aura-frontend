@@ -71,35 +71,35 @@ const CourseMarquee: React.FC = () => {
 
       {/* Row 1 - Scrolling Left */}
       <div className="flex mb-4 animate-marquee-row-1 will-change-transform">
-        {[...row1, ...row1, ...row1, ...row1, ...row1, ...row1].map((career, index) => (
+        {[...row1, ...row1].map((career, index) => (
           <CareerCard key={`row1-${index}`} career={career} onClick={() => handleCareerClick(career.id)} />
         ))}
       </div>
 
       {/* Row 2 - Scrolling Right */}
       <div className="flex mb-4 animate-marquee-row-2 will-change-transform">
-        {[...row2, ...row2, ...row2, ...row2, ...row2, ...row2].map((career, index) => (
+        {[...row2, ...row2].map((career, index) => (
           <CareerCard key={`row2-${index}`} career={career} onClick={() => handleCareerClick(career.id)} />
         ))}
       </div>
 
       {/* Row 3 - Scrolling Left (faster) */}
       <div className="flex mb-4 animate-marquee-row-3 will-change-transform">
-        {[...row3, ...row3, ...row3, ...row3, ...row3, ...row3].map((career, index) => (
+        {[...row3, ...row3].map((career, index) => (
           <CareerCard key={`row3-${index}`} career={career} onClick={() => handleCareerClick(career.id)} />
         ))}
       </div>
 
       {/* Row 4 - Scrolling Right (faster) */}
       <div className="flex mb-4 animate-marquee-row-4 will-change-transform">
-        {[...row4, ...row4, ...row4, ...row4, ...row4, ...row4].map((career, index) => (
+        {[...row4, ...row4].map((career, index) => (
           <CareerCard key={`row4-${index}`} career={career} onClick={() => handleCareerClick(career.id)} />
         ))}
       </div>
 
       {/* Row 5 - Scrolling Left */}
       <div className="flex animate-marquee-row-5 will-change-transform">
-        {[...row5, ...row5, ...row5, ...row5, ...row5, ...row5].map((career, index) => (
+        {[...row5, ...row5].map((career, index) => (
           <CareerCard key={`row5-${index}`} career={career} onClick={() => handleCareerClick(career.id)} />
         ))}
       </div>

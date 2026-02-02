@@ -228,23 +228,23 @@ export default {
         },
         'marquee-row-1': {
           '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-16.666%)' },
+          '100%': { transform: 'translateX(-50%)' },
         },
         'marquee-row-2': {
-          '0%': { transform: 'translateX(-16.666%)' },
+          '0%': { transform: 'translateX(-50%)' },
           '100%': { transform: 'translateX(0)' },
         },
         'marquee-row-3': {
           '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-16.666%)' },
+          '100%': { transform: 'translateX(-50%)' },
         },
         'marquee-row-4': {
-          '0%': { transform: 'translateX(-16.666%)' },
+          '0%': { transform: 'translateX(-50%)' },
           '100%': { transform: 'translateX(0)' },
         },
         'marquee-row-5': {
           '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-16.666%)' },
+          '100%': { transform: 'translateX(-50%)' },
         },
       },
       animation: {
@@ -268,11 +268,11 @@ export default {
         'marquee-fast': 'marquee-fast 20s linear infinite',
         'marquee-left': 'marquee-left 30s linear infinite',
         'marquee-right': 'marquee-right 30s linear infinite',
-        'marquee-row-1': 'marquee-row-1 6s linear infinite',
-        'marquee-row-2': 'marquee-row-2 7s linear infinite',
-        'marquee-row-3': 'marquee-row-3 5s linear infinite',
-        'marquee-row-4': 'marquee-row-4 6.5s linear infinite',
-        'marquee-row-5': 'marquee-row-5 5.5s linear infinite',
+        'marquee-row-1': 'marquee-row-1 25s linear infinite',
+        'marquee-row-2': 'marquee-row-2 28s linear infinite',
+        'marquee-row-3': 'marquee-row-3 22s linear infinite',
+        'marquee-row-4': 'marquee-row-4 26s linear infinite',
+        'marquee-row-5': 'marquee-row-5 24s linear infinite',
       },
 
       /* ===============================
