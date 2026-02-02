@@ -1,6 +1,24 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Menu, X, Sparkles } from 'lucide-react';
+import { 
+  Menu, 
+  X, 
+  Sparkles, 
+  Home,
+  BookOpen,
+  GraduationCap,
+  Briefcase,
+  Search,
+  Users,
+  Library,
+  ClipboardList,
+  Phone,
+  Image,
+  Info,
+  FileText,
+  ScrollText,
+  Shield
+} from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,23 +33,25 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { path: '/', label: 'Home' },
-    { path: '/courses', label: 'Courses' },
-    { path: '/faculty', label: 'Faculty' },
-    { path: '/library', label: 'Library' },
-    { path: '/admissions', label: 'Admissions' },
-    { path: '/contact', label: 'Contact' },
-    { path: '/gallery', label: 'Gallery' },
-    { path: '/about', label: 'About' },
+    { path: '/', label: 'Home', icon: Home },
+    { path: '/courses', label: 'Courses', icon: BookOpen },
+    { path: '/degrees', label: 'Degrees', icon: GraduationCap },
+    { path: '/careers', label: 'Careers', icon: Briefcase },
+    { path: '/jobs', label: 'Jobs', icon: Search },
+    { path: '/faculty', label: 'Faculty', icon: Users },
+    { path: '/library', label: 'Library', icon: Library },
+    { path: '/admissions', label: 'Admissions', icon: ClipboardList },
+    { path: '/contact', label: 'Contact', icon: Phone },
+    { path: '/gallery', label: 'Gallery', icon: Image },
+    { path: '/about', label: 'About', icon: Info },
+    { path: '/resume-builder', label: 'Resume Builder', icon: FileText },
+    { path: '/terms', label: 'Terms & Conditions', icon: ScrollText },
+    { path: '/privacy', label: 'Privacy Policy', icon: Shield },
   ];
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-background/80 backdrop-blur-lg shadow-lg shadow-primary/5 border-b border-border/50'
-          : 'bg-background/50 backdrop-blur-sm'
-      }`}
+      className="sticky top-0 z-50 transition-all duration-300 bg-[#0d1117] border-b border-slate-700/50"
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
         {/* LOGO */}
@@ -40,71 +60,97 @@ const Navbar = () => {
             <Sparkles className="h-6 w-6 text-primary animate-pulse-glow" />
             <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full" />
           </div>
-          <h1 className="text-xl font-bold text-gradient">
+          <h1 className="text-xl font-bold text-white">
             EduAura
           </h1>
         </Link>
 
-        {/* DESKTOP NAV */}
-        <nav className="hidden items-center gap-1 md:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className="relative px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-300 hover:text-foreground group"
-            >
-              {link.label}
-              <span className="absolute bottom-0 left-1/2 h-0.5 w-0 bg-gradient-to-r from-primary via-secondary to-accent transition-all duration-300 group-hover:left-0 group-hover:w-full" />
-            </Link>
-          ))}
-        </nav>
-
-        {/* CTA BUTTON */}
-        <div className="hidden md:block">
-          <Link
-            to="/admissions"
-            className="relative inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-primary-foreground bg-gradient-to-r from-primary to-secondary rounded-lg overflow-hidden transition-all duration-300 hover:shadow-glow-md hover:scale-105 shimmer"
+        {/* Right Side - AI Button + Hamburger */}
+        <div className="flex items-center gap-3">
+          {/* AI Button - Like Reference */}
+          <button
+            className="flex items-center gap-2 px-4 py-2.5 bg-transparent text-primary rounded-xl border border-primary/60 hover:border-primary hover:shadow-glow-sm transition-all duration-300 group"
+            onClick={() => {
+              const event = new CustomEvent('openEduBot');
+              window.dispatchEvent(event);
+            }}
           >
-            <span className="relative z-10">Apply Now</span>
-          </Link>
-        </div>
+            <Sparkles className="h-4 w-4 group-hover:animate-spin" />
+            <span className="text-sm font-semibold">Try EduAura AI</span>
+            <Sparkles className="h-4 w-4 group-hover:animate-spin" />
+          </button>
 
-        {/* MOBILE BUTTON */}
-        <button
-          className="md:hidden relative p-2 text-foreground hover:text-primary transition-colors"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle menu"
-        >
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
+          {/* HAMBURGER MENU - Always visible */}
+          <button
+            className="relative p-2.5 text-white hover:text-primary transition-colors rounded-lg hover:bg-white/10"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
+          >
+            <Menu size={26} />
+          </button>
+        </div>
       </div>
 
-      {/* MOBILE MENU */}
+      {/* NAVIGATION DRAWER - Side Panel */}
       <div
-        className={`md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-lg border-b border-border/50 shadow-xl transition-all duration-300 ${
-          isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
+        className={`fixed inset-0 z-[60] transition-all duration-300 ${
+          isOpen ? 'visible' : 'invisible'
         }`}
       >
-        <nav className="flex flex-col px-4 py-4">
-          {navLinks.map((link, index) => (
-            <Link
-              key={link.path}
-              to={link.path}
+        {/* Backdrop */}
+        <div 
+          className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${
+            isOpen ? 'opacity-100' : 'opacity-0'
+          }`}
+          onClick={() => setIsOpen(false)}
+        />
+
+        {/* Drawer Panel */}
+        <div
+          className={`absolute top-0 right-0 h-full w-80 max-w-[85vw] bg-[#0d1117] border-l border-slate-700/50 shadow-2xl transition-transform duration-300 ${
+            isOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+        >
+          {/* Drawer Header with Close Button */}
+          <div className="flex items-center justify-between p-6 border-b border-slate-700/50">
+            <h2 className="text-lg font-bold text-primary">Navigation</h2>
+            <button 
               onClick={() => setIsOpen(false)}
-              className="py-3 text-muted-foreground hover:text-primary transition-all duration-300 border-b border-border/30 last:border-none"
-              style={{ animationDelay: `${index * 50}ms` }}
+              className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+              aria-label="Close menu"
             >
-              {link.label}
+              <X className="h-5 w-5 text-white hover:text-primary" />
+            </button>
+          </div>
+
+          {/* Navigation Links */}
+          <nav className="p-4 space-y-1 overflow-y-auto max-h-[calc(100vh-200px)]">
+            {navLinks.map((link, index) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-4 px-4 py-3.5 text-slate-300 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 group"
+                style={{ animationDelay: `${index * 30}ms` }}
+              >
+                <link.icon className="h-5 w-5 text-slate-400 group-hover:text-primary transition-colors" />
+                <span className="font-medium">{link.label}</span>
+              </Link>
+            ))}
+          </nav>
+
+          {/* Apply Now Button */}
+          <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700/50 bg-[#0d1117]">
+            <Link
+              to="/admissions"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center justify-center gap-2 w-full py-3.5 text-white bg-gradient-to-r from-primary to-secondary rounded-xl hover:shadow-glow-md transition-all font-semibold"
+            >
+              <ClipboardList className="h-5 w-5" />
+              Apply Now
             </Link>
-          ))}
-          <Link
-            to="/admissions"
-            onClick={() => setIsOpen(false)}
-            className="mt-4 text-center px-5 py-3 text-sm font-medium text-primary-foreground bg-gradient-to-r from-primary to-secondary rounded-lg"
-          >
-            Apply Now
-          </Link>
-        </nav>
+          </div>
+        </div>
       </div>
     </header>
   );

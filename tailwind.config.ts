@@ -206,6 +206,46 @@ export default {
           '0%, 100%': { transform: 'rotate(-3deg)' },
           '50%': { transform: 'rotate(3deg)' },
         },
+        orbit: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+        'counter-orbit': {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(-360deg)' },
+        },
+        'marquee-fast': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        'marquee-left': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-33.333%)' },
+        },
+        'marquee-right': {
+          '0%': { transform: 'translateX(-33.333%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        'marquee-row-1': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-16.666%)' },
+        },
+        'marquee-row-2': {
+          '0%': { transform: 'translateX(-16.666%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        'marquee-row-3': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-16.666%)' },
+        },
+        'marquee-row-4': {
+          '0%': { transform: 'translateX(-16.666%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        'marquee-row-5': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-16.666%)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -223,6 +263,16 @@ export default {
         'bounce-slow': 'bounce-slow 2s ease-in-out infinite',
         'spin-slow': 'spin-slow 8s linear infinite',
         wiggle: 'wiggle 0.5s ease-in-out infinite',
+        orbit: 'orbit 30s linear infinite',
+        'counter-orbit': 'counter-orbit 30s linear infinite',
+        'marquee-fast': 'marquee-fast 20s linear infinite',
+        'marquee-left': 'marquee-left 30s linear infinite',
+        'marquee-right': 'marquee-right 30s linear infinite',
+        'marquee-row-1': 'marquee-row-1 6s linear infinite',
+        'marquee-row-2': 'marquee-row-2 7s linear infinite',
+        'marquee-row-3': 'marquee-row-3 5s linear infinite',
+        'marquee-row-4': 'marquee-row-4 6.5s linear infinite',
+        'marquee-row-5': 'marquee-row-5 5.5s linear infinite',
       },
 
       /* ===============================

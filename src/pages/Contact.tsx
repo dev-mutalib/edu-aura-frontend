@@ -22,23 +22,22 @@ const Contact = () => {
   };
 
   const submitHandler = async () => {
-    if (!message.trim()) {
-      toast.error('Please enter a message');
+    if (!name || !email || !phone || !message.trim()) {
+      toast.error('Please fill all required fields');
       return;
     }
 
     try {
       setLoading(true);
 
-      const res = await api.post('/contact', {
+      await api.post('/admissions/apply', {
         name,
         email,
         phone,
-        subject,
-        message,
+        course: subject || 'Contact Inquiry',
       });
 
-      toast.success(res.data?.message || 'Message sent successfully');
+      toast.success('Message sent successfully');
       resetForm();
     } catch (error: any) {
       console.error('Contact API error:', error);

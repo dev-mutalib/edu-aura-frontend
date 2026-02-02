@@ -17,7 +17,7 @@ const EduBot: React.FC = () => {
     {
       id: 1,
       role: 'assistant',
-      content: "👋 Hello! I'm EduBot, your AI assistant at EduAura Institute.\n\nI can help you with:\n• Courses & Programs\n• Admission Process\n• Fee Structure\n• Placements & Career\n• Hostel & Facilities\n\nHow can I assist you today?",
+      content: "👋 Hello! I'm EduAura AI, your assistant for EduAura Institute. Ask me about programming, technology, or career paths. I was developed by EduAura Developers.",
       timestamp: new Date(),
     },
   ]);
@@ -40,6 +40,13 @@ const EduBot: React.FC = () => {
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [isOpen]);
+
+  // Listen for custom event to open chatbot
+  useEffect(() => {
+    const handleOpenEduBot = () => setIsOpen(true);
+    window.addEventListener('openEduBot', handleOpenEduBot);
+    return () => window.removeEventListener('openEduBot', handleOpenEduBot);
+  }, []);
 
   /* ------------------ BOT RESPONSES ------------------ */
 
@@ -96,6 +103,16 @@ const EduBot: React.FC = () => {
       return "🏫 **Campus Facilities:**\n\n• Modern Computer Labs\n• Smart Classrooms\n• Wi-Fi Campus\n• Sports Ground\n• Cafeteria\n• Auditorium\n• Seminar Halls\n• Parking Area\n• Medical Room\n\nState-of-the-art infrastructure for holistic development!";
     }
 
+    // Programming related
+    if (/programming|coding|python|java|javascript|c\+\+|web development|app development/.test(msg)) {
+      return "💻 **Programming & Technology:**\n\nWe teach:\n• Python, Java, C++\n• Web Development (HTML, CSS, JavaScript, React)\n• Mobile App Development\n• Database Management (SQL, MongoDB)\n• Cloud Computing\n• AI & Machine Learning basics\n\nOur BCA & MCA programs focus heavily on practical coding skills!";
+    }
+
+    // Career guidance
+    if (/career path|what should i study|which course|confused|help me choose/.test(msg)) {
+      return "🎯 **Career Guidance:**\n\n**For Tech Enthusiasts:**\n→ BCA/MCA - Software Development\n\n**For Business Minds:**\n→ BBA/MBA - Management & Leadership\n\n**For Commerce Students:**\n→ B.Com/M.Com - Finance & Accounting\n\nNeed personalized guidance? Contact our counselor:\n📞 +91 88307 72432";
+    }
+
     // Thanks
     if (/thank|thanks|thankyou|thank you|thx/.test(msg)) {
       return "You're welcome! 😊\n\nIs there anything else I can help you with?\n\nFeel free to ask about courses, admissions, or any other queries!";
@@ -107,7 +124,7 @@ const EduBot: React.FC = () => {
     }
 
     // Default fallback
-    return "I'm here to help! 🤖\n\nPlease ask me about:\n\n• **Courses** - BCA, BBA, MCA, MBA, B.Com\n• **Admissions** - Process & Requirements\n• **Fees** - Fee Structure & Scholarships\n• **Placements** - Career & Job Opportunities\n• **Hostel** - Accommodation & Facilities\n• **Contact** - Get in touch with us\n\nType your question and I'll assist you!";
+    return "I'm here to help! 🤖\n\nPlease ask me about:\n\n• **Courses** - BCA, BBA, MCA, MBA, B.Com\n• **Admissions** - Process & Requirements\n• **Fees** - Fee Structure & Scholarships\n• **Placements** - Career & Job Opportunities\n• **Hostel** - Accommodation & Facilities\n• **Contact** - Get in touch with us\n• **Programming** - Tech & Coding queries\n\nType your question and I'll assist you!";
   };
 
   /* ------------------ SEND MESSAGE ------------------ */
@@ -128,7 +145,7 @@ const EduBot: React.FC = () => {
     setIsTyping(true);
 
     // Simulate typing delay
-    await new Promise((res) => setTimeout(res, 800 + Math.random() * 600));
+    await new Promise((res) => setTimeout(res, 600 + Math.random() * 400));
 
     const botMessage: Message = {
       id: Date.now() + 1,
@@ -148,24 +165,13 @@ const EduBot: React.FC = () => {
     }
   };
 
+  // Only render when open (triggered by navbar button)
+  if (!isOpen) return null;
+
   return (
     <div className="fixed bottom-6 right-6 z-[9999]">
-      {/* Floating Button */}
-      {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-primary to-secondary shadow-lg hover:shadow-glow-md transition-all duration-300 hover:scale-105 shimmer"
-          aria-label="Open EduBot Chat"
-        >
-          <MessageSquare className="h-5 w-5 text-primary-foreground" />
-          <span className="text-primary-foreground font-semibold">Ask EduBot</span>
-          <Sparkles className="h-4 w-4 text-primary-foreground/80" />
-        </button>
-      )}
 
-      {/* Chat Window */}
-      {isOpen && (
-        <div className="w-[360px] sm:w-[400px] h-[550px] bg-card border border-border/50 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-scale-in">
+      <div className="w-[360px] sm:w-[400px] h-[550px] bg-card border border-border/50 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-scale-in">
           {/* Header */}
           <div className="bg-gradient-to-r from-primary to-secondary p-4 flex justify-between items-center shrink-0">
             <div className="flex items-center gap-3">
@@ -173,7 +179,7 @@ const EduBot: React.FC = () => {
                 <Bot className="h-5 w-5 text-primary-foreground" />
               </div>
               <div>
-                <h3 className="text-primary-foreground font-bold">EduBot</h3>
+                <h3 className="text-primary-foreground font-bold">EduAura AI</h3>
                 <p className="text-primary-foreground/70 text-xs">AI Assistant • Online</p>
               </div>
             </div>
@@ -240,11 +246,10 @@ const EduBot: React.FC = () => {
               </Button>
             </div>
             <p className="text-xs text-muted-foreground text-center mt-2">
-              Powered by EduAura AI
+              EduAura AI may occasionally generate incorrect information
             </p>
-          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
