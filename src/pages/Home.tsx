@@ -275,52 +275,84 @@ const Home: React.FC = () => {
 
       {/* HERO / CAROUSEL */}
       <section className="relative pt-2 md:pt-4">
-        <Slider {...carouselSettings}>
-          {carouselItems.map((item, i) => (
-            <div
-              key={i}
-              className="relative min-h-[60vh] sm:min-h-[70vh] md:min-h-[85vh]"
-            >
-              <img
-                src={item.image}
-                alt={`Slide ${i + 1}`}
-                className="absolute inset-0 h-full w-full object-cover"
+        {/* Carousel Only - Full Height Images */}
+        <div className="relative">
+          <Slider {...carouselSettings}>
+            {carouselItems.map((item, i) => (
+              <div
+                key={i}
+                className="relative h-[50vh] sm:h-[55vh] md:h-[65vh] lg:h-[70vh]"
+              >
+                <img
+                  src={item.image}
+                  alt={`Slide ${i + 1}`}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+                {/* Subtle gradient overlay for better visibility */}
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" />
+              </div>
+            ))}
+          </Slider>
+          
+          {/* Carousel Indicators */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+            {carouselItems.map((_, i) => (
+              <div 
+                key={i} 
+                className="w-2 h-2 rounded-full bg-foreground/30 hover:bg-primary transition-colors" 
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background" />
-            </div>
-          ))}
-        </Slider>
-
-        {/* Hero Content Overlay */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="text-center px-4 pointer-events-auto">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 mb-6 animate-fade-in">
-              <Sparkles className="h-4 w-4 text-primary" />
-              <span className="text-sm text-primary font-medium">Welcome to EduAura</span>
-            </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 animate-fade-in-up">
-              <span className="text-gradient">Shape Your Future</span>
-              <br />
-              <span className="text-foreground">With Quality Education</span>
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 animate-fade-in delay-200">
-              Discover world-class programs designed to prepare you for success in your chosen field.
-            </p>
+            ))}
           </div>
         </div>
 
-        {/* BUTTONS BELOW CAROUSEL */}
-        <div className="relative z-10 mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row pb-12">
-          <Button asChild size="lg" className="group bg-gradient-to-r from-primary to-secondary hover:shadow-glow-md transition-all duration-300 shimmer">
-            <Link to="/admissions" className="flex items-center gap-2">
-              Apply Now 
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </Button>
+        {/* Hero Content Below Carousel */}
+        <div className="relative z-10 py-12 md:py-16 lg:py-20 bg-gradient-to-b from-background/95 to-background">
+          <div className="mx-auto max-w-5xl px-4 text-center">
+            {/* Welcome Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 mb-6 animate-fade-in hover:scale-105 transition-transform cursor-default">
+              <Sparkles className="h-4 w-4 text-primary animate-pulse" />
+              <span className="text-sm text-primary font-medium">Welcome to EduAura</span>
+            </div>
+            
+            {/* Main Heading */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 animate-fade-in">
+              <span className="text-gradient bg-clip-text">Shape Your Future</span>
+              <br />
+              <span className="text-foreground">With Quality Education</span>
+            </h1>
+            
+            {/* Description */}
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-fade-in leading-relaxed">
+              Discover world-class programs designed to prepare you for success in your chosen field. 
+              Join thousands of students building their dreams.
+            </p>
+            
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in">
+              <Button asChild size="lg" className="group bg-gradient-to-r from-primary to-secondary hover:shadow-glow-md transition-all duration-300 shimmer px-8 py-6 text-lg">
+                <Link to="/admissions" className="flex items-center gap-2">
+                  <Sparkles className="h-5 w-5" />
+                  Apply Now 
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
 
-          <Button asChild variant="outline" size="lg" className="border-primary/50 hover:bg-primary/10 hover:border-primary transition-all duration-300">
-            <Link to="/courses">Explore Courses</Link>
-          </Button>
+              <Button asChild variant="outline" size="lg" className="border-primary/50 hover:bg-primary/10 hover:border-primary transition-all duration-300 px-8 py-6 text-lg group">
+                <Link to="/courses" className="flex items-center gap-2">
+                  <BookOpen className="h-5 w-5 group-hover:rotate-12 transition-transform" />
+                  Explore Courses
+                </Link>
+              </Button>
+            </div>
+            
+            {/* Scroll Indicator */}
+            <div className="mt-12 animate-bounce hidden md:block">
+              <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 mx-auto flex items-start justify-center pt-2">
+                <div className="w-1.5 h-3 bg-primary rounded-full animate-pulse" />
+              </div>
+              <p className="text-xs text-muted-foreground mt-2">Scroll to explore</p>
+            </div>
+          </div>
         </div>
       </section>
 
