@@ -157,6 +157,31 @@ const Contact = () => {
             ))}
           </div>
 
+          {/* Google Map Section */}
+          <Card className="mb-12 bg-card/50 border-border/50 backdrop-blur-sm animate-fade-in overflow-hidden">
+            <CardContent className="p-0">
+              <div className="relative">
+                <div className="absolute top-4 left-4 z-10 bg-card/90 backdrop-blur-sm px-4 py-2 rounded-lg border border-border/50">
+                  <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+                    <MapPin className="h-5 w-5 text-primary" />
+                    Our Location
+                  </h3>
+                  <p className="text-sm text-muted-foreground">Institute of Management and Technology</p>
+                </div>
+                <iframe 
+                  src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15074.93714553633!2d77.32923!3d19.163105!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd1d6608f835e5d%3A0x77334c6ef2a354f7!2sInstitute%20of%20Management%20and%20Technology!5e0!3m2!1sen!2sin!4v1770244470075!5m2!1sen!2sin" 
+                  width="100%" 
+                  height="400" 
+                  style={{ border: 0 }} 
+                  allowFullScreen 
+                  loading="lazy" 
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="w-full"
+                  title="Institute of Management and Technology Location"
+                />
+              </div>
+            </CardContent>
+          </Card>
           {/* Contact Form */}
           <Card className="max-w-xl mx-auto bg-card/50 border-border/50 backdrop-blur-sm animate-fade-in delay-300">
             <CardContent className="p-8">
