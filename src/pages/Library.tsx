@@ -1,474 +1,235 @@
-import { useEffect, useState } from 'react';
-import {
-  LogOut,
-  Mail,
-  Lock,
-  User,
-  Eye,
-  EyeOff,
-  Search,
-  BookOpen,
-  Users,
-  Clock,
+import { motion } from 'framer-motion';
+import { 
+  BookOpen, 
+  ScanLine, 
+  ExternalLink, 
   Sparkles,
+  Library as LibraryIcon,
+  QrCode,
+  Database,
+  ArrowRight
 } from 'lucide-react';
-
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import toast, { Toaster } from 'react-hot-toast';
-import api from '../api/axios.js';
-
-/* ================= TYPES ================= */
-
-interface BookImage {
-  url: string;
-  public_id: string;
-}
-
-interface Book {
-  _id: string;
-  title: string;
-  author: string;
-  quantity: number;
-  image: BookImage | null;
-}
-
-/* ================= HELPERS ================= */
-
-const resolveImageUrl = (image: BookImage | null) => {
-  if (!image?.url) return '/placeholder-user.jpg';
-  return image.url;
-};
-
-/* ================= SKELETON ================= */
-
-const BookSkeleton = () => (
-  <Card className='relative bg-[#0b1027]/80 border border-white/10 rounded-2xl backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] animate-pulse overflow-hidden'>
-    <CardContent className='p-6 space-y-4'>
-      <div className='h-52 w-full rounded-xl bg-gradient-to-br from-white/10 to-white/5' />
-      <div className='h-5 w-3/4 bg-white/10 rounded' />
-      <div className='h-4 w-1/2 bg-white/10 rounded' />
-      <div className='flex justify-between'>
-        <div className='h-4 w-20 bg-white/10 rounded' />
-        <div className='h-4 w-24 bg-white/10 rounded' />
-      </div>
-      <div className='flex gap-3'>
-        <div className='h-10 flex-1 bg-white/10 rounded-xl' />
-        <div className='h-10 flex-1 bg-white/10 rounded-xl' />
-      </div>
-    </CardContent>
-  </Card>
-);
-
-/* ================= COMPONENT ================= */
+import Container from '@/components/Container';
 
 const Library = () => {
-  /* ---------- AUTH ---------- */
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(false);
+  // Dummy link - replace with actual library database link
+  const libraryDatabaseLink = 'https://library.example.com';
 
-  /* ---------- LOGIN / REGISTER ---------- */
-  const [isRegister, setIsRegister] = useState(false);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-
-  /* ---------- DATA ---------- */
-  const [books, setBooks] = useState<Book[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isFetching, setIsFetching] = useState(true);
-  const [error, setError] = useState('')
-
-  useEffect(() => {
-    const token = localStorage.getItem('library_token');
-    if (token) {
-      setIsAuthenticated(true);
-      fetchBooks(token);
-    }
-  }, []);
-
-  /* ================= API ================= */
-
-  const fetchBooks = async (token: string) => {
-    try {
-      setIsFetching(true);
-      const res = await api.get('/library', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setBooks(res.data.data ?? res.data);
-    } catch {
-      toast.error('Failed to load books');
-    } finally {
-      setIsFetching(false);
-    }
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1, 
+      transition: { staggerChildren: 0.2 } 
+    },
   };
 
-  const registerHandler = async () => {
-    if (!name || !email || !password) {
-      toast.error('Please fill all fields');
-      return;
-    }
-
-    try {
-      setLoading(true);
-      const res = await api.post('/auth/register', {
-        name,
-        email,
-        password,
-      });
-
-      const token = res.data.token;
-      localStorage.setItem('library_token', token);
-
-      toast.success('Registered successfully');
-      setIsAuthenticated(true);
-      fetchBooks(token);
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message || 'Register failed');
-    } finally {
-      setLoading(false);
-    }
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
   };
-
-  const loginHandler = async () => {
-    if (!email || !password) {
-      toast.error('Email and password required');
-      return;
-    }
-
-    try {
-      setLoading(true);
-      const res = await api.post('/auth/login', { email, password });
-
-      const token = res.data.token;
-      localStorage.setItem('library_token', token);
-
-      toast.success('Login successful');
-      setIsAuthenticated(true);
-      fetchBooks(token);
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message || 'Login failed');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const logoutHandler = () => {
-    localStorage.removeItem('library_token');
-    setIsAuthenticated(false);
-    setBooks([]);
-  };
-
-  /* ================= BORROW / RETURN ================= */
-
-  const getBorrowKey = (token: string, bookId: string) =>
-    `library_user_borrowed_${token}_${bookId}`;
-
-  const normalizeBook = (res: any): Book => (res?.data?._id ? res.data : res);
-
-  const borrowBook = async (id: string) => {
-    try {
-      const token = localStorage.getItem('library_token');
-      if (!token) return;
-
-      const key = getBorrowKey(token, id);
-      const currentBorrowed = Number(localStorage.getItem(key) || 0);
-
-      const res = await api.put(
-        `/library/borrow/${id}`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
-
-      const updatedBook = normalizeBook(res.data);
-
-      localStorage.setItem(key, String(currentBorrowed + 1));
-      setBooks((prev) => prev.map((b) => (b._id === id ? updatedBook : b)));
-
-      toast.success('Book borrowed successfully');
-    } catch {
-      toast.error('Borrow failed');
-    }
-  };
-
-  const returnBook = async (id: string) => {
-    try {
-      const token = localStorage.getItem('library_token');
-      if (!token) return;
-
-      const key = getBorrowKey(token, id);
-      const currentBorrowed = Number(localStorage.getItem(key) || 0);
-      if (currentBorrowed <= 0) return;
-
-      const res = await api.put(
-        `/library/return/${id}`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
-
-      const updatedBook = normalizeBook(res.data);
-
-      localStorage.setItem(key, String(currentBorrowed - 1));
-      setBooks((prev) => prev.map((b) => (b._id === id ? updatedBook : b)));
-
-      toast.success('Book returned successfully');
-    } catch {
-      toast.error('Return failed');
-    }
-  };
-
-  /* ================= LOGIN / REGISTER UI ================= */
-
-  if (!isAuthenticated) {
-    return (
-      <>
-        <Toaster
-          position='top-right'
-          toastOptions={{
-            duration: 3000,
-            style: {
-              fontSize: '14px',
-              background: 'hsl(var(--card))',
-              color: 'hsl(var(--foreground))',
-              border: '1px solid hsl(var(--border))',
-            },
-          }}
-        />
-
-        <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-[#060b1f] via-[#0b122e] to-[#150c2c] px-4'>
-          <Card className='w-full max-w-md rounded-2xl border border-white/10 bg-[#0b1027]/80 backdrop-blur-2xl shadow-2xl'>
-            <CardContent className='p-10 space-y-6'>
-              <div className='flex flex-col items-center space-y-3'>
-                <div className='h-14 w-14 rounded-xl bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center'>
-                  <BookOpen className='text-white' />
-                </div>
-                <h2 className='text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500'>
-                  Smart Library
-                </h2>
-              </div>
-
-              {isRegister && (
-                <div className='relative'>
-                  <User className='absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400' />
-                  <Input
-                    placeholder='Full name'
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className='pl-12 h-12 bg-[#131a3a] border-white/10 text-white rounded-xl'
-                  />
-                </div>
-              )}
-
-              <div className='relative'>
-                <Mail className='absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400' />
-                <Input
-                  placeholder='Email address'
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className='pl-12 h-12 bg-[#131a3a] border-white/10 text-white rounded-xl'
-                />
-              </div>
-
-              <div className='relative'>
-                <Lock className='absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400' />
-                <Input
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder='Password'
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className='pl-12 pr-12 h-12 bg-[#131a3a] border-white/10 text-white rounded-xl'
-                />
-                <button
-                  type='button'
-                  onClick={() => setShowPassword(!showPassword)}
-                  className='absolute right-4 top-1/2 -translate-y-1/2 text-gray-400'
-                >
-                  {showPassword ? <EyeOff /> : <Eye />}
-                </button>
-              </div>
-
-              <Button
-                onClick={isRegister ? registerHandler : loginHandler}
-                disabled={loading}
-                className='w-full h-12 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl'
-              >
-                {isRegister ? 'Register' : 'Login'}
-              </Button>
-
-              <p className='text-center text-sm text-gray-400'>
-                {isRegister
-                  ? 'Already have an account?'
-                  : "Don't have an account?"}
-                <button
-                  onClick={() => setIsRegister(!isRegister)}
-                  className='ml-2 text-cyan-400 hover:underline'
-                >
-                  {isRegister ? 'Login' : 'Register'}
-                </button>
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </>
-    );
-  }
-
-  /* ================= LOADING / ERROR (COURSES STYLE) ================= */
-
-  if (isFetching) {
-    return (
-      <div className='min-h-screen pt-16 flex items-center justify-center'>
-        <p className='text-muted-foreground animate-pulse'>Loading books...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className='min-h-screen pt-16 flex items-center justify-center'>
-        <p className='text-destructive'>{error}</p>
-      </div>
-    );
-  }
-
-  /* ================= DASHBOARD ================= */
-
-  const filteredBooks = books.filter(
-    (b) =>
-      b.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      b.author.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
-
-  const token = localStorage.getItem('library_token');
 
   return (
-    <>
-      <Toaster
-        position='top-right'
-        toastOptions={{
-          duration: 3000,
-          style: {
-            fontSize: '14px',
-            background: 'hsl(var(--card))',
-            color: 'hsl(var(--foreground))',
-            border: '1px solid hsl(var(--border))',
-          },
-        }}
-      />
-
-      <div className='min-h-screen bg-gradient-to-br from-[#060b1f] via-[#0b122e] to-[#150c2c] pt-24 px-6'>
-        {/* 🔹 STATS (same style as Courses page) */}
-        <div className='grid grid-cols-2 md:grid-cols-4 gap-6 mb-16'>
-          {[
-            { icon: BookOpen, label: 'Books', value: `${books.length}+` },
-            { icon: Users, label: 'Readers', value: '3000+' },
-            { icon: Clock, label: '24/7', value: 'Access' },
-            { icon: Sparkles, label: 'Quality', value: 'Premium' },
-          ].map((stat, i) => (
-            <Card
-              key={i}
-              className='bg-[#0b1027]/70 border border-white/10 backdrop-blur-xl rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:scale-[1.05] transition'
-            >
-              <stat.icon className='text-cyan-400 mb-3' />
-              <h3 className='text-2xl font-bold text-white'>{stat.value}</h3>
-              <p className='text-sm text-gray-400'>{stat.label}</p>
-            </Card>
-          ))}
-        </div>
-
-        {/* HEADER */}
-        <header className='flex justify-between items-center mb-10'>
-          <h1 className='text-4xl font-bold text-white'>Library</h1>
-          <Button
-            variant='destructive'
-            onClick={logoutHandler}
+    <div className="min-h-screen bg-background py-12">
+      <Container>
+        {/* Hero Section */}
+        <motion.div
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <motion.div
+            animate={{
+              rotate: [0, 5, -5, 0],
+              scale: [1, 1.1, 1],
+            }}
+            transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
+            className="inline-block mb-6"
           >
-            <LogOut className='w-4 h-4 mr-2' />
-            Logout
-          </Button>
-        </header>
+            <div className="relative">
+              <div className="p-6 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-3xl">
+                <LibraryIcon className="h-16 w-16 text-primary" />
+              </div>
+              <div className="absolute -top-2 -right-2">
+                <Sparkles className="h-6 w-6 text-accent animate-pulse" />
+              </div>
+            </div>
+          </motion.div>
+          
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4">
+            Digital <span className="text-gradient">Library</span>
+          </h1>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Access our extensive collection of books and resources. Scan book codes or explore our digital catalog.
+          </p>
+        </motion.div>
 
-        {/* SEARCH */}
-        <div className='relative max-w-md mb-10'>
-          <Input
-            placeholder='Search books...'
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className='pr-12 bg-[#131a3a] border-white/10 text-white'
-          />
-          <Search className='absolute right-4 top-1/2 -translate-y-1/2 text-gray-400' />
-        </div>
+        {/* Options Grid */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto"
+        >
+          {/* Scanner Option */}
+          <motion.div variants={itemVariants}>
+            <Card className="group relative h-full bg-card border border-border hover:border-primary/50 rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-glow-md cursor-pointer">
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              {/* Animated Border */}
+              <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <div className="absolute inset-0 rounded-3xl animate-gradient-shift bg-gradient-to-r from-primary via-secondary to-accent bg-[length:200%_200%] p-[2px]">
+                  <div className="h-full w-full bg-card rounded-[calc(1.5rem-2px)]" />
+                </div>
+              </div>
+              
+              <CardContent className="relative p-8 md:p-10 flex flex-col items-center text-center h-full">
+                {/* Icon */}
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  className="mb-6"
+                >
+                  <div className="relative p-6 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl">
+                    <ScanLine className="h-16 w-16 text-primary" />
+                    <div className="absolute -bottom-2 -right-2 p-2 bg-card rounded-xl border border-border shadow-lg">
+                      <QrCode className="h-6 w-6 text-secondary" />
+                    </div>
+                  </div>
+                </motion.div>
 
-        {/* BOOK CARDS */}
-        <div className='grid gap-8 sm:grid-cols-2 lg:grid-cols-3'>
-          {isFetching
-            ? Array.from({ length: 6 }).map((_, i) => <BookSkeleton key={i} />)
-            : filteredBooks.map((book) => {
-                const borrowed = token
-                  ? Number(
-                      localStorage.getItem(getBorrowKey(token, book._id)) || 0,
-                    )
-                  : 0;
+                {/* Content */}
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
+                  Book Scanner
+                </h2>
+                <p className="text-muted-foreground mb-6 flex-grow">
+                  Scan book barcodes or QR codes to quickly find book details, availability, and location in our library.
+                </p>
 
-                return (
-                  <Card
-                    key={book._id}
-                    className='group relative bg-[#0b1027]/80 border border-white/10 rounded-2xl backdrop-blur-2xl shadow-[0_30px_80px_rgba(0,0,0,0.6)] hover:shadow-cyan-500/20 hover:-translate-y-2 transition-all duration-500'
-                  >
-                    <CardContent className='p-6 space-y-4'>
-                      <div className='relative overflow-hidden rounded-xl'>
-                        <div className='absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10' />
-                        <img
-                          src={resolveImageUrl(book.image)}
-                          alt={book.title}
-                          className='h-52 w-full object-cover group-hover:scale-110 transition-transform duration-700'
-                        />
-                      </div>
+                {/* Button */}
+                <Button
+                  size="lg"
+                  className="w-full rounded-xl bg-gradient-to-r from-primary to-secondary hover:shadow-glow-md transition-all group/btn"
+                  onClick={() => {
+                    // Open device camera for scanning
+                    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                      navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+                        .then(() => {
+                          // This will prompt user for camera permission
+                          // In a real app, you'd integrate a QR/barcode scanner library
+                          alert('Camera access granted! Scanner feature coming soon.');
+                        })
+                        .catch(() => {
+                          alert('Camera access denied. Please enable camera permissions.');
+                        });
+                    } else {
+                      alert('Camera not supported on this device.');
+                    }
+                  }}
+                >
+                  <ScanLine className="h-5 w-5 mr-2 group-hover/btn:animate-pulse" />
+                  Open Scanner
+                  <ArrowRight className="h-5 w-5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                </Button>
+              </CardContent>
+            </Card>
+          </motion.div>
 
-                      <h3 className='text-xl font-semibold text-white'>
-                        {book.title}
-                      </h3>
+          {/* Library Database Link Option */}
+          <motion.div variants={itemVariants}>
+            <Card className="group relative h-full bg-card border border-border hover:border-secondary/50 rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-glow-md cursor-pointer">
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              {/* Animated Border */}
+              <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <div className="absolute inset-0 rounded-3xl animate-gradient-shift bg-gradient-to-r from-secondary via-accent to-primary bg-[length:200%_200%] p-[2px]">
+                  <div className="h-full w-full bg-card rounded-[calc(1.5rem-2px)]" />
+                </div>
+              </div>
+              
+              <CardContent className="relative p-8 md:p-10 flex flex-col items-center text-center h-full">
+                {/* Icon */}
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: -5 }}
+                  className="mb-6"
+                >
+                  <div className="relative p-6 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-2xl">
+                    <Database className="h-16 w-16 text-secondary" />
+                    <div className="absolute -bottom-2 -right-2 p-2 bg-card rounded-xl border border-border shadow-lg">
+                      <BookOpen className="h-6 w-6 text-primary" />
+                    </div>
+                  </div>
+                </motion.div>
 
-                      <p className='text-sm text-gray-400'>by {book.author}</p>
+                {/* Content */}
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3 group-hover:text-secondary transition-colors">
+                  Library Database
+                </h2>
+                <p className="text-muted-foreground mb-6 flex-grow">
+                  Browse our complete digital catalog. Search for books, journals, e-resources, and check real-time availability.
+                </p>
 
-                      <div className='flex justify-between items-center'>
-                        <span className='text-gray-300'>
-                          Available: {book.quantity}
-                        </span>
-                        <Badge className='bg-cyan-600'>
-                          Borrowed: {borrowed}
-                        </Badge>
-                      </div>
+                {/* Button */}
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="w-full rounded-xl border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground hover:shadow-glow-md transition-all group/btn"
+                  onClick={() => window.open(libraryDatabaseLink, '_blank')}
+                >
+                  <ExternalLink className="h-5 w-5 mr-2 group-hover/btn:animate-pulse" />
+                  Open Database
+                  <ArrowRight className="h-5 w-5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                </Button>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </motion.div>
 
-                      <div className='flex gap-3 pt-2'>
-                        <Button
-                          className='flex-1'
-                          disabled={book.quantity <= 0}
-                          onClick={() => borrowBook(book._id)}
-                        >
-                          Borrow
-                        </Button>
+        {/* Quick Stats */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.6 }}
+          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto"
+        >
+          {[
+            { value: '50,000+', label: 'Books', icon: BookOpen },
+            { value: '1,000+', label: 'E-Journals', icon: Database },
+            { value: '24/7', label: 'Digital Access', icon: ExternalLink },
+            { value: '100%', label: 'Free for Students', icon: Sparkles },
+          ].map((stat, i) => (
+            <motion.div
+              key={i}
+              whileHover={{ scale: 1.05, y: -5 }}
+              className="bg-card border border-border rounded-2xl p-6 text-center hover:border-primary/30 transition-all"
+            >
+              <stat.icon className="h-8 w-8 text-primary mx-auto mb-3" />
+              <h3 className="text-2xl font-bold text-foreground">{stat.value}</h3>
+              <p className="text-sm text-muted-foreground">{stat.label}</p>
+            </motion.div>
+          ))}
+        </motion.div>
 
-                        <Button
-                          variant='secondary'
-                          className='flex-1'
-                          disabled={borrowed <= 0}
-                          onClick={() => returnBook(book._id)}
-                        >
-                          Return
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-        </div>
-      </div>
-    </>
+        {/* Info Note */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className="mt-12 text-center"
+        >
+          <p className="text-sm text-muted-foreground">
+            Need help? Visit the library help desk or contact us at{' '}
+            <a href="mailto:library@eduaura.com" className="text-primary hover:underline">
+              library@eduaura.com
+            </a>
+          </p>
+        </motion.div>
+      </Container>
+    </div>
   );
-};;
+};
 
 export default Library;

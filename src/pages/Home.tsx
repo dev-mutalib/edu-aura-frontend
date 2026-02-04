@@ -344,6 +344,20 @@ const Home: React.FC = () => {
       <section className="relative pt-2 md:pt-4">
         {/* Interactive Carousel */}
         <div className="relative group">
+          {/* Decorative Corner Elements */}
+          <div className="absolute top-4 left-4 z-30 hidden md:block">
+            <div className="w-20 h-20 border-l-4 border-t-4 border-primary/60 rounded-tl-3xl" />
+          </div>
+          <div className="absolute top-4 right-4 z-30 hidden md:block">
+            <div className="w-20 h-20 border-r-4 border-t-4 border-secondary/60 rounded-tr-3xl" />
+          </div>
+          <div className="absolute bottom-28 left-4 z-30 hidden md:block">
+            <div className="w-20 h-20 border-l-4 border-b-4 border-accent/60 rounded-bl-3xl" />
+          </div>
+          <div className="absolute bottom-28 right-4 z-30 hidden md:block">
+            <div className="w-20 h-20 border-r-4 border-b-4 border-primary/60 rounded-br-3xl" />
+          </div>
+          
           {/* Main Slider */}
           <Slider ref={sliderRef} {...carouselSettings}>
             {carouselItems.map((item, i) => (
@@ -364,11 +378,19 @@ const Home: React.FC = () => {
                   />
                 </div>
                 
-                {/* Gradient Overlays */}
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-transparent" />
+                {/* Multiple Gradient Overlays for depth */}
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-b from-background/20 to-transparent opacity-50" />
                 
-                {/* Slide Content */}
+                {/* Animated Particles */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                  <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-primary rounded-full animate-float opacity-60" />
+                  <div className="absolute top-1/3 right-1/4 w-3 h-3 bg-secondary rounded-full animate-float-slow opacity-40" style={{ animationDelay: '1s' }} />
+                  <div className="absolute bottom-1/3 left-1/3 w-2 h-2 bg-accent rounded-full animate-float opacity-50" style={{ animationDelay: '2s' }} />
+                </div>
+                
+                {/* Slide Content with Enhanced Animation */}
                 <div className="absolute bottom-20 left-6 sm:left-12 md:left-20 z-10 max-w-lg">
                   <div 
                     className={`transform transition-all duration-700 ${
@@ -377,112 +399,150 @@ const Home: React.FC = () => {
                         : 'translate-y-10 opacity-0'
                     }`}
                   >
-                    <span className="inline-block px-3 py-1 text-xs font-semibold bg-primary/20 text-primary rounded-full mb-3 backdrop-blur-sm border border-primary/30">
-                      {String(i + 1).padStart(2, '0')} / {String(carouselItems.length).padStart(2, '0')}
-                    </span>
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2 drop-shadow-lg">
-                      {item.title}
+                    {/* Slide Number Badge */}
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold bg-gradient-to-r from-primary to-secondary text-primary-foreground rounded-full shadow-glow-sm">
+                        <Sparkles className="h-4 w-4" />
+                        {String(i + 1).padStart(2, '0')} / {String(carouselItems.length).padStart(2, '0')}
+                      </span>
+                      <div className="h-px flex-1 bg-gradient-to-r from-primary/50 to-transparent max-w-[100px]" />
+                    </div>
+                    
+                    {/* Title with Text Shadow */}
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 drop-shadow-lg">
+                      <span className="text-gradient">{item.title}</span>
                     </h2>
-                    <p className="text-sm sm:text-base md:text-lg text-muted-foreground/90 max-w-md drop-shadow">
-                      {item.subtitle}
-                    </p>
+                    
+                    {/* Subtitle with Glass Effect */}
+                    <div className="inline-block px-4 py-2 bg-card/30 backdrop-blur-md rounded-xl border border-border/30">
+                      <p className="text-sm sm:text-base md:text-lg text-foreground/90">
+                        {item.subtitle}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Right Side Quick Info (Desktop) */}
+                <div 
+                  className={`absolute bottom-24 right-8 z-10 hidden lg:block transform transition-all duration-700 delay-200 ${
+                    currentSlide === i 
+                      ? 'translate-x-0 opacity-100' 
+                      : 'translate-x-10 opacity-0'
+                  }`}
+                >
+                  <div className="flex items-center gap-4 px-6 py-4 bg-card/40 backdrop-blur-xl rounded-2xl border border-border/30 shadow-2xl">
+                    <div className="p-3 bg-gradient-to-br from-primary to-secondary rounded-xl">
+                      <Award className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground uppercase tracking-wider">Ranked</p>
+                      <p className="text-lg font-bold text-foreground">#1 in Excellence</p>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </Slider>
           
-          {/* Navigation Arrows */}
+          {/* Navigation Arrows - Enhanced */}
           <button
             onClick={prevSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-card/80 backdrop-blur-sm border border-border/50 shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:scale-110 hover:shadow-glow-md"
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-4 rounded-2xl bg-card/80 backdrop-blur-md border border-border/50 shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:scale-110 hover:shadow-glow-lg hover:border-primary"
             aria-label="Previous slide"
           >
-            <ChevronLeft className="h-6 w-6" />
+            <ChevronLeft className="h-7 w-7" />
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-card/80 backdrop-blur-sm border border-border/50 shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:scale-110 hover:shadow-glow-md"
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-4 rounded-2xl bg-card/80 backdrop-blur-md border border-border/50 shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:scale-110 hover:shadow-glow-lg hover:border-primary"
             aria-label="Next slide"
           >
-            <ChevronRight className="h-6 w-6" />
+            <ChevronRight className="h-7 w-7" />
           </button>
           
-          {/* Bottom Controls Bar */}
+          {/* Bottom Controls Bar - Enhanced */}
           <div className="absolute bottom-0 left-0 right-0 z-20">
-            {/* Progress Bar */}
-            <div className="h-1 bg-muted/30">
+            {/* Multi-color Progress Bar */}
+            <div className="h-1.5 bg-muted/20 backdrop-blur-sm">
               <div 
-                className="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-100 ease-linear"
+                className="h-full bg-gradient-to-r from-primary via-secondary to-accent transition-all duration-100 ease-linear shadow-glow-sm"
                 style={{ width: `${progress}%` }}
               />
             </div>
             
             {/* Controls Container */}
-            <div className="bg-gradient-to-t from-background/95 to-background/80 backdrop-blur-sm px-4 sm:px-8 py-4">
+            <div className="bg-gradient-to-t from-background via-background/95 to-background/80 backdrop-blur-md px-4 sm:px-8 py-5">
               <div className="flex items-center justify-between max-w-7xl mx-auto">
-                {/* Play/Pause Button */}
+                {/* Play/Pause Button - Enhanced */}
                 <button
                   onClick={toggleAutoPlay}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-card/80 border border-border/50 hover:border-primary/50 transition-all hover:scale-105"
+                  className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-card border border-border/50 hover:border-primary/50 hover:shadow-glow-sm transition-all hover:scale-105 group/play"
                 >
-                  {isAutoPlaying ? (
-                    <>
+                  <div className={`p-2 rounded-xl ${isAutoPlaying ? 'bg-primary/20' : 'bg-muted'} transition-colors`}>
+                    {isAutoPlaying ? (
                       <Pause className="h-4 w-4 text-primary" />
-                      <span className="text-sm text-muted-foreground hidden sm:inline">Pause</span>
-                    </>
-                  ) : (
-                    <>
+                    ) : (
                       <Play className="h-4 w-4 text-primary" />
-                      <span className="text-sm text-muted-foreground hidden sm:inline">Play</span>
-                    </>
-                  )}
+                    )}
+                  </div>
+                  <div className="text-left hidden sm:block">
+                    <span className="text-sm font-semibold text-foreground">{isAutoPlaying ? 'Pause' : 'Play'}</span>
+                    <p className="text-xs text-muted-foreground">Auto-slide</p>
+                  </div>
                 </button>
                 
-                {/* Dot Indicators */}
-                <div className="flex items-center gap-2">
+                {/* Enhanced Dot Indicators */}
+                <div className="flex items-center gap-3">
                   {carouselItems.map((_, i) => (
                     <button
                       key={i}
                       onClick={() => goToSlide(i)}
-                      className={`relative overflow-hidden rounded-full transition-all duration-300 ${
+                      className={`relative overflow-hidden rounded-full transition-all duration-500 group/dot ${
                         currentSlide === i 
-                          ? 'w-8 h-3 bg-primary' 
-                          : 'w-3 h-3 bg-muted-foreground/30 hover:bg-muted-foreground/50'
+                          ? 'w-12 h-4 bg-gradient-to-r from-primary to-secondary shadow-glow-sm' 
+                          : 'w-4 h-4 bg-muted-foreground/20 hover:bg-muted-foreground/40 hover:scale-125'
                       }`}
                       aria-label={`Go to slide ${i + 1}`}
                     >
                       {currentSlide === i && (
-                        <span className="absolute inset-0 bg-gradient-to-r from-primary to-secondary animate-pulse" />
+                        <>
+                          <span className="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-accent animate-gradient-shift bg-[length:200%_200%]" />
+                          <span className="absolute inset-0 flex items-center justify-center">
+                            <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                          </span>
+                        </>
                       )}
                     </button>
                   ))}
                 </div>
                 
-                {/* Slide Counter */}
-                <div className="flex items-center gap-3 text-sm">
-                  <span className="text-2xl font-bold text-gradient">
-                    {String(currentSlide + 1).padStart(2, '0')}
-                  </span>
-                  <span className="text-muted-foreground">/</span>
-                  <span className="text-muted-foreground">
-                    {String(carouselItems.length).padStart(2, '0')}
-                  </span>
+                {/* Enhanced Slide Counter */}
+                <div className="flex items-center gap-4">
+                  <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-card rounded-xl border border-border/50">
+                    <span className="text-xs text-muted-foreground">Slide</span>
+                    <span className="text-2xl font-bold text-gradient">
+                      {String(currentSlide + 1).padStart(2, '0')}
+                    </span>
+                    <span className="text-muted-foreground/50">/</span>
+                    <span className="text-lg text-muted-foreground">
+                      {String(carouselItems.length).padStart(2, '0')}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           
-          {/* Thumbnail Preview (shows on hover) */}
-          <div className="absolute bottom-24 right-4 z-20 hidden lg:flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+          {/* Enhanced Thumbnail Preview (shows on hover) */}
+          <div className="absolute bottom-28 right-4 z-20 hidden lg:flex gap-3 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
             {carouselItems.map((item, i) => (
               <button
                 key={i}
                 onClick={() => goToSlide(i)}
-                className={`relative w-16 h-12 rounded-lg overflow-hidden border-2 transition-all duration-300 hover:scale-110 ${
+                className={`relative w-20 h-14 rounded-xl overflow-hidden border-2 transition-all duration-300 hover:scale-110 shadow-lg ${
                   currentSlide === i 
-                    ? 'border-primary shadow-glow-sm' 
-                    : 'border-border/50 opacity-60 hover:opacity-100'
+                    ? 'border-primary shadow-glow-md ring-2 ring-primary/30' 
+                    : 'border-border/30 opacity-70 hover:opacity-100 hover:border-primary/50'
                 }`}
               >
                 <img
@@ -491,8 +551,11 @@ const Home: React.FC = () => {
                   className="w-full h-full object-cover"
                 />
                 {currentSlide === i && (
-                  <div className="absolute inset-0 bg-primary/20" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent" />
                 )}
+                <div className="absolute bottom-1 left-1 text-[10px] font-bold text-white bg-background/50 px-1.5 py-0.5 rounded">
+                  {String(i + 1).padStart(2, '0')}
+                </div>
               </button>
             ))}
           </div>

@@ -33,7 +33,11 @@ const AdmissionModal: React.FC = () => {
     }
   }, []);
 
-  const handleClose = () => {
+  const handleClose = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     setIsOpen(false);
     sessionStorage.setItem('admissionModalSeen', 'true');
   };
@@ -110,11 +114,13 @@ const AdmissionModal: React.FC = () => {
           
           {/* Close Button */}
           <button
-            onClick={handleClose}
-            className="absolute top-4 right-4 p-2.5 rounded-full bg-muted/80 hover:bg-destructive/20 hover:text-destructive transition-all duration-300 z-10 group"
+            type="button"
+            onClick={(e) => handleClose(e)}
+            onMouseDown={(e) => e.stopPropagation()}
+            className="absolute top-4 right-4 p-2.5 rounded-full bg-muted/80 hover:bg-destructive/20 hover:text-destructive transition-all duration-300 z-20 group cursor-pointer"
             aria-label="Close modal"
           >
-            <X className="h-5 w-5 text-muted-foreground group-hover:text-destructive group-hover:rotate-90 transition-all duration-300" />
+            <X className="h-5 w-5 text-muted-foreground group-hover:text-destructive group-hover:rotate-90 transition-all duration-300 pointer-events-none" />
           </button>
 
           {/* Content */}

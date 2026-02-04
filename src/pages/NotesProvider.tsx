@@ -346,17 +346,27 @@ const NotesProvider = () => {
 
   const handleDownload = async (note: Note) => {
     try {
-      // Trigger download via backend
-      const downloadUrl = `${api.defaults.baseURL}/notes/download/${note._id}`;
+      // Download directly from PDF URL (frontend only)
+      if (!note.pdfUrl) {
+        toast.error('PDF not available');
+        return;
+      }
+      
+      // Fetch the PDF as blob and trigger download
+      const response = await fetch(note.pdfUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
       
       // Create a hidden anchor to trigger download
       const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.target = '_blank';
+      link.href = url;
       link.download = `${note.title}.pdf`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      
+      // Clean up blob URL
+      window.URL.revokeObjectURL(url);
       
       toast.success('Download started!');
     } catch {
@@ -366,9 +376,9 @@ const NotesProvider = () => {
 
   /* ================= PDF PREVIEW URL ================= */
   const getPdfPreviewUrl = (note: Note) => {
-    // Use Google Docs Viewer for PDF preview (shows first page)
+    // Use Google Docs Viewer for clean PDF preview (shows first page)
     if (note.pdfUrl) {
-      return `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(note.pdfUrl)}`;
+      return `https://docs.google.com/viewer?embedded=true&url=${encodeURIComponent(note.pdfUrl)}`;
     }
     return null;
   };
@@ -578,39 +588,20 @@ const NotesProvider = () => {
                     </Select>
                   </div>
 
-                  {/* Subject Selection */}
+                  {/* Subject Input - Free Text */}
                   <div className='space-y-2'>
                     <Label className='flex items-center gap-2'>
                       <BookOpen className='h-4 w-4 text-primary' />
                       Subject
                     </Label>
-                    <Select
+                    <Input
+                      placeholder='e.g., Data Structures, DBMS, Marketing...'
                       value={uploadFormData.subject}
-                      onValueChange={(value) =>
-                        handleUploadInputChange('subject', value)
+                      onChange={(e) =>
+                        handleUploadInputChange('subject', e.target.value)
                       }
-                      disabled={!uploadFormData.course}
-                    >
-                      <SelectTrigger className='h-12 rounded-xl'>
-                        <SelectValue
-                          placeholder={
-                            uploadFormData.course
-                              ? 'Select Subject'
-                              : 'Select Course First'
-                          }
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {adminAvailableSubjects.map((subject) => (
-                          <SelectItem
-                            key={subject}
-                            value={subject}
-                          >
-                            {subject}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      className='h-12 rounded-xl'
+                    />
                   </div>
 
                   {/* Title Input */}
