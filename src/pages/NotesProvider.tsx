@@ -114,9 +114,10 @@ const subjectsByCourse: Record<string, string[]> = {
 const NotesProvider = () => {
   /* ================= AUTH ================= */
   const [user, setUser] = useState<UserType | null>(null);
-  const [showAuthModal, setShowAuthModal] = useState(true);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [authTab, setAuthTab] = useState<'login' | 'register'>('login');
   const [authLoading, setAuthLoading] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [authForm, setAuthForm] = useState({
     name: '',
     email: '',
@@ -157,12 +158,26 @@ const NotesProvider = () => {
     ? subjectsByCourse[uploadFormData.course]
     : [];
 
-  /* ================= TOKEN AUTO ATTACH ================= */
+  /* ================= RESTORE SESSION ON MOUNT ================= */
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    const storedUser = localStorage.getItem('notesUser');
+    
+    if (token && storedUser) {
+      try {
+        const parsedUser = JSON.parse(storedUser) as UserType;
+        setUser(parsedUser);
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        setShowAuthModal(false);
+      } catch {
+        localStorage.removeItem('notesUser');
+        localStorage.removeItem('token');
+        setShowAuthModal(true);
+      }
+    } else {
+      setShowAuthModal(true);
     }
+    setIsCheckingAuth(false);
   }, []);
 
   /* ================= ANIMATIONS ================= */
@@ -240,12 +255,16 @@ const NotesProvider = () => {
     try {
       const res = await api.post('/auth/login', authForm);
 
-      setUser(res.data.user); // ✅ FIX
+      const userData: UserType = res.data.user;
+      setUser(userData);
+      
+      // Store in localStorage for session persistence
       localStorage.setItem('token', res.data.token);
+      localStorage.setItem('notesUser', JSON.stringify(userData));
       api.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
 
       setShowAuthModal(false);
-      toast.success(`Welcome ${res.data.user.name}`);
+      toast.success(`Welcome ${userData.name}`);
     } catch (e: any) {
       toast.error(e.response?.data?.message || 'Login failed');
     } finally {
@@ -269,6 +288,7 @@ const NotesProvider = () => {
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem('token');
+    localStorage.removeItem('notesUser');
     delete api.defaults.headers.common['Authorization'];
     setShowAuthModal(true);
   };
@@ -324,8 +344,33 @@ const NotesProvider = () => {
     }
   };
 
-  const handleDownload = (note: Note) => {
-    window.open(`${api.defaults.baseURL}/notes/download/${note._id}`, '_blank');
+  const handleDownload = async (note: Note) => {
+    try {
+      // Trigger download via backend
+      const downloadUrl = `${api.defaults.baseURL}/notes/download/${note._id}`;
+      
+      // Create a hidden anchor to trigger download
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.target = '_blank';
+      link.download = `${note.title}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      toast.success('Download started!');
+    } catch {
+      toast.error('Download failed');
+    }
+  };
+
+  /* ================= PDF PREVIEW URL ================= */
+  const getPdfPreviewUrl = (note: Note) => {
+    // Use Google Docs Viewer for PDF preview (shows first page)
+    if (note.pdfUrl) {
+      return `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(note.pdfUrl)}`;
+    }
+    return null;
   };
 
   /* ================= FILTERED ================= */
@@ -356,15 +401,31 @@ const NotesProvider = () => {
     return notes.slice(0, 5);
   }, [notes, isAdmin]);
 
-  /* ================= PDF PREVIEW (FINAL FIX) ================= */
-  const getPdfPreviewImage = (pdfUrl: string) => {
-    if (!pdfUrl) return null;
-
-    const cloudName = 'eduaura'; // 🔥 YOUR cloud name
-    const encodedPdfUrl = encodeURIComponent(pdfUrl);
-
-    return `https://res.cloudinary.com/${cloudName}/image/fetch/f_jpg,pg_1,w_800/${encodedPdfUrl}`;
+  /* ================= PDF FIRST PAGE PREVIEW IMAGE ================= */
+  const getPdfPreviewImage = (note: Note) => {
+    // Use PDF.js viewer or Cloudinary for thumbnail
+    if (note.previewImageUrl) {
+      return note.previewImageUrl;
+    }
+    // Fallback: Use Cloudinary to generate preview from PDF URL
+    if (note.pdfUrl) {
+      const cloudName = 'eduaura';
+      return `https://res.cloudinary.com/${cloudName}/image/fetch/f_jpg,pg_1,w_800/${encodeURIComponent(note.pdfUrl)}`;
+    }
+    return null;
   };
+
+  // Show loading while checking auth
+  if (isCheckingAuth) {
+    return (
+      <div className='min-h-screen bg-background flex items-center justify-center'>
+        <div className='text-center'>
+          <div className='w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4' />
+          <p className='text-muted-foreground'>Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='min-h-screen bg-background py-12'>
@@ -1131,19 +1192,33 @@ const NotesProvider = () => {
             </DialogHeader>
 
             <div className='mt-4'>
-              {/* PDF Preview Placeholder */}
-              <div className='bg-muted rounded-xl h-[400px] flex items-center justify-center overflow-hidden'>
+              {/* PDF Preview - Shows first page */}
+              <div className='bg-muted rounded-xl h-[500px] flex items-center justify-center overflow-hidden relative'>
                 {previewNote?.pdfUrl ? (
-                  <img
-                    src={previewNote.previewImageUrl}
-                    alt='PDF Preview'
-                    className='w-full h-full object-contain'
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = 'none';
-                    }}
-                  />
+                  <>
+                    {/* Try iframe with PDF first page via Google Docs viewer */}
+                    <iframe
+                      src={getPdfPreviewUrl(previewNote) || ''}
+                      className='w-full h-full border-0'
+                      title='PDF Preview'
+                      onError={(e) => {
+                        (e.target as HTMLIFrameElement).style.display = 'none';
+                      }}
+                    />
+                    {/* Fallback image overlay */}
+                    <div className='absolute inset-0 flex items-center justify-center pointer-events-none opacity-0'>
+                      <img
+                        src={getPdfPreviewImage(previewNote) || ''}
+                        alt='PDF Preview'
+                        className='w-full h-full object-contain'
+                      />
+                    </div>
+                  </>
                 ) : (
-                  <FileText className='h-20 w-20 text-muted-foreground' />
+                  <div className='text-center'>
+                    <FileText className='h-20 w-20 text-muted-foreground mx-auto mb-4' />
+                    <p className='text-muted-foreground'>No preview available</p>
+                  </div>
                 )}
               </div>
 

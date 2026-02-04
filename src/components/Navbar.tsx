@@ -20,6 +20,7 @@ import {
   Shield,
   NotebookPen
 } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,7 +54,7 @@ const Navbar = () => {
 
   return (
     <header
-      className="sticky top-0 z-50 transition-all duration-300 bg-[#0d1117] border-b border-slate-700/50"
+      className="sticky top-0 z-50 transition-all duration-300 bg-background border-b border-border"
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
         {/* LOGO */}
@@ -62,13 +63,16 @@ const Navbar = () => {
             <Sparkles className="h-6 w-6 text-primary animate-pulse-glow" />
             <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full" />
           </div>
-          <h1 className="text-xl font-bold text-white">
+          <h1 className="text-xl font-bold text-foreground">
             EduAura
           </h1>
         </Link>
 
-        {/* Right Side - AI Button + Hamburger */}
+        {/* Right Side - Theme Toggle + AI Button + Hamburger */}
         <div className="flex items-center gap-3">
+          {/* Theme Toggle */}
+          <ThemeToggle />
+
           {/* AI Button - Like Reference */}
           <button
             className="flex items-center gap-2 px-3 py-2.5 md:px-4 bg-transparent text-primary rounded-xl border border-primary/60 hover:border-primary hover:shadow-glow-sm transition-all duration-300 group"
@@ -84,7 +88,7 @@ const Navbar = () => {
 
           {/* HAMBURGER MENU - Always visible */}
           <button
-            className="relative p-2.5 text-white hover:text-primary transition-colors rounded-lg hover:bg-white/10"
+            className="relative p-2.5 text-foreground hover:text-primary transition-colors rounded-lg hover:bg-muted"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
@@ -109,19 +113,19 @@ const Navbar = () => {
 
         {/* Drawer Panel */}
         <div
-          className={`absolute top-0 right-0 h-full w-80 max-w-[85vw] bg-[#0d1117] border-l border-slate-700/50 shadow-2xl transition-transform duration-300 ${
+          className={`absolute top-0 right-0 h-full w-80 max-w-[85vw] bg-background border-l border-border shadow-2xl transition-transform duration-300 ${
             isOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
           {/* Drawer Header with Close Button */}
-          <div className="flex items-center justify-between p-6 border-b border-slate-700/50">
+          <div className="flex items-center justify-between p-6 border-b border-border">
             <h2 className="text-lg font-bold text-primary">Navigation</h2>
             <button 
               onClick={() => setIsOpen(false)}
-              className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+              className="p-2 rounded-lg hover:bg-muted transition-colors"
               aria-label="Close menu"
             >
-              <X className="h-5 w-5 text-white hover:text-primary" />
+              <X className="h-5 w-5 text-foreground hover:text-primary" />
             </button>
           </div>
 
@@ -132,17 +136,17 @@ const Navbar = () => {
                 key={link.path}
                 to={link.path}
                 onClick={() => setIsOpen(false)}
-                className="flex items-center gap-4 px-4 py-3.5 text-slate-300 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 group"
+                className="flex items-center gap-4 px-4 py-3.5 text-muted-foreground hover:text-foreground hover:bg-muted rounded-xl transition-all duration-200 group"
                 style={{ animationDelay: `${index * 30}ms` }}
               >
-                <link.icon className="h-5 w-5 text-slate-400 group-hover:text-primary transition-colors" />
+                <link.icon className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
                 <span className="font-medium">{link.label}</span>
               </Link>
             ))}
           </nav>
 
           {/* Apply Now Button */}
-          <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700/50 bg-[#0d1117]">
+          <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-border bg-background">
             <Link
               to="/admissions"
               onClick={() => setIsOpen(false)}

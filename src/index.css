@@ -6,20 +6,64 @@
    ROOT + BRAND VARIABLES (DARK THEME - Like nxtstepx.com)
 ========================================================= */
 @layer base {
-  :root {
-    /* ===== DARK THEME COLORS ===== */
-    --background: 222 47% 7%;           /* Dark navy #0F172A */
-    --foreground: 210 40% 98%;          /* Light text */
+  /* ===== LIGHT THEME (DEFAULT) ===== */
+  :root,
+  .light {
+    --background: 210 40% 98%;           /* Light gray-white */
+    --foreground: 222 47% 11%;           /* Dark navy text */
 
     /* ===== BRAND COLORS ===== */
-    --primary: 192 91% 36%;             /* Cyan/Teal #06B6D4 */
+    --primary: 192 91% 36%;              /* Cyan/Teal #06B6D4 */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 280 67% 60%;           /* Purple #A855F7 */
+    --secondary: 280 67% 60%;            /* Purple #A855F7 */
     --secondary-foreground: 0 0% 100%;
 
     /* ===== CARD / POPOVER ===== */
-    --card: 222 47% 11%;                /* Slightly lighter navy */
+    --card: 0 0% 100%;                   /* Pure white */
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* ===== MUTED / ACCENT ===== */
+    --muted: 210 40% 94%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 330 81% 60%;               /* Magenta/Pink #EC4899 */
+    --accent-foreground: 0 0% 100%;
+
+    /* ===== STATES ===== */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* ===== UI ELEMENTS ===== */
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 192 91% 36%;
+
+    --radius: 0.75rem;
+
+    /* ===== CUSTOM GLOW COLORS ===== */
+    --glow-primary: 192 91% 36%;
+    --glow-secondary: 280 67% 60%;
+    --glow-accent: 330 81% 60%;
+  }
+
+  /* ===== DARK THEME ===== */
+  .dark {
+    --background: 222 47% 7%;            /* Dark navy #0F172A */
+    --foreground: 210 40% 98%;           /* Light text */
+
+    /* ===== BRAND COLORS ===== */
+    --primary: 192 91% 36%;              /* Cyan/Teal #06B6D4 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 280 67% 60%;            /* Purple #A855F7 */
+    --secondary-foreground: 0 0% 100%;
+
+    /* ===== CARD / POPOVER ===== */
+    --card: 222 47% 11%;                 /* Slightly lighter navy */
     --card-foreground: 210 40% 98%;
 
     --popover: 222 47% 11%;
@@ -29,7 +73,7 @@
     --muted: 217 19% 18%;
     --muted-foreground: 215 20% 65%;
 
-    --accent: 330 81% 60%;              /* Magenta/Pink #EC4899 */
+    --accent: 330 81% 60%;               /* Magenta/Pink #EC4899 */
     --accent-foreground: 0 0% 100%;
 
     /* ===== STATES ===== */
@@ -40,8 +84,6 @@
     --border: 217 19% 18%;
     --input: 217 19% 18%;
     --ring: 192 91% 36%;
-
-    --radius: 0.75rem;
 
     /* ===== CUSTOM GLOW COLORS ===== */
     --glow-primary: 192 91% 36%;
