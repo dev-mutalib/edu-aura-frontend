@@ -13,8 +13,6 @@ import {
   GraduationCap,
   Laptop,
   Megaphone,
-  ChevronLeft,
-  ChevronRight,
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -336,81 +334,89 @@ const Home: React.FC = () => {
         </a>
       </div>
 
-      {/* HERO / CAROUSEL - Clean Professional Design */}
+      {/* HERO / CAROUSEL - TCS-Style Cinematic Video Animation */}
       <section className="relative">
-        {/* Modern Carousel Container */}
+        {/* Cinematic Carousel Container - No Controls */}
         <div 
-          className="relative w-full h-[50vh] sm:h-[55vh] md:h-[65vh] lg:h-[75vh] overflow-hidden"
+          className="relative w-full h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[85vh] xl:h-[90vh] overflow-hidden"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          {/* Carousel Images */}
-          {carouselItems.map((item, i) => (
-            <div
-              key={i}
-              className={`absolute inset-0 transition-all duration-700 ease-out ${
-                currentSlide === i 
-                  ? 'opacity-100 scale-100' 
-                  : 'opacity-0 scale-105'
-              }`}
-            >
-              {/* Image with Zoom Animation */}
-              <div 
-                className={`absolute inset-0 transition-transform duration-[6000ms] ease-out ${
-                  currentSlide === i ? 'scale-110' : 'scale-100'
-                }`}
+          {/* Carousel Images with Cinematic Crossfade */}
+          {carouselItems.map((item, i) => {
+            const isActive = currentSlide === i;
+            const isPrev = currentSlide === (i + 1) % carouselItems.length;
+            
+            return (
+              <div
+                key={i}
+                className="absolute inset-0"
+                style={{
+                  opacity: isActive ? 1 : 0,
+                  transform: `scale(${isActive ? 1 : 1.05})`,
+                  transition: 'opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1), transform 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                  zIndex: isActive ? 10 : isPrev ? 5 : 1,
+                }}
               >
-                <img
-                  src={item.image}
-                  alt={`Campus view ${i + 1}`}
-                  className="h-full w-full object-cover"
+                {/* Image with Slow Ken Burns Zoom Effect */}
+                <div 
+                  className="absolute inset-0"
+                  style={{
+                    transform: isActive ? 'scale(1.15)' : 'scale(1)',
+                    transition: 'transform 8s cubic-bezier(0.25, 0.1, 0.25, 1)',
+                  }}
+                >
+                  <img
+                    src={item.image}
+                    alt={`Campus view ${i + 1}`}
+                    className="h-full w-full object-cover"
+                    style={{
+                      filter: 'brightness(0.95) contrast(1.05)',
+                    }}
+                  />
+                </div>
+                
+                {/* Cinematic Gradient Overlays */}
+                <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-transparent to-background/70" />
+                <div className="absolute inset-0 bg-gradient-to-r from-background/30 via-transparent to-background/30" />
+                
+                {/* Subtle Vignette Effect */}
+                <div 
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background: 'radial-gradient(ellipse at center, transparent 40%, hsl(var(--background) / 0.4) 100%)',
+                  }}
                 />
               </div>
-              
-              {/* Subtle Gradient Overlay - No Text */}
-              <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
-            </div>
-          ))}
+            );
+          })}
           
-          {/* Navigation Arrows - Always Visible on Mobile */}
-          <button
-            onClick={prevSlide}
-            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-3 md:p-4 rounded-full bg-background/70 backdrop-blur-md border border-border/50 shadow-xl transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:scale-110 active:scale-95 touch-manipulation"
-            aria-label="Previous slide"
-          >
-            <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
-          </button>
-          
-          <button
-            onClick={nextSlide}
-            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-3 md:p-4 rounded-full bg-background/70 backdrop-blur-md border border-border/50 shadow-xl transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:scale-110 active:scale-95 touch-manipulation"
-            aria-label="Next slide"
-          >
-            <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
-          </button>
-          
-          {/* Bottom Navigation Dots */}
-          <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-3 rounded-full bg-background/70 backdrop-blur-md border border-border/30">
-            {carouselItems.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => goToSlide(i)}
-                className={`relative transition-all duration-500 rounded-full ${
-                  currentSlide === i 
-                    ? 'w-6 sm:w-8 h-2 sm:h-2.5 bg-gradient-to-r from-primary to-secondary' 
-                    : 'w-2 sm:w-2.5 h-2 sm:h-2.5 bg-muted-foreground/40 hover:bg-muted-foreground/60'
-                }`}
-                aria-label={`Go to slide ${i + 1}`}
-              />
-            ))}
+          {/* Animated Bottom Line Progress Indicator */}
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-background/30 z-20">
+            <div 
+              className="h-full bg-gradient-to-r from-primary via-secondary to-primary"
+              style={{
+                width: `${((currentSlide + 1) / carouselItems.length) * 100}%`,
+                transition: 'width 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+              }}
+            />
           </div>
           
-          {/* Slide Counter - Mobile Friendly */}
-          <div className="absolute top-4 right-4 z-20 px-3 py-1.5 rounded-full bg-background/70 backdrop-blur-md border border-border/30 text-sm font-medium">
-            <span className="text-primary">{String(currentSlide + 1).padStart(2, '0')}</span>
-            <span className="text-muted-foreground mx-1">/</span>
-            <span className="text-muted-foreground">{String(carouselItems.length).padStart(2, '0')}</span>
+          {/* Floating Ambient Particles */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden z-15">
+            {[...Array(6)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute w-1 h-1 sm:w-2 sm:h-2 rounded-full bg-primary/30"
+                style={{
+                  left: `${15 + i * 15}%`,
+                  top: `${20 + (i % 3) * 25}%`,
+                  animation: `float ${4 + i}s ease-in-out infinite`,
+                  animationDelay: `${i * 0.5}s`,
+                }}
+              />
+            ))}
           </div>
         </div>
 
