@@ -17,20 +17,6 @@ interface Course {
   };
 }
 
-/* ================= IMAGE RESOLVER ================= */
-
-const BACKEND_URL = api.defaults.baseURL?.replace('/api', '') || '';
-
-const resolveImageUrl = (image?: { url?: string }) => {
-  if (!image?.url) return '/placeholder-course.jpg';
-
-  if (image.url.startsWith('http://') || image.url.startsWith('https://')) {
-    return image.url;
-  }
-
-  return `${BACKEND_URL}${image.url}`;
-};
-
 /* ================= COMPONENT ================= */
 const Courses = () => {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -101,7 +87,7 @@ const Courses = () => {
               {/* COURSE IMAGE */}
               <div className='relative overflow-hidden'>
                 <img
-                  src={resolveImageUrl(course.image)}
+                  src={course.image?.url || '/placeholder-course.jpg'}
                   alt={course.title}
                   className='h-44 w-full object-cover transition-transform duration-500 group-hover:scale-110'
                   onError={(e) => {

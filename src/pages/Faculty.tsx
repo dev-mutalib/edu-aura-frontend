@@ -17,22 +17,6 @@ interface Faculty {
   };
 }
 
-/* ================= IMAGE FIX ================= */
-
-const BACKEND_URL = api.defaults.baseURL?.replace('/api', '') || '';
-
-const resolveImageUrl = (image?: { url?: string }) => {
-  if (!image?.url) return '/placeholder-user.jpg';
-
-  // external image
-  if (image.url.startsWith('http://') || image.url.startsWith('https://')) {
-    return image.url;
-  }
-
-  // local backend image
-  return `${BACKEND_URL}${image.url}`;
-};
-
 /* ================= COMPONENT ================= */
 
 const Faculty = () => {
@@ -118,7 +102,7 @@ const Faculty = () => {
               {/* Faculty Image */}
               <div className='relative overflow-hidden bg-muted'>
                 <img
-                  src={resolveImageUrl(member.image)}
+                  src={member.image?.url || '/placeholder-user.jpg'}
                   alt={member.name}
                   className='h-56 w-full object-contain transition-transform duration-500 group-hover:scale-105'
                   onError={(e) => {
