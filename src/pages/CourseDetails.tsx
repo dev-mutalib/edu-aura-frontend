@@ -10,15 +10,23 @@ interface Course {
   description: string;
   duration: string;
   price: number;
-  image: string;
+  image?: {
+    url?: string;
+  } | string;
 }
 
-const BACKEND_URL = 'http://localhost:5000';
-
-const resolveImage = (image: string) => {
+const resolveImage = (image: Course['image']) => {
   if (!image) return '/placeholder-course.jpg';
-  if (image.startsWith('http')) return image;
-  return `${BACKEND_URL}${image}`;
+  // Handle object with url property
+  if (typeof image === 'object' && image.url) {
+    return image.url;
+  }
+  // Handle string
+  if (typeof image === 'string') {
+    if (image.startsWith('http')) return image;
+    return image;
+  }
+  return '/placeholder-course.jpg';
 };
 
 const CourseDetails = () => {
@@ -117,7 +125,7 @@ const CourseDetails = () => {
                 </div>
 
                 <div className='text-2xl font-bold text-gradient'>
-                  ₹{course.price.toLocaleString()}
+                  ₹{Number(course.price || 0).toLocaleString()}
                 </div>
               </div>
 
