@@ -9,14 +9,13 @@ const degrees = [
     fullName: 'Bachelor of Computer Applications',
     duration: '3 Years',
     semesters: '6 Semesters',
-    type: 'Undergraduate',
     description: 'Comprehensive program covering programming, software development, and IT fundamentals.',
     highlights: ['Industry-ready curriculum', 'Hands-on projects', '100% placement assistance'],
     careers: ['Software Developer', 'Web Developer', 'System Analyst'],
     eligibility: '10+2 with Mathematics',
     fees: '₹45,000/year',
     icon: '💻',
-    gradient: 'from-blue-500 to-cyan-400',
+    gradient: 'from-indigo-500 to-violet-400',
   },
   {
     id: 'bba',
@@ -24,14 +23,13 @@ const degrees = [
     fullName: 'Bachelor of Business Administration',
     duration: '3 Years',
     semesters: '6 Semesters',
-    type: 'Undergraduate',
     description: 'Develop essential business skills in management, marketing, and entrepreneurship.',
     highlights: ['Case study approach', 'Industry internships', 'Leadership development'],
     careers: ['Business Analyst', 'Marketing Manager', 'HR Manager'],
     eligibility: '10+2 from any stream',
     fees: '₹40,000/year',
     icon: '📊',
-    gradient: 'from-purple-500 to-pink-400',
+    gradient: 'from-indigo-500 to-violet-400',
   },
   {
     id: 'bsc-hospitality',
@@ -39,14 +37,13 @@ const degrees = [
     fullName: 'Bachelor of Science in Hospitality Studies',
     duration: '3 Years',
     semesters: '6 Semesters',
-    type: 'Undergraduate',
     description: 'Prepare for a dynamic career in hospitality, tourism, and hotel management.',
     highlights: ['Practical training', 'Industry exposure', 'Global career opportunities'],
     careers: ['Hotel Manager', 'Event Coordinator', 'Tourism Manager'],
     eligibility: '10+2 from any stream',
     fees: '₹50,000/year',
     icon: '🏨',
-    gradient: 'from-orange-500 to-amber-400',
+    gradient: 'from-indigo-500 to-violet-400',
   },
   {
     id: 'mca',
@@ -54,14 +51,13 @@ const degrees = [
     fullName: 'Master of Computer Applications',
     duration: '2 Years',
     semesters: '4 Semesters',
-    type: 'Postgraduate',
     description: 'Advanced program for aspiring software engineers and IT professionals.',
     highlights: ['Advanced programming', 'Research opportunities', 'Industry collaborations'],
     careers: ['Software Architect', 'Data Scientist', 'AI Engineer'],
     eligibility: 'BCA/B.Sc. with Math',
     fees: '₹65,000/year',
     icon: '🎓',
-    gradient: 'from-emerald-500 to-teal-400',
+    gradient: 'from-indigo-500 to-violet-400',
   },
   {
     id: 'mba',
@@ -69,14 +65,13 @@ const degrees = [
     fullName: 'Master of Business Administration',
     duration: '2 Years',
     semesters: '4 Semesters',
-    type: 'Postgraduate',
     description: 'Prepare for leadership roles with strategic management and business expertise.',
     highlights: ['Multiple specializations', 'Executive mentorship', 'Global exposure'],
     careers: ['CEO', 'Marketing Director', 'Strategy Consultant'],
     eligibility: 'Bachelor in any discipline',
     fees: '₹85,000/year',
     icon: '🏆',
-    gradient: 'from-rose-500 to-red-400',
+    gradient: 'from-indigo-500 to-violet-400',
   },
   {
     id: 'msc-cs',
@@ -84,7 +79,6 @@ const degrees = [
     fullName: 'Master of Science in Computer Science',
     duration: '2 Years',
     semesters: '4 Semesters',
-    type: 'Postgraduate',
     description: 'Advanced theoretical and practical knowledge in computer science and research.',
     highlights: ['Research-focused', 'AI & ML specialization', 'Academic excellence'],
     careers: ['Research Scientist', 'ML Engineer', 'University Professor'],
@@ -160,9 +154,6 @@ const Degrees = () => {
                         <h3 className="text-xl sm:text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
                           {degree.name}
                         </h3>
-                        <span className={`inline-block px-2 py-0.5 text-[10px] sm:text-xs font-medium rounded-full bg-gradient-to-r ${degree.gradient} text-white`}>
-                          {degree.type}
-                        </span>
                       </div>
                     </div>
                   </div>
