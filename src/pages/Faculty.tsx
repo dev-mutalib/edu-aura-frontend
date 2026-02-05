@@ -32,7 +32,7 @@ const Faculty = () => {
         setFaculty(res.data?.data || []);
       } catch (error) {
         console.error('Faculty API Error:', error);
-        setFaculty([]); // ✅ safety
+        setFaculty([]);
       } finally {
         setLoading(false);
       }

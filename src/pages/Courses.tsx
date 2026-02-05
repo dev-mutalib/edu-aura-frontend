@@ -30,7 +30,7 @@ const Courses = () => {
         setCourses(res.data?.data || []);
       } catch (err) {
         console.error('Courses API Error:', err);
-        setCourses([]); // ✅ safety
+        setCourses([]);
         setError('Failed to load courses');
       } finally {
         setLoading(false);
@@ -107,7 +107,7 @@ const Courses = () => {
                     <span>{course.duration}</span>
                   </div>
                   <p className='font-bold text-gradient text-lg'>
-                    ₹{course.price.toLocaleString()}
+                    ₹{Number(course.price || 0).toLocaleString()}
                   </p>
                 </div>
 
