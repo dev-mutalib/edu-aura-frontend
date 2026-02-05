@@ -27,9 +27,10 @@ const Courses = () => {
     const fetchCourses = async () => {
       try {
         const res = await api.get('/courses');
-        setCourses(res.data.data || []);
+        setCourses(res.data?.data || []);
       } catch (err) {
         console.error('Courses API Error:', err);
+        setCourses([]); // ✅ safety
         setError('Failed to load courses');
       } finally {
         setLoading(false);
@@ -59,7 +60,6 @@ const Courses = () => {
 
   return (
     <div className='min-h-screen pt-16 relative overflow-hidden'>
-      {/* HERO */}
       <section className='py-20 text-center'>
         <div className='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 mb-6'>
           <Sparkles className='h-4 w-4 text-primary' />
@@ -84,7 +84,6 @@ const Courses = () => {
               className='card-hover bg-card/50 border-border/50 backdrop-blur-sm overflow-hidden group animate-fade-in'
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              {/* COURSE IMAGE */}
               <div className='relative overflow-hidden'>
                 <img
                   src={course.image?.url || '/placeholder-course.jpg'}
@@ -97,10 +96,7 @@ const Courses = () => {
               </div>
 
               <CardContent className='p-6'>
-                <h3 className='text-lg font-semibold text-foreground group-hover:text-gradient transition-all'>
-                  {course.title}
-                </h3>
-
+                <h3 className='text-lg font-semibold'>{course.title}</h3>
                 <p className='mt-2 line-clamp-3 text-sm text-muted-foreground'>
                   {course.description}
                 </p>
@@ -110,14 +106,13 @@ const Courses = () => {
                     <Clock className='h-4 w-4 text-primary' />
                     <span>{course.duration}</span>
                   </div>
-
                   <p className='font-bold text-gradient text-lg'>
                     ₹{course.price.toLocaleString()}
                   </p>
                 </div>
 
                 <Link to={`/courses/${course._id}`}>
-                  <button className='mt-4 w-full py-2.5 rounded-lg bg-gradient-to-r from-primary to-secondary text-white font-medium transition-all duration-300 hover:shadow-glow-sm hover:scale-[1.02] shimmer'>
+                  <button className='mt-4 w-full py-2.5 rounded-lg bg-gradient-to-r from-primary to-secondary text-white font-medium transition-all duration-300'>
                     Enroll Now
                   </button>
                 </Link>
@@ -126,7 +121,6 @@ const Courses = () => {
           ))}
         </div>
 
-        {/* STATS */}
         <section className='py-16 border-t border-border/30'>
           <div className='grid grid-cols-2 md:grid-cols-4 gap-6'>
             {[
@@ -137,7 +131,7 @@ const Courses = () => {
             ].map((stat, index) => (
               <Card
                 key={index}
-                className='card-hover bg-card/50 border-border/50 text-center'
+                className='text-center'
               >
                 <CardContent className='p-6'>
                   <stat.icon className='h-8 w-8 mx-auto text-primary mb-2' />
