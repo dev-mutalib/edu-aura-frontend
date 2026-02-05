@@ -19,7 +19,7 @@ interface Faculty {
 
 /* ================= IMAGE FIX ================= */
 
-const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const BACKEND_URL = api.defaults.baseURL?.replace('/api', '') || '';
 
 const resolveImageUrl = (image?: { url?: string }) => {
   if (!image?.url) return '/placeholder-user.jpg';

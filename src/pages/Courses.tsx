@@ -5,7 +5,7 @@ import Container from '../components/Container';
 import { BookOpen, Clock, Sparkles, GraduationCap } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
-/* ================= TYPES (FIXED) ================= */
+/* ================= TYPES ================= */
 interface Course {
   _id: string;
   title: string;
@@ -17,8 +17,9 @@ interface Course {
   };
 }
 
-/* ================= IMAGE RESOLVER (FIXED) ================= */
-const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+/* ================= IMAGE RESOLVER ================= */
+
+const BACKEND_URL = api.defaults.baseURL?.replace('/api', '') || '';
 
 const resolveImageUrl = (image?: { url?: string }) => {
   if (!image?.url) return '/placeholder-course.jpg';
@@ -97,6 +98,7 @@ const Courses = () => {
               className='card-hover bg-card/50 border-border/50 backdrop-blur-sm overflow-hidden group animate-fade-in'
               style={{ animationDelay: `${index * 100}ms` }}
             >
+              {/* COURSE IMAGE */}
               <div className='relative overflow-hidden'>
                 <img
                   src={resolveImageUrl(course.image)}
@@ -138,6 +140,7 @@ const Courses = () => {
           ))}
         </div>
 
+        {/* STATS */}
         <section className='py-16 border-t border-border/30'>
           <div className='grid grid-cols-2 md:grid-cols-4 gap-6'>
             {[
