@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import api from '../api/axios';
 import Container from '../components/Container';
 import toast, { Toaster } from 'react-hot-toast';
@@ -12,7 +13,19 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+const courses = [
+  { value: 'bca', label: 'BCA - Bachelor of Computer Applications' },
+  { value: 'bba', label: 'BBA - Bachelor of Business Administration' },
+  { value: 'bsc-hospitality', label: 'B.Sc. (HS) - Hospitality Studies' },
+  { value: 'mca', label: 'MCA - Master of Computer Applications' },
+  { value: 'mba', label: 'MBA - Master of Business Administration' },
+  { value: 'msc-cs', label: 'M.Sc. C.S. - Computer Science' },
+];
+
 const Admissions = () => {
+  const [searchParams] = useSearchParams();
+  const preSelectedCourse = searchParams.get('course') || '';
+
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -22,17 +35,17 @@ const Admissions = () => {
 
   const [loading, setLoading] = useState(false);
 
+  // Pre-select course if coming from degree details page
+  useEffect(() => {
+    if (preSelectedCourse && courses.some(c => c.value === preSelectedCourse)) {
+      setForm(prev => ({ ...prev, course: preSelectedCourse }));
+    }
+  }, [preSelectedCourse]);
+
   const steps = [
     { icon: ClipboardList, title: 'Fill Application', desc: 'Complete the online application form with your details' },
     { icon: FileText, title: 'Submit Documents', desc: 'Upload required academic documents and certificates' },
     { icon: CheckCircle, title: 'Get Confirmation', desc: 'Receive admission confirmation and enrollment details' },
-  ];
-
-  const courses = [
-    { value: 'BCA', label: 'BCA - Bachelor of Computer Applications' },
-    { value: 'BBA', label: 'BBA - Bachelor of Business Administration' },
-    { value: 'MCA', label: 'MCA - Master of Computer Applications' },
-    { value: 'MBA', label: 'MBA - Master of Business Administration' },
   ];
 
   const submitHandler = async () => {

@@ -321,7 +321,7 @@ const DegreeDetails = () => {
           <p className="text-muted-foreground mb-6">
             Start your application today and join thousands of successful alumni.
           </p>
-          <Link to="/admissions">
+          <Link to={`/admissions?course=${id}`}>
             <Button className="bg-gradient-to-r from-primary to-secondary hover:shadow-glow-md">
               Apply Now
             </Button>
