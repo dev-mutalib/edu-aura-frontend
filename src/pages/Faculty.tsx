@@ -91,63 +91,58 @@ const Faculty = () => {
       </section>
 
       <Container>
-        <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pb-20'>
+        <div className='grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pb-20 px-2 sm:px-0'>
           {faculty.map((member, index) => (
             <Card
               key={member._id}
-              className='group relative bg-card/60 border-border/50 backdrop-blur-sm overflow-hidden rounded-2xl transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2 animate-fade-in'
+              className='group relative bg-card/80 border-border/50 backdrop-blur-sm overflow-hidden rounded-xl sm:rounded-2xl transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-1 sm:hover:-translate-y-2 animate-fade-in'
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* Gradient Border on Hover */}
-              <div className='absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/0 via-secondary/0 to-accent/0 group-hover:from-primary/20 group-hover:via-secondary/20 group-hover:to-accent/20 transition-all duration-500 pointer-events-none' />
+              <div className='absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-primary/0 via-secondary/0 to-accent/0 group-hover:from-primary/20 group-hover:via-secondary/20 group-hover:to-accent/20 transition-all duration-500 pointer-events-none z-10' />
               
-              {/* Image Container */}
-              <div className='relative overflow-hidden'>
+              {/* Image Container with Fixed Aspect Ratio */}
+              <div className='relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden bg-muted'>
                 {/* Gradient Overlay */}
-                <div className='absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent z-10 opacity-60' />
+                <div className='absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent z-10' />
                 
                 <img
                   src={member.image?.url || '/placeholder-user.jpg'}
                   alt={member.name}
-                  className='h-64 w-full object-cover object-top transition-all duration-700 group-hover:scale-110'
+                  className='absolute inset-0 w-full h-full object-cover object-top transition-all duration-700 group-hover:scale-105'
                   onError={(e) => {
                     e.currentTarget.src = '/placeholder-user.jpg';
                   }}
                 />
                 
-                {/* Floating Badge */}
-                <div className='absolute top-3 right-3 z-20'>
-                  <div className='px-3 py-1.5 rounded-full bg-primary/90 backdrop-blur-sm text-white text-xs font-semibold shadow-lg'>
-                    {member.experience}
+                {/* Experience Badge */}
+                <div className='absolute top-2 right-2 sm:top-3 sm:right-3 z-20'>
+                  <div className='flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full bg-gradient-to-r from-primary to-secondary text-white text-[10px] sm:text-xs font-semibold shadow-lg'>
+                    <Award className='h-3 w-3' />
+                    <span>{member.experience}</span>
                   </div>
                 </div>
               </div>
 
               {/* Content */}
-              <CardContent className='relative p-5 text-center'>
-                {/* Name with Gradient */}
-                <h3 className='text-lg font-bold text-foreground group-hover:text-gradient transition-all duration-300'>
+              <CardContent className='relative p-3 sm:p-4 text-center space-y-2 sm:space-y-3'>
+                {/* Name */}
+                <h3 className='text-sm sm:text-base lg:text-lg font-bold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-1'>
                   {member.name}
                 </h3>
                 
-                {/* Designation Badge */}
-                <div className='mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/10 border border-secondary/30'>
-                  <span className='text-xs font-medium text-secondary'>{member.designation}</span>
+                {/* Designation */}
+                <div className='inline-flex items-center gap-1.5 px-2 sm:px-3 py-1 rounded-full bg-secondary/10 border border-secondary/30'>
+                  <User className='h-3 w-3 text-secondary' />
+                  <span className='text-[10px] sm:text-xs font-medium text-secondary line-clamp-1'>{member.designation}</span>
                 </div>
                 
                 {/* Subject */}
-                <div className='mt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground'>
-                  <div className='p-1.5 rounded-lg bg-primary/10'>
-                    <BookOpen className='h-3.5 w-3.5 text-primary' />
+                <div className='flex items-center justify-center gap-2 text-xs sm:text-sm text-muted-foreground'>
+                  <div className='p-1 sm:p-1.5 rounded-lg bg-primary/10'>
+                    <BookOpen className='h-3 w-3 sm:h-3.5 sm:w-3.5 text-primary' />
                   </div>
-                  <span className='font-medium'>{member.subject}</span>
-                </div>
-                
-                {/* Hover Action Button */}
-                <div className='mt-4 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300'>
-                  <button className='w-full py-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-white text-sm font-semibold hover:shadow-glow-md transition-all duration-300'>
-                    View Profile
-                  </button>
+                  <span className='font-medium line-clamp-1'>{member.subject}</span>
                 </div>
               </CardContent>
             </Card>
