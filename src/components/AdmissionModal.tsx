@@ -80,8 +80,10 @@ const AdmissionModal: React.FC = () => {
   const courses = [
     { value: 'bca', label: 'BCA - Bachelor of Computer Applications' },
     { value: 'bba', label: 'BBA - Bachelor of Business Administration' },
+    { value: 'bsc-hospitality', label: 'B.Sc. (HS) - Hospitality Studies' },
     { value: 'mca', label: 'MCA - Master of Computer Applications' },
     { value: 'mba', label: 'MBA - Master of Business Administration' },
+    { value: 'msc-cs', label: 'M.Sc. C.S. - Computer Science' },
   ];
 
   if (!isOpen) return null;

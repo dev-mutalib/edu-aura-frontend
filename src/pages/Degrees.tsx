@@ -24,6 +24,16 @@ const degrees = [
     icon: '📊',
   },
   {
+    id: 'bsc-hospitality',
+    name: 'B.Sc. (HS)',
+    fullName: 'Bachelor of Science in Hospitality Studies',
+    duration: '3 Years',
+    type: 'Undergraduate',
+    description: 'Prepare for a dynamic career in hospitality, tourism, and hotel management.',
+    highlights: ['Practical training', 'Industry exposure', 'Global career opportunities'],
+    icon: '🏨',
+  },
+  {
     id: 'mca',
     name: 'MCA',
     fullName: 'Master of Computer Applications',
@@ -42,6 +52,16 @@ const degrees = [
     description: 'Prepare for leadership roles with strategic management and business expertise.',
     highlights: ['Multiple specializations', 'Executive mentorship', 'Global exposure'],
     icon: '🏆',
+  },
+  {
+    id: 'msc-cs',
+    name: 'M.Sc. C.S.',
+    fullName: 'Master of Science in Computer Science',
+    duration: '2 Years',
+    type: 'Postgraduate',
+    description: 'Advanced theoretical and practical knowledge in computer science and research.',
+    highlights: ['Research-focused', 'AI & ML specialization', 'Academic excellence'],
+    icon: '🔬',
   },
 ];
 
@@ -68,7 +88,7 @@ const Degrees = () => {
           <div className="flex flex-wrap justify-center gap-4">
             <div className="flex items-center gap-2 px-4 py-2 bg-card rounded-full border border-border/50">
               <BookOpen className="h-4 w-4 text-primary" />
-              <span className="text-sm">4 Programs</span>
+              <span className="text-sm">6 Programs</span>
             </div>
             <div className="flex items-center gap-2 px-4 py-2 bg-card rounded-full border border-border/50">
               <Users className="h-4 w-4 text-secondary" />
