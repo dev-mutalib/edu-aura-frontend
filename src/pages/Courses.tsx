@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import api from '../api/axios';
 import Container from '../components/Container';
 import { BookOpen, Clock, Sparkles, GraduationCap } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '../components/ui/card';
+
 
 /* ================= TYPES ================= */
 interface Course {
