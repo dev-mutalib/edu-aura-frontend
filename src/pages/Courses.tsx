@@ -82,39 +82,61 @@ const Courses = () => {
           {courses.map((course, index) => (
             <Card
               key={course._id}
-              className='card-hover bg-card/50 border-border/50 backdrop-blur-sm overflow-hidden group animate-fade-in'
+              className='group relative bg-card/60 border-border/50 backdrop-blur-sm overflow-hidden rounded-2xl transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2 animate-fade-in'
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <div className='relative overflow-hidden'>
+              {/* Gradient Border Effect */}
+              <div className='absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/0 via-secondary/0 to-accent/0 group-hover:from-primary/20 group-hover:via-secondary/20 group-hover:to-accent/20 transition-all duration-500 pointer-events-none' />
+              
+              {/* Image Container with Proper Aspect Ratio */}
+              <div className='relative aspect-[16/10] overflow-hidden'>
+                {/* Gradient Overlay */}
+                <div className='absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent z-10' />
+                
                 <img
                   src={course.image?.url || '/placeholder-course.jpg'}
                   alt={course.title}
-                  className='h-44 w-full object-cover transition-transform duration-500 group-hover:scale-110'
+                  className='absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-110'
                   onError={(e) => {
                     e.currentTarget.src = '/placeholder-course.jpg';
                   }}
                 />
+                
+                {/* Duration Badge */}
+                <div className='absolute top-3 left-3 z-20'>
+                  <div className='flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card/90 backdrop-blur-sm border border-border/50 shadow-lg'>
+                    <Clock className='h-3.5 w-3.5 text-primary' />
+                    <span className='text-xs font-semibold text-foreground'>{course.duration}</span>
+                  </div>
+                </div>
+                
+                {/* Price Badge */}
+                <div className='absolute top-3 right-3 z-20'>
+                  <div className='px-3 py-1.5 rounded-full bg-gradient-to-r from-primary to-secondary text-white text-xs font-bold shadow-lg'>
+                    ₹{Number(course.price || 0).toLocaleString()}
+                  </div>
+                </div>
               </div>
 
-              <CardContent className='p-6'>
-                <h3 className='text-lg font-semibold'>{course.title}</h3>
-                <p className='mt-2 line-clamp-3 text-sm text-muted-foreground'>
+              <CardContent className='relative p-5'>
+                {/* Title */}
+                <h3 className='text-lg font-bold text-foreground group-hover:text-gradient transition-all duration-300 line-clamp-2'>
+                  {course.title}
+                </h3>
+                
+                {/* Description */}
+                <p className='mt-2 line-clamp-2 text-sm text-muted-foreground leading-relaxed'>
                   {course.description}
                 </p>
 
-                <div className='mt-4 flex items-center justify-between'>
-                  <div className='flex items-center gap-2 text-sm text-muted-foreground'>
-                    <Clock className='h-4 w-4 text-primary' />
-                    <span>{course.duration}</span>
-                  </div>
-                  <p className='font-bold text-gradient text-lg'>
-                    ₹{Number(course.price || 0).toLocaleString()}
-                  </p>
-                </div>
-
+                {/* CTA Button */}
                 <Link to={`/courses/${course._id}`}>
-                  <button className='mt-4 w-full py-2.5 rounded-lg bg-gradient-to-r from-primary to-secondary text-white font-medium transition-all duration-300'>
-                    Enroll Now
+                  <button className='mt-4 w-full py-3 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-semibold transition-all duration-300 hover:shadow-glow-md group-hover:shadow-lg relative overflow-hidden'>
+                    <span className='relative z-10 flex items-center justify-center gap-2'>
+                      <GraduationCap className='h-4 w-4' />
+                      Enroll Now
+                    </span>
+                    <div className='absolute inset-0 bg-gradient-to-r from-secondary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
                   </button>
                 </Link>
               </CardContent>

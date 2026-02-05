@@ -91,38 +91,63 @@ const Faculty = () => {
       </section>
 
       <Container>
-        <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-4 pb-20'>
+        <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pb-20'>
           {faculty.map((member, index) => (
             <Card
               key={member._id}
-              className='card-hover bg-card/50 border-border/50 backdrop-blur-sm overflow-hidden group text-center animate-fade-in'
+              className='group relative bg-card/60 border-border/50 backdrop-blur-sm overflow-hidden rounded-2xl transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2 animate-fade-in'
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <div className='relative overflow-hidden bg-muted'>
+              {/* Gradient Border on Hover */}
+              <div className='absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/0 via-secondary/0 to-accent/0 group-hover:from-primary/20 group-hover:via-secondary/20 group-hover:to-accent/20 transition-all duration-500 pointer-events-none' />
+              
+              {/* Image Container */}
+              <div className='relative overflow-hidden'>
+                {/* Gradient Overlay */}
+                <div className='absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent z-10 opacity-60' />
+                
                 <img
                   src={member.image?.url || '/placeholder-user.jpg'}
                   alt={member.name}
-                  className='h-56 w-full object-contain transition-transform duration-500 group-hover:scale-105'
+                  className='h-64 w-full object-cover object-top transition-all duration-700 group-hover:scale-110'
                   onError={(e) => {
                     e.currentTarget.src = '/placeholder-user.jpg';
                   }}
                 />
+                
+                {/* Floating Badge */}
+                <div className='absolute top-3 right-3 z-20'>
+                  <div className='px-3 py-1.5 rounded-full bg-primary/90 backdrop-blur-sm text-white text-xs font-semibold shadow-lg'>
+                    {member.experience}
+                  </div>
+                </div>
               </div>
 
-              <CardContent className='p-5'>
-                <h3 className='text-lg font-semibold'>{member.name}</h3>
-                <p className='mt-1 text-sm font-medium text-primary'>
-                  {member.designation}
-                </p>
-                <div className='mt-3 space-y-2'>
-                  <div className='flex items-center justify-center gap-2 text-sm text-muted-foreground'>
-                    <BookOpen className='h-4 w-4 text-secondary' />
-                    <span>{member.subject}</span>
+              {/* Content */}
+              <CardContent className='relative p-5 text-center'>
+                {/* Name with Gradient */}
+                <h3 className='text-lg font-bold text-foreground group-hover:text-gradient transition-all duration-300'>
+                  {member.name}
+                </h3>
+                
+                {/* Designation Badge */}
+                <div className='mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/10 border border-secondary/30'>
+                  <span className='text-xs font-medium text-secondary'>{member.designation}</span>
+                </div>
+                
+                {/* Subject */}
+                <div className='mt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground'>
+                  <div className='p-1.5 rounded-lg bg-primary/10'>
+                    <BookOpen className='h-3.5 w-3.5 text-primary' />
                   </div>
-                  <div className='flex items-center justify-center gap-2 text-sm text-muted-foreground'>
-                    <Award className='h-4 w-4 text-accent' />
-                    <span>{member.experience}</span>
-                  </div>
+                  <span className='font-medium'>{member.subject}</span>
+                </div>
+                
+                {/* Hover Action Button */}
+                <div className='mt-4 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300'>
+                  <button className='w-full py-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-white text-sm font-semibold hover:shadow-glow-md transition-all duration-300'>
+                    View Profile
+                  </button>
                 </div>
               </CardContent>
             </Card>
