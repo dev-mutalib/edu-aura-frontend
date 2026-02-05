@@ -18,7 +18,7 @@ interface Course {
 }
 
 /* ================= IMAGE RESOLVER (FIXED) ================= */
-const BACKEND_URL = 'http://localhost:5000';
+const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const resolveImageUrl = (image?: { url?: string }) => {
   if (!image?.url) return '/placeholder-course.jpg';
@@ -40,7 +40,7 @@ const Courses = () => {
     const fetchCourses = async () => {
       try {
         const res = await api.get('/courses');
-        setCourses(res.data.data || []); // ✅ SAFE
+        setCourses(res.data.data || []);
       } catch (err) {
         console.error('Courses API Error:', err);
         setError('Failed to load courses');
@@ -52,7 +52,6 @@ const Courses = () => {
     fetchCourses();
   }, []);
 
-  /* ================= LOADING ================= */
   if (loading) {
     return (
       <div className='min-h-screen pt-16 flex items-center justify-center'>
@@ -63,7 +62,6 @@ const Courses = () => {
     );
   }
 
-  /* ================= ERROR ================= */
   if (error) {
     return (
       <div className='min-h-screen pt-16 flex items-center justify-center'>
@@ -72,7 +70,6 @@ const Courses = () => {
     );
   }
 
-  /* ================= UI ================= */
   return (
     <div className='min-h-screen pt-16 relative overflow-hidden'>
       {/* HERO */}
@@ -100,7 +97,6 @@ const Courses = () => {
               className='card-hover bg-card/50 border-border/50 backdrop-blur-sm overflow-hidden group animate-fade-in'
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              {/* COURSE IMAGE */}
               <div className='relative overflow-hidden'>
                 <img
                   src={resolveImageUrl(course.image)}
@@ -112,7 +108,6 @@ const Courses = () => {
                 />
               </div>
 
-              {/* COURSE CONTENT */}
               <CardContent className='p-6'>
                 <h3 className='text-lg font-semibold text-foreground group-hover:text-gradient transition-all'>
                   {course.title}
@@ -133,7 +128,6 @@ const Courses = () => {
                   </p>
                 </div>
 
-                {/* ENROLL BUTTON */}
                 <Link to={`/courses/${course._id}`}>
                   <button className='mt-4 w-full py-2.5 rounded-lg bg-gradient-to-r from-primary to-secondary text-white font-medium transition-all duration-300 hover:shadow-glow-sm hover:scale-[1.02] shimmer'>
                     Enroll Now
@@ -144,7 +138,6 @@ const Courses = () => {
           ))}
         </div>
 
-        {/* STATS */}
         <section className='py-16 border-t border-border/30'>
           <div className='grid grid-cols-2 md:grid-cols-4 gap-6'>
             {[
