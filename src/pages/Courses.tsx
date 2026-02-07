@@ -43,10 +43,21 @@ const Courses = () => {
 
   if (loading) {
     return (
-      <div className='min-h-screen pt-16 flex items-center justify-center'>
-        <p className='text-muted-foreground animate-pulse'>
-          Loading courses...
-        </p>
+      <div className='min-h-screen pt-16 relative'>
+        <div className='fixed inset-0 pointer-events-none'>
+          <div className='absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-float' />
+          <div className='absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-float-slow' />
+        </div>
+        <Container>
+          <div className='flex flex-col items-center justify-center mt-20'>
+            <div className='w-16 h-16 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center animate-pulse-glow mb-4'>
+              <BookOpen className='h-8 w-8 text-white animate-bounce-slow' />
+            </div>
+            <p className='text-muted-foreground animate-pulse'>
+              Loading courses...
+            </p>
+          </div>
+        </Container>
       </div>
     );
   }
