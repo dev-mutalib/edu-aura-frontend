@@ -105,11 +105,14 @@ const Gallery = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent z-10" />
 
                 <img
-                  src={img.image?.url || "/placeholder-course.jpg"}
+                  src={img.image?.url || "/placeholder.svg"}
                   alt={img.title}
                   className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
                   onError={(e) => {
-                    e.currentTarget.src = "/placeholder-course.jpg";
+                    const target = e.currentTarget;
+                    if (target.src !== window.location.origin + "/placeholder.svg") {
+                      target.src = "/placeholder.svg";
+                    }
                   }}
                 />
 
