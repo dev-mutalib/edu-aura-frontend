@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { validateName, validateEmail, validatePhone, validateCourse, sanitizeName, sanitizePhone } from '@/lib/validation';
 
 const courses = [
   { value: 'bca', label: 'BCA - Bachelor of Computer Applications' },
@@ -33,9 +34,9 @@ const Admissions = () => {
     course: '',
   });
 
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
 
-  // Pre-select course if coming from degree details page
   useEffect(() => {
     if (preSelectedCourse && courses.some(c => c.value === preSelectedCourse)) {
       setForm(prev => ({ ...prev, course: preSelectedCourse }));
@@ -48,31 +49,52 @@ const Admissions = () => {
     { icon: CheckCircle, title: 'Get Confirmation', desc: 'Receive admission confirmation and enrollment details' },
   ];
 
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+    const nameErr = validateName(form.name);
+    const emailErr = validateEmail(form.email);
+    const phoneErr = validatePhone(form.phone);
+    const courseErr = validateCourse(form.course);
+    if (nameErr) newErrors.name = nameErr;
+    if (emailErr) newErrors.email = emailErr;
+    if (phoneErr) newErrors.phone = phoneErr;
+    if (courseErr) newErrors.course = courseErr;
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const submitHandler = async () => {
-    if (!form.name || !form.email || !form.phone || !form.course) {
-      toast.error('Please fill all fields');
+    if (!validateForm()) {
+      toast.error('Please fix the errors in the form');
       return;
     }
 
     try {
       setLoading(true);
-      await api.post('/admissions/apply', form);
-      toast.success('Admission applied successfully');
-
-      setForm({
-        name: '',
-        email: '',
-        phone: '',
-        course: '',
+      await api.post('/admissions/apply', {
+        name: form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        course: form.course,
       });
+      toast.success('Admission applied successfully');
+      setForm({ name: '', email: '', phone: '', course: '' });
+      setErrors({});
     } catch (error: any) {
       console.error('Admission API Error:', error);
-      toast.error(
-        error?.response?.data?.message || 'Failed to apply admission',
-      );
+      toast.error(error?.response?.data?.message || 'Failed to apply admission');
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleFieldChange = (key: string, value: string) => {
+    let sanitized = value;
+    if (key === 'name') sanitized = sanitizeName(value);
+    if (key === 'phone') sanitized = sanitizePhone(value);
+    setForm({ ...form, [key]: sanitized });
+    // Clear error on change
+    if (errors[key]) setErrors({ ...errors, [key]: '' });
   };
 
   const inputFields = [
@@ -90,7 +112,6 @@ const Admissions = () => {
         <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-accent/5 rounded-full blur-3xl" />
       </div>
 
-      {/* TOASTER */}
       <Toaster
         position="top-right"
         toastOptions={{
@@ -153,38 +174,51 @@ const Admissions = () => {
 
               <div className="space-y-4">
                 {inputFields.map((field) => (
-                  <div key={field.key} className="relative group">
-                    <field.icon className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                    <input
-                      type={field.type}
-                      value={(form as any)[field.key]}
-                      className="w-full pl-12 pr-4 py-3 rounded-lg bg-muted/30 border border-border/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:bg-muted/50 transition-all duration-300"
-                      placeholder={field.placeholder}
-                      onChange={(e) => setForm({ ...form, [field.key]: e.target.value })}
-                      disabled={loading}
-                    />
+                  <div key={field.key}>
+                    <div className="relative group">
+                      <field.icon className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                      <input
+                        type={field.type}
+                        value={(form as any)[field.key]}
+                        className={`w-full pl-12 pr-4 py-3 rounded-lg bg-muted/30 border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:bg-muted/50 transition-all duration-300 ${errors[field.key] ? 'border-destructive' : 'border-border/50'}`}
+                        placeholder={field.placeholder}
+                        onChange={(e) => handleFieldChange(field.key, e.target.value)}
+                        disabled={loading}
+                      />
+                    </div>
+                    {errors[field.key] && (
+                      <p className="text-xs text-destructive mt-1 ml-1">{errors[field.key]}</p>
+                    )}
                   </div>
                 ))}
 
                 {/* Course Dropdown */}
-                <div className="relative group">
-                  <BookOpen className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
-                  <Select
-                    value={form.course}
-                    onValueChange={(value) => setForm({ ...form, course: value })}
-                    disabled={loading}
-                  >
-                    <SelectTrigger className="w-full pl-12 pr-4 py-3 h-auto rounded-lg bg-muted/30 border border-border/50 text-foreground focus:border-primary/50 focus:bg-muted/50">
-                      <SelectValue placeholder="Select Course" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-card border-border">
-                      {courses.map((course) => (
-                        <SelectItem key={course.value} value={course.value}>
-                          {course.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                <div>
+                  <div className="relative group">
+                    <BookOpen className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
+                    <Select
+                      value={form.course}
+                      onValueChange={(value) => {
+                        setForm({ ...form, course: value });
+                        if (errors.course) setErrors({ ...errors, course: '' });
+                      }}
+                      disabled={loading}
+                    >
+                      <SelectTrigger className={`w-full pl-12 pr-4 py-3 h-auto rounded-lg bg-muted/30 border text-foreground focus:border-primary/50 focus:bg-muted/50 ${errors.course ? 'border-destructive' : 'border-border/50'}`}>
+                        <SelectValue placeholder="Select Course" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-card border-border">
+                        {courses.map((course) => (
+                          <SelectItem key={course.value} value={course.value}>
+                            {course.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  {errors.course && (
+                    <p className="text-xs text-destructive mt-1 ml-1">{errors.course}</p>
+                  )}
                 </div>
 
                 <button
