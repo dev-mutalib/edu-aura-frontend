@@ -1,11 +1,11 @@
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, MapPin, Clock, Briefcase, CheckCircle, Send, User, Mail, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import api from '../api/axios';
+import { validateName, validateEmail, validatePhone, sanitizeName, sanitizePhone } from '@/lib/validation';
 
 const careerData: Record<string, {
   title: string;
@@ -200,6 +200,7 @@ const CareerDetails = () => {
     course: '',
     coverLetter: '',
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
   
   const career = id ? careerData[id] : null;
 
@@ -216,30 +217,41 @@ const CareerDetails = () => {
     );
   }
 
+  const clearError = (field: string) => {
+    if (errors[field]) setErrors(prev => ({ ...prev, [field]: '' }));
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+    const nameErr = validateName(formData.name);
+    const emailErr = validateEmail(formData.email);
+    const phoneErr = validatePhone(formData.phone);
+    if (nameErr) newErrors.name = nameErr;
+    if (emailErr) newErrors.email = emailErr;
+    if (phoneErr) newErrors.phone = phoneErr;
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.email || !formData.phone) {
-      toast.error('Please fill all required fields');
+    if (!validateForm()) {
+      toast.error('Please fix the errors in the form');
       return;
     }
 
     setIsSubmitting(true);
     try {
       await api.post('/admissions/apply', {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
         course: career.title,
       });
       toast.success('Application submitted successfully! We will contact you soon.');
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        course: '',
-        coverLetter: '',
-      });
+      setFormData({ name: '', email: '', phone: '', course: '', coverLetter: '' });
+      setErrors({});
     } catch (error: any) {
       console.error('Application API Error:', error);
       toast.error(error?.response?.data?.message || 'Failed to submit application');
@@ -248,45 +260,32 @@ const CareerDetails = () => {
     }
   };
 
+  const inputClass = (field: string) =>
+    `flex h-10 w-full rounded-md border bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10 ${errors[field] ? 'border-destructive' : 'border-input'}`;
+
   return (
     <main className="min-h-screen bg-background py-12 px-4">
       <div className="max-w-5xl mx-auto">
-        {/* Back Button */}
-        <Link
-          to="/careers"
-          className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary mb-8 transition-colors"
-        >
+        <Link to="/careers" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary mb-8 transition-colors">
           <ArrowLeft className="h-4 w-4" />
           Back to Careers
         </Link>
 
-        {/* Header */}
         <div className="mb-12">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">{career.title}</h1>
           <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-            <span className="flex items-center gap-1">
-              <MapPin className="h-4 w-4" />
-              {career.location}
-            </span>
-            <span className="flex items-center gap-1">
-              <Clock className="h-4 w-4" />
-              {career.experience}
-            </span>
-            <span className="flex items-center gap-1">
-              <Briefcase className="h-4 w-4" />
-              {career.type}
-            </span>
+            <span className="flex items-center gap-1"><MapPin className="h-4 w-4" />{career.location}</span>
+            <span className="flex items-center gap-1"><Clock className="h-4 w-4" />{career.experience}</span>
+            <span className="flex items-center gap-1"><Briefcase className="h-4 w-4" />{career.type}</span>
           </div>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             <section>
               <h2 className="text-xl font-semibold mb-4">About the Role</h2>
               <p className="text-muted-foreground">{career.description}</p>
             </section>
-
             <section>
               <h2 className="text-xl font-semibold mb-4">Responsibilities</h2>
               <ul className="space-y-3">
@@ -298,7 +297,6 @@ const CareerDetails = () => {
                 ))}
               </ul>
             </section>
-
             <section>
               <h2 className="text-xl font-semibold mb-4">Requirements</h2>
               <ul className="space-y-3">
@@ -310,7 +308,6 @@ const CareerDetails = () => {
                 ))}
               </ul>
             </section>
-
             <section>
               <h2 className="text-xl font-semibold mb-4">Benefits</h2>
               <ul className="space-y-3">
@@ -329,37 +326,43 @@ const CareerDetails = () => {
             <div className="sticky top-24 p-6 bg-card rounded-2xl border border-border/50">
               <h3 className="text-lg font-semibold mb-4">Apply for this Position</h3>
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input 
-                    placeholder="Full Name" 
-                    required 
-                    className="pl-10"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  />
+                <div>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <input
+                      placeholder="Full Name"
+                      className={inputClass('name')}
+                      value={formData.name}
+                      onChange={(e) => { setFormData({ ...formData, name: sanitizeName(e.target.value) }); clearError('name'); }}
+                    />
+                  </div>
+                  {errors.name && <p className="text-xs text-destructive mt-1">{errors.name}</p>}
                 </div>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input 
-                    type="email" 
-                    placeholder="Email Address" 
-                    required 
-                    className="pl-10"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  />
+                <div>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <input
+                      type="email"
+                      placeholder="Email Address"
+                      className={inputClass('email')}
+                      value={formData.email}
+                      onChange={(e) => { setFormData({ ...formData, email: e.target.value }); clearError('email'); }}
+                    />
+                  </div>
+                  {errors.email && <p className="text-xs text-destructive mt-1">{errors.email}</p>}
                 </div>
-                <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input 
-                    type="tel" 
-                    placeholder="Phone Number" 
-                    required 
-                    className="pl-10"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  />
+                <div>
+                  <div className="relative">
+                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <input
+                      type="tel"
+                      placeholder="Phone Number"
+                      className={inputClass('phone')}
+                      value={formData.phone}
+                      onChange={(e) => { setFormData({ ...formData, phone: sanitizePhone(e.target.value) }); clearError('phone'); }}
+                    />
+                  </div>
+                  {errors.phone && <p className="text-xs text-destructive mt-1">{errors.phone}</p>}
                 </div>
                 <Textarea 
                   placeholder="Cover Letter (Optional)" 
@@ -367,11 +370,7 @@ const CareerDetails = () => {
                   value={formData.coverLetter}
                   onChange={(e) => setFormData({ ...formData, coverLetter: e.target.value })}
                 />
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-primary to-secondary"
-                >
+                <Button type="submit" disabled={isSubmitting} className="w-full bg-gradient-to-r from-primary to-secondary">
                   {isSubmitting ? (
                     <span className="flex items-center gap-2">
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
